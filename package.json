@@ -1,0 +1,14 @@
+{
+  "name": "s0urce-marketplace-discord",
+  "version": "1.0.0",
+  "description": "Discord bot for s0urce marketplace using Yabluzo's API (NanderTGA/yabluzo)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.16.3"
+  }
+}
