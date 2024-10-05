@@ -6,6 +6,6 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("auction"),
     async execute(interaction){
-
+        
     }
 }
