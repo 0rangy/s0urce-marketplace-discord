@@ -1,6 +1,6 @@
 {
-    "cacheAge": 5,
-    "auctions": [
+  "cacheAge": 1728259329461,
+  "auctions": [
     {
       "id": 1,
       "organizer": "NanderTGA",
@@ -16,7 +16,7 @@
         "creationDate": "2024-06-18T15:58:52.440Z",
         "rarity": "C",
         "sellPrice": 0.00864,
-        "upgradePrice": 0.054,
+        "upgradePrice": 0.054000000000000006,
         "suffix": "S2",
         "description": "Botnet's PSU, a collective energy source harnessed from a network of machines. Ideal for marathon crypto mining operations.",
         "icon": "psu.webp",
@@ -65,7 +65,7 @@
         "creationDate": "2024-06-22T22:11:43.508Z",
         "rarity": "C",
         "sellPrice": 0.00864,
-        "upgradePrice": 0.054,
+        "upgradePrice": 0.054000000000000006,
         "suffix": "WeiWei",
         "description": "From China's tech heart, Weiwei's great CPU: Power, stability, and efficiency.",
         "icon": "cpu.webp",
@@ -134,7 +134,7 @@
         "creator": "Natsu",
         "creationDate": "2024-06-15T23:02:54.271Z",
         "rarity": "SS",
-        "sellPrice": 0.5328,
+        "sellPrice": 0.5327999999999999,
         "upgradePrice": 0.066,
         "suffix": "3D",
         "description": "A custom made mythic Firewall.",
@@ -188,7 +188,7 @@
           "version": "1.6.2"
         },
         "dTIName": "dFI",
-        "estimatedPrice": 10.0200124384825
+        "estimatedPrice": 10.020012438482503
       },
       "type": "firewall",
       "rarity": "mythic",
@@ -308,7 +308,7 @@
         "creator": "GrinderPro",
         "creationDate": "2024-05-04T01:14:03.714Z",
         "rarity": "SS",
-        "sellPrice": 0.5328,
+        "sellPrice": 0.5327999999999999,
         "upgradePrice": 0.066,
         "suffix": "3D",
         "description": "A custom made mythic GPU.",
@@ -321,7 +321,7 @@
             "description": "Mines $VAL BTC per second",
             "starter_value": 0.0000709536,
             "isCrypto": true,
-            "value": 0.000075153599999999,
+            "value": 0.00007515359999999999,
             "increasePerLevel": 0.0000042,
             "key": "idleCryptoMining",
             "quality": "90.48"
@@ -336,7 +336,7 @@
           {
             "name": "Better Barter",
             "description": "Increases your sell price by $VAL%",
-            "value": 24.96375,
+            "value": 24.963749999999997,
             "key": "betterBarter",
             "quality": "99.71"
           }
@@ -349,7 +349,7 @@
           "version": "1.6.2"
         },
         "dTIName": "dGI",
-        "estimatedPrice": 8.02392967312023
+        "estimatedPrice": 8.023929673120225
       },
       "type": "GPU",
       "rarity": "mythic",
@@ -373,7 +373,7 @@
         "creationDate": "2024-07-09T20:57:54.802Z",
         "rarity": "C",
         "sellPrice": 0.00864,
-        "upgradePrice": 0.054,
+        "upgradePrice": 0.054000000000000006,
         "suffix": "GG",
         "description": "A default CPU, but the watercooling is pink.",
         "icon": "cpu.webp",
@@ -383,8 +383,8 @@
             "primary": true,
             "name": "Hack Damage",
             "description": "Increases your hack damage by $VAL",
-            "value": 26.876,
-            "starter_value": 23.376,
+            "value": 26.875999999999998,
+            "starter_value": 23.375999999999998,
             "increasePerLevel": 3.5,
             "key": "hackDamage",
             "quality": "55.84"
@@ -436,7 +436,7 @@
         "creationDate": "2024-07-09T21:03:41.381Z",
         "rarity": "D",
         "sellPrice": 0.00252,
-        "upgradePrice": 0.051,
+        "upgradePrice": 0.051000000000000004,
         "suffix": "Meta",
         "description": "Meta's GPU, a virtual reality dream machine, it turns 1s and 0s into immersive worlds.",
         "icon": "gpu.webp",
@@ -448,8 +448,8 @@
             "description": "Mines $VAL BTC per second",
             "starter_value": 0.0000120104,
             "isCrypto": true,
-            "value": 0.000014530399999999,
-            "increasePerLevel": 0.000002519999999999,
+            "value": 0.000014530399999999999,
+            "increasePerLevel": 0.0000025199999999999996,
             "key": "idleCryptoMining",
             "quality": "50.26"
           }
@@ -486,7 +486,7 @@
         "creationDate": "2024-07-01T08:30:58.308Z",
         "rarity": "A",
         "sellPrice": 0.03096,
-        "upgradePrice": 0.06,
+        "upgradePrice": 0.060000000000000005,
         "suffix": "3D",
         "description": "A custom made epic GPU.",
         "icon": "gpu.webp",
@@ -499,7 +499,7 @@
             "starter_value": 0.0000303408,
             "isCrypto": true,
             "value": 0.0000339108,
-            "increasePerLevel": 0.000003569999999999,
+            "increasePerLevel": 0.0000035699999999999997,
             "key": "idleCryptoMining",
             "quality": "44.96"
           },
@@ -543,7 +543,7 @@
         "creationDate": "2024-04-03T10:19:50.687Z",
         "rarity": "C",
         "sellPrice": 0.00864,
-        "upgradePrice": 0.054,
+        "upgradePrice": 0.054000000000000006,
         "suffix": "robo+",
         "description": "Fortify your defenses with GHost's Firewall. A digital shield designed by the master hacker himself, it's your ultimate weapon against cyber threats.",
         "icon": "router.webp",
@@ -569,7 +569,7 @@
           {
             "name": "Firewall Regeneration",
             "description": "Increases your firewall regeneration by $VAL",
-            "value": 2.04295,
+            "value": 2.0429500000000003,
             "key": "firewallRegeneration",
             "quality": "69.53"
           }
@@ -606,7 +606,7 @@
         "creationDate": "2024-07-29T06:31:26.891Z",
         "rarity": "A",
         "sellPrice": 0.03096,
-        "upgradePrice": 0.06,
+        "upgradePrice": 0.060000000000000005,
         "suffix": "3D",
         "description": "A custom made epic Firewall.",
         "icon": "router.webp",
@@ -625,7 +625,7 @@
           {
             "name": "Firewall Master Encryption",
             "description": "Increases the chance to spawn a long length word for the enemy by $VAL",
-            "value": 15.181,
+            "value": 15.181000000000001,
             "key": "firewallMasterEncryption",
             "quality": "34.54"
           },
@@ -676,7 +676,7 @@
         "creationDate": "2024-07-27T12:20:45.884Z",
         "rarity": "A",
         "sellPrice": 0.03096,
-        "upgradePrice": 0.06,
+        "upgradePrice": 0.060000000000000005,
         "suffix": "DM0D",
         "description": "Crafting visuals as vivid as the Party's propaganda.",
         "icon": "gpu.webp",
@@ -686,10 +686,10 @@
             "primary": true,
             "name": "Idle Crypto Mining",
             "description": "Mines $VAL BTC per second",
-            "starter_value": 0.0000407299,
+            "starter_value": 0.000040729900000000005,
             "isCrypto": true,
-            "value": 0.0000442999,
-            "increasePerLevel": 0.000003569999999999,
+            "value": 0.000044299900000000006,
+            "increasePerLevel": 0.0000035699999999999997,
             "key": "idleCryptoMining",
             "quality": "90.13"
           },
@@ -716,7 +716,7 @@
           "version": "1.6.2"
         },
         "dTIName": "dGI",
-        "estimatedPrice": 0.361568017371442
+        "estimatedPrice": 0.36156801737144195
       },
       "type": "GPU",
       "rarity": "epic",
@@ -739,7 +739,7 @@
         "creator": "ApolloX939",
         "creationDate": "2024-08-20T23:51:05.330Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "s1lk",
         "description": "Experience the visuals of the underworld with s1lk's GPU.",
@@ -773,7 +773,7 @@
           "version": "1.6.2"
         },
         "dTIName": "dGI",
-        "estimatedPrice": 0.108504143641234
+        "estimatedPrice": 0.10850414364123409
       },
       "type": "GPU",
       "rarity": "rare",
@@ -850,7 +850,7 @@
         "creationDate": "2024-08-31T18:22:32.392Z",
         "rarity": "D",
         "sellPrice": 0.00252,
-        "upgradePrice": 0.051,
+        "upgradePrice": 0.051000000000000004,
         "suffix": "syry",
         "description": "Experience immersive graphics with a GPU that learns from your habits and optimizes performance, all under Syry's intelligent control.",
         "icon": "gpu.webp",
@@ -862,8 +862,8 @@
             "description": "Mines $VAL BTC per second",
             "starter_value": 0.0000136508,
             "isCrypto": true,
-            "value": 0.000016170799999999,
-            "increasePerLevel": 0.000002519999999999,
+            "value": 0.000016170799999999998,
+            "increasePerLevel": 0.0000025199999999999996,
             "key": "idleCryptoMining",
             "quality": "91.27"
           }
@@ -900,7 +900,7 @@
         "creationDate": "2024-08-31T18:35:14.204Z",
         "rarity": "D",
         "sellPrice": 0.00252,
-        "upgradePrice": 0.051,
+        "upgradePrice": 0.051000000000000004,
         "suffix": "Macrohard",
         "description": "Experience stunning visuals with Macrohard's GPU, a masterpiece of graphics technology designed by Gill Bates.",
         "icon": "gpu.webp",
@@ -912,8 +912,8 @@
             "description": "Mines $VAL BTC per second",
             "starter_value": 0.0000117872,
             "isCrypto": true,
-            "value": 0.000014307199999999,
-            "increasePerLevel": 0.000002519999999999,
+            "value": 0.000014307199999999999,
+            "increasePerLevel": 0.0000025199999999999996,
             "key": "idleCryptoMining",
             "quality": "44.68"
           }
@@ -960,8 +960,8 @@
             "primary": true,
             "name": "Hack Damage",
             "description": "Increases your hack damage by $VAL",
-            "value": 84.272,
-            "starter_value": 79.522,
+            "value": 84.27199999999999,
+            "starter_value": 79.52199999999999,
             "increasePerLevel": 4.75,
             "key": "hackDamage",
             "quality": "97.61"
@@ -976,7 +976,7 @@
           {
             "name": "Hack Armor Penetration",
             "description": "Increases your hack armor penetration by $VAL%",
-            "value": 20.7685,
+            "value": 20.768500000000003,
             "key": "hackArmorPenetration",
             "quality": "71.79"
           },
@@ -1003,7 +1003,7 @@
           "version": "1.6.2"
         },
         "dTIName": "dCI",
-        "estimatedPrice": 3.18449211272542
+        "estimatedPrice": 3.184492112725419
       },
       "type": "CPU",
       "rarity": "legendary",
@@ -1027,7 +1027,7 @@
         "creationDate": "2024-09-27T04:07:52.878Z",
         "rarity": "A",
         "sellPrice": 0.03096,
-        "upgradePrice": 0.06,
+        "upgradePrice": 0.060000000000000005,
         "suffix": "GG",
         "description": "It's pink and it powers your PC. What else do you need?",
         "icon": "psu.webp",
@@ -1076,7 +1076,7 @@
         "creationDate": "2024-09-29T16:12:48.050Z",
         "rarity": "C",
         "sellPrice": 0.00864,
-        "upgradePrice": 0.054,
+        "upgradePrice": 0.054000000000000006,
         "suffix": "Macrohard",
         "description": "Experience unmatched power efficiency with Macrohard's PSU, designed by tech giant Gill Bates for optimal performance.",
         "icon": "psu.webp",
@@ -1087,7 +1087,7 @@
             "name": "Crypto Mining Power",
             "description": "Increases your crypto mining power by $VAL%",
             "starter_value": 5.643,
-            "value": 7.043,
+            "value": 7.042999999999999,
             "increasePerLevel": 1.4,
             "key": "cryptoMiningPower",
             "quality": "12.86"
@@ -1124,7 +1124,7 @@
         "creator": "CDR0",
         "creationDate": "2024-09-29T22:14:24.087Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "s1lk",
         "description": "Experience the speed of the darknet with s1lk's CPU. Engineered for those who defy the system.",
@@ -1187,7 +1187,7 @@
         "creator": "CDR0",
         "creationDate": "2024-09-30T22:56:36.210Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare GPU.",
@@ -1200,7 +1200,7 @@
             "description": "Mines $VAL BTC per second",
             "starter_value": 0.0000256288,
             "isCrypto": true,
-            "value": 0.0000289888,
+            "value": 0.000028988800000000003,
             "increasePerLevel": 0.00000336,
             "key": "idleCryptoMining",
             "quality": "56.64"
@@ -1244,7 +1244,7 @@
         "creator": "CDR0",
         "creationDate": "2024-09-30T22:57:56.378Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "X",
         "description": "Experience the power of Mars in your PC with X's AI-focused CPU!",
@@ -1255,7 +1255,7 @@
             "primary": true,
             "name": "Hack Damage",
             "description": "Increases your hack damage by $VAL",
-            "value": 35.986,
+            "value": 35.986000000000004,
             "starter_value": 31.986,
             "increasePerLevel": 4,
             "key": "hackDamage",
@@ -1264,7 +1264,7 @@
           {
             "name": "Hack Critical Damage Chance",
             "description": "Increases your hack critical damage chance by $VAL%",
-            "value": 3.274125,
+            "value": 3.2741249999999997,
             "key": "hackCriticalDamageChance",
             "quality": "61.93"
           },
@@ -1307,7 +1307,7 @@
         "creator": "CDR0",
         "creationDate": "2024-10-01T23:22:55.767Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare PSU.",
@@ -1356,7 +1356,7 @@
         "creator": "CDR0",
         "creationDate": "2024-10-02T06:08:18.941Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare PSU.",
@@ -1405,7 +1405,7 @@
         "creator": "CDR0",
         "creationDate": "2024-09-30T22:56:36.217Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare CPU.",
@@ -1425,7 +1425,7 @@
           {
             "name": "Hack Armor Penetration",
             "description": "Increases your hack armor penetration by $VAL%",
-            "value": 14.249,
+            "value": 14.248999999999999,
             "key": "hackArmorPenetration",
             "quality": "92.49"
           },
@@ -1468,7 +1468,7 @@
         "creator": "CDR0",
         "creationDate": "2024-10-02T06:08:18.939Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare GPU.",
@@ -1479,9 +1479,9 @@
             "primary": true,
             "name": "Idle Crypto Mining",
             "description": "Mines $VAL BTC per second",
-            "starter_value": 0.0000261184,
+            "starter_value": 0.000026118400000000004,
             "isCrypto": true,
-            "value": 0.0000294784,
+            "value": 0.000029478400000000006,
             "increasePerLevel": 0.00000336,
             "key": "idleCryptoMining",
             "quality": "59.52"
@@ -1525,7 +1525,7 @@
         "creator": "CDR0",
         "creationDate": "2024-10-02T15:31:37.353Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare GPU.",
@@ -1538,7 +1538,7 @@
             "description": "Mines $VAL BTC per second",
             "starter_value": 0.000025503,
             "isCrypto": true,
-            "value": 0.000028862999999999,
+            "value": 0.000028862999999999998,
             "increasePerLevel": 0.00000336,
             "key": "idleCryptoMining",
             "quality": "55.90"
@@ -1582,7 +1582,7 @@
         "creator": "CDR0",
         "creationDate": "2024-10-02T15:31:37.349Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare Firewall.",
@@ -1645,7 +1645,7 @@
         "creator": "CDR0",
         "creationDate": "2024-10-02T15:31:37.345Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare PSU.",
@@ -1657,7 +1657,7 @@
             "name": "Crypto Mining Power",
             "description": "Increases your crypto mining power by $VAL%",
             "starter_value": 14.7315,
-            "value": 16.3315,
+            "value": 16.331500000000002,
             "increasePerLevel": 1.6,
             "key": "cryptoMiningPower",
             "quality": "94.63"
@@ -1671,7 +1671,7 @@
           "version": "1.6.2"
         },
         "dTIName": "dPI",
-        "estimatedPrice": 0.175835000000001
+        "estimatedPrice": 0.17583500000000135
       },
       "type": "PSU",
       "rarity": "rare",
@@ -1694,7 +1694,7 @@
         "creator": "CDR0",
         "creationDate": "2024-10-02T15:31:37.342Z",
         "rarity": "B",
-        "sellPrice": 0.01782,
+        "sellPrice": 0.017820000000000003,
         "upgradePrice": 0.057,
         "suffix": "3D",
         "description": "A custom made rare Firewall.",
@@ -1751,7 +1751,7 @@
         "creationDate": "2024-10-03T20:28:10.339Z",
         "rarity": "D",
         "sellPrice": 0.00252,
-        "upgradePrice": 0.051,
+        "upgradePrice": 0.051000000000000004,
         "suffix": "G4Y",
         "description": "Josh's masterpiece: a cutting-edge military-grade GPU, forged for unparalleled performance in the digital battlefield.",
         "icon": "gpu.webp",
@@ -1761,10 +1761,10 @@
             "primary": true,
             "name": "Idle Crypto Mining",
             "description": "Mines $VAL BTC per second",
-            "starter_value": 0.0000107132,
+            "starter_value": 0.000010713200000000001,
             "isCrypto": true,
             "value": 0.0000132332,
-            "increasePerLevel": 0.000002519999999999,
+            "increasePerLevel": 0.0000025199999999999996,
             "key": "idleCryptoMining",
             "quality": "17.83"
           }

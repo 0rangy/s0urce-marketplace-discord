@@ -1,9 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const https = require("https")
-const { writeFileSync } = require('node:fs');
+const fs = require('fs');
 
-const JSONToFile = (obj, filename) =>
-    writeFileSync(`${filename}.json`, JSON.stringify(obj, null, 2));
 
 module.exports = {
 	category: 'marketplace',
@@ -16,14 +13,20 @@ module.exports = {
             .setDescription("Get all available auctions")
     ),
     async execute(interaction){
-        JSONToFile({"text":"hello"}, "../auctionCache")
         const { cacheAge, auctions } = require("../../auctionCache.json");
         if(Date.now() >= cacheAge + 30000){ // Update info once every 30 seconds, only when prompted.
             fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
-                console.log(listings[0].ended)
+                console.log(Date.now())
+                fs.writeFileSync('./auctionCache.json', JSON.stringify({
+                        "cacheAge": Date.now(),
+                        "auctions": listings
+                    },null, 2), {
+                    encoding: "utf8",
+                    mode: 0o666
+                  })
             });
-            const { auctions } = require("../../auctionCache.json");
-            console.log(`User ${interaction.user.tag} refreshed cache`);
+            const { cacheAge, auctions } = require("../../auctionCache.json");
+            console.log(`User ${interaction.user.tag} refreshed cache. (${Date.now() - (cacheAge + 30000)})`);
         }
 
 
