@@ -146,20 +146,24 @@ module.exports = {
         const data = fs.readFileSync('./auctionCache.json',
             { encoding: 'utf8', flag: 'r' });
         dataParsed = JSON.parse(data);
-        // const timeDif = Date.now()/1000 - dataParsed.cacheAge;
-        // if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
-        //     fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
-        //         fs.writeFileSync('./auctionCache.json', JSON.stringify({
-        //                 "cacheAge": Date.now()/1000,
-        //                 "auctions": listings
-        //             },null, 2), {
-        //             encoding: "utf8",
-        //             mode: 0o666
-        //           })
-        //     });
-            
-        //     console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
-        // }
+        try {
+          const timeDif = Date.now()/1000 - dataParsed.cacheAge;
+          if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
+              fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
+                  fs.writeFileSync('./auctionCache.json', JSON.stringify({
+                          "cacheAge": Date.now()/1000,
+                          "auctions": listings
+                      },null, 2), {
+                      encoding: "utf8",
+                      mode: 0o666
+                    })
+              });
+              
+              console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
+          }
+        } catch(e){
+          console.log("Fetch failed! Is the API offline?")
+        }
         const embed = generateEmbed(Array(dataParsed.auctions)[0].length, dataParsed);
 
         const goBack = new ButtonBuilder()
