@@ -94,6 +94,29 @@ const generateEmbed = (id, auctionCache) => {
 };
 
 async function processButtons(response, prevId, aCache, collectorFilter, interaction){
+    dataParsed = aCache;
+    try { // In case someone spends more than 30 seconds browsing
+      const timeDif = Date.now()/1000 - dataParsed.cacheAge;
+      if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
+          fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
+              fs.writeFileSync('./auctionCache.json', JSON.stringify({
+                      "cacheAge": Date.now()/1000,
+                      "auctions": listings
+                  },null, 2), {
+                  encoding: "utf8",
+                  mode: 0o666
+                })
+          });
+          
+          console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
+          const data = fs.readFileSync('./auctionCache.json',
+            { encoding: 'utf8', flag: 'r' });
+          dataParsed = JSON.parse(data);
+      }
+    } catch(e){
+      console.log("Fetch failed! Is the API offline?")
+    }
+
     let curId = prevId;
     try {
         
@@ -117,16 +140,16 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
         switch(curId){
             case 1:
                 goBack.setDisabled(true);
-            case Array(aCache.auctions)[0].length:
+            case Array(dataParsed.auctions)[0].length:
                 goForwards.setDisabled(true)
         }
 
         const row = new ActionRowBuilder()
 			.addComponents(goBack, goForwards);
-        const embed = generateEmbed(curId, aCache);
+        const embed = generateEmbed(curId, dataParsed);
         await action.update({ embeds: [embed], components: [row] })
 
-        processButtons(response, curId, aCache, collectorFilter, interaction);
+        processButtons(response, curId, dataParsed, collectorFilter, interaction);
     } catch( exception ){
         console.log(exception) // Just in case ;)
     }
@@ -160,6 +183,9 @@ module.exports = {
               });
               
               console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
+              const data = fs.readFileSync('./auctionCache.json',
+                { encoding: 'utf8', flag: 'r' });
+              dataParsed = JSON.parse(data);
           }
         } catch(e){
           console.log("Fetch failed! Is the API offline?")
