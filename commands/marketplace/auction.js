@@ -40,17 +40,17 @@ const generateEmbed = (id, auctionCache) => {
       value: `${listing.item.description}`,
       inline: false
     });
-    for(let stat of listing.item.stats){
-        try{
-            let statDesc = String(stat.description).replace("$VAL", `${properRound(stat.value)}`)
-            embed.addFields({
-                name: `${stat.name}`,
-                value: `${statDesc} `,
-                inline: false
-            })
-        } catch(e){
-            // Same as above.
-        }
+    try {
+      for(let stat of listing.item.stats){
+        let statDesc = String(stat.description).replace("$VAL", `${properRound(stat.value)}`)
+        embed.addFields({
+            name: `${stat.name}`,
+            value: `${statDesc} `,
+            inline: false
+        })
+      }
+    } catch(e){
+      // Have to put it outside since listing.item.stats is being iterated over :smh:
     }
     embed.addFields(
     {
