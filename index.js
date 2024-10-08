@@ -49,16 +49,16 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.once(Events.ClientReady, readyClient => {
     client.user.setActivity('Yabluzo auctions', { type: ActivityType.Streaming });
-    fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
-        console.log(Date.now())
-        fs.writeFileSync('./auctionCache.json', JSON.stringify({
-                "cacheAge": Date.now()/1000,
-                "auctions": listings
-            },null, 2), {
-            encoding: "utf8",
-            mode: 0o666
-          })
-    });
+    // fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
+    //     console.log(Date.now())
+    //     fs.writeFileSync('./auctionCache.json', JSON.stringify({
+    //             "cacheAge": Date.now()/1000,
+    //             "auctions": listings
+    //         },null, 2), {
+    //         encoding: "utf8",
+    //         mode: 0o666
+    //       })
+    // });
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 

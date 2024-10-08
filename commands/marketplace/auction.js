@@ -1,6 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, Embed} = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder} = require('discord.js');
 const fs = require('fs');
 const moment = require('moment')
+
+const properRound = (num) => {
+    return Math.round((num + Number.EPSILON) * 1000) / 1000
+}
 
 const generateEmbed = (id, auctionCache) => {
     let listings = auctionCache.auctions
@@ -20,39 +24,48 @@ const generateEmbed = (id, auctionCache) => {
       name: "Rarity",
       value: `${listing.rarity}`,
       inline: true
-    },
-    {
-      name: "dTI",
-      value: `${listing.dTI.rank.rating}/10 (Est. BTC: ${listing.dTI.estimatedPrice})`,
-      inline: true
-    },
-    {
+    });
+    try {
+        embed.addFields(
+            {
+            name: "dTI",
+            value: `${properRound(listing.dTI.rank.rating)}/10 (Est. BTC: ${properRound(listing.dTI.estimatedPrice)})`,
+            inline: true
+            });
+    } catch(e){
+        // Do nothing. This is for colors, avatars, etc.
+    }
+    embed.addFields({
       name: "Description",
       value: `${listing.item.description}`,
       inline: false
     });
     for(let stat of listing.item.stats){
-        let statDesc = String(stat.description).replace("$VAL", `${stat.value}`)
-        embed.addFields({
-            name: `${stat.name}`,
-            value: `${statDesc} `,
-            inline: false
-          })
+        try{
+            let statDesc = String(stat.description).replace("$VAL", `${properRound(stat.value)}`)
+            embed.addFields({
+                name: `${stat.name}`,
+                value: `${statDesc} `,
+                inline: false
+            })
+        } catch(e){
+            // Same as above.
+        }
     }
     embed.addFields(
     {
-      name: "**Auction Stats:**",
+      name: "**Auction Information:**",
       value: " ",
       inline: false
     },
     {
       name: "Starting Bid",
-      value: `${listing.startingPrice}`,
+      value: `${properRound(listing.startingPrice)}`,
       inline: true
     },
     {
       name: "Highest Bid",
-      value: `${listing.highestBid}`,
+      value: `${properRound(listing.highestBid)}`,
       inline: true
     },
     {
@@ -80,6 +93,44 @@ const generateEmbed = (id, auctionCache) => {
   return embed;
 };
 
+async function processButtons(response, prevId, aCache, collectorFilter, interaction){
+    let curId = prevId;
+    try {
+        
+        const action = await response.awaitMessageComponent({ filter: collectorFilter, time: 600_000 }); // Keep buttons active for 10 mins
+        if (action.customId === 'forwards') {
+            curId++
+        } else if(action.customId === 'back') {
+            curId--
+        }
+        
+        let goBack = new ButtonBuilder()
+			.setCustomId('back')
+			.setLabel('<-')
+			.setStyle(ButtonStyle.Primary);
+
+		let goForwards = new ButtonBuilder()
+			.setCustomId('forwards')
+			.setLabel('->')
+			.setStyle(ButtonStyle.Primary);
+
+        switch(curId){
+            case 1:
+                goBack.setDisabled(true);
+            case Array(aCache.auctions)[0].length:
+                goForwards.setDisabled(true)
+        }
+
+        const row = new ActionRowBuilder()
+			.addComponents(goBack, goForwards);
+        const embed = generateEmbed(curId, aCache);
+        await action.update({ embeds: [embed], components: [row] })
+
+        processButtons(response, curId, aCache, collectorFilter, interaction);
+    } catch( exception ){
+        console.log(exception) // Just in case ;)
+    }
+}
 
 module.exports = {
 	category: 'marketplace',
@@ -98,7 +149,6 @@ module.exports = {
         // const timeDif = Date.now()/1000 - dataParsed.cacheAge;
         // if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
         //     fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
-        //         console.log(Date.now())
         //         fs.writeFileSync('./auctionCache.json', JSON.stringify({
         //                 "cacheAge": Date.now()/1000,
         //                 "auctions": listings
@@ -110,9 +160,27 @@ module.exports = {
             
         //     console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
         // }
-        // console.log(`${timeDif}`)
-        const embed = generateEmbed(2, dataParsed);
+        const embed = generateEmbed(Array(dataParsed.auctions)[0].length, dataParsed);
 
-        await interaction.reply({ embeds: [embed] });
+        const goBack = new ButtonBuilder()
+			.setCustomId('back')
+			.setLabel('<-')
+			.setStyle(ButtonStyle.Primary);
+
+		const goForwards = new ButtonBuilder()
+			.setCustomId('forwards')
+			.setLabel('->')
+			.setStyle(ButtonStyle.Primary)
+            .setDisabled(true);
+
+        const row = new ActionRowBuilder()
+			.addComponents(goBack, goForwards);
+
+        const response = await interaction.reply({ embeds: [embed], components: [row] });
+        let currentAuction = Array(dataParsed.auctions)[0].length;
+        const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
+
+        await processButtons(response, currentAuction, dataParsed, collectorFilter, interaction)  
+
     }
 }
