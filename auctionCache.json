@@ -1,5 +1,5 @@
 {
-  "cacheAge": 1728419588.218,
+  "cacheAge": 1728481229.286,
   "auctions": [
     {
       "id": 1,
@@ -1784,6 +1784,704 @@
       "name": "Selling junk for cheap",
       "startDate": "2024-10-03T20:37:28.000Z",
       "endDate": "2024-10-10T20:37:57.000Z",
+      "ended": false
+    },
+    {
+      "id": 33,
+      "organizer": "CDR0",
+      "startingPrice": 0.824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "63c35f820891cae97f4c66fed572796e7f2a2fe5",
+        "type": "firewall",
+        "name": "3D B3-1024",
+        "mint": 5754,
+        "creator": "CDR0",
+        "creationDate": "2024-10-03T02:20:01.602Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "3D",
+        "description": "A custom made rare Firewall.",
+        "icon": "router.webp",
+        "iconSmall": "router-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Firewall Health",
+            "description": "Increases your firewall health by $VAL",
+            "value": 116.475,
+            "starter_value": 100.475,
+            "increasePerLevel": 16,
+            "key": "firewallHealth",
+            "quality": "0.95"
+          },
+          {
+            "name": "Firewall Regeneration",
+            "description": "Increases your firewall regeneration by $VAL",
+            "value": 2.6065,
+            "key": "firewallRegeneration",
+            "quality": "4.26"
+          },
+          {
+            "name": "Firewall Damage Reduction",
+            "description": "Increases your firewall damage reduction by $VAL%",
+            "value": 5.808999999999999,
+            "key": "firewallDamageReduction",
+            "quality": "44.12"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 2.3676,
+          "version": "1.6.2"
+        },
+        "dTIName": "dFI",
+        "estimatedPrice": 0.1
+      },
+      "type": "firewall",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 34,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "72c5b7c4efbd1f588a7d2edd30cdf1213fc084f0",
+        "type": "psu",
+        "name": "Macrohard C1-1024",
+        "mint": 3332,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T12:54:05.091Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "Macrohard",
+        "description": "Experience unmatched power efficiency with Macrohard's PSU, designed by tech giant Gill Bates for optimal performance.",
+        "icon": "psu.webp",
+        "iconSmall": "psu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Crypto Mining Power",
+            "description": "Increases your crypto mining power by $VAL%",
+            "starter_value": 7.4155,
+            "value": 8.8155,
+            "increasePerLevel": 1.4,
+            "key": "cryptoMiningPower",
+            "quality": "48.31"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 5.3479,
+          "version": "1.6.2"
+        },
+        "dTIName": "dPI",
+        "estimatedPrice": 0.03
+      },
+      "type": "PSU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 35,
+      "organizer": "CDR0",
+      "startingPrice": 0.0824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "f4902fdef1f48550648509f2230a49a738c2fd38",
+        "type": "firewall",
+        "name": "G4Y B3-924",
+        "mint": 523,
+        "creator": "CDR0",
+        "creationDate": "2024-09-29T02:01:27.603Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "G4Y",
+        "description": "Josh's firewalls prioritize experience over absolute safety.",
+        "icon": "router.webp",
+        "iconSmall": "router-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Firewall Health",
+            "description": "Increases your firewall health by $VAL",
+            "value": 153.125,
+            "starter_value": 137.125,
+            "increasePerLevel": 16,
+            "key": "firewallHealth",
+            "quality": "74.25"
+          },
+          {
+            "name": "Firewall Damage Reduction",
+            "description": "Increases your firewall damage reduction by $VAL%",
+            "value": 3.6647499999999997,
+            "key": "firewallDamageReduction",
+            "quality": "15.53"
+          },
+          {
+            "name": "Firewall Regeneration",
+            "description": "Increases your firewall regeneration by $VAL",
+            "value": 4.937250000000001,
+            "key": "firewallRegeneration",
+            "quality": "97.49"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 2.6959,
+          "version": "1.6.2"
+        },
+        "dTIName": "dFI",
+        "estimatedPrice": 0.1
+      },
+      "type": "firewall",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 36,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "0b303f66d1d78dd2f462b712d2180065e3a14e52",
+        "type": "gpu",
+        "name": "robo+ C3-1024",
+        "mint": 3479,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T12:59:04.603Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "robo+",
+        "description": "Built for the cyber warrior, it transforms code into stunning visuals for the ultimate hacking experience.",
+        "icon": "gpu.webp",
+        "iconSmall": "gpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Idle Crypto Mining",
+            "description": "Mines $VAL BTC per second",
+            "starter_value": 0.000020926799999999998,
+            "isCrypto": true,
+            "value": 0.000023866799999999997,
+            "increasePerLevel": 0.0000029399999999999994,
+            "key": "idleCryptoMining",
+            "quality": "76.36"
+          },
+          {
+            "name": "More Crypto Reward",
+            "description": "Increases your crypto reward by $VAL%",
+            "value": 7.315,
+            "key": "moreCryptoReward",
+            "quality": "64.20"
+          },
+          {
+            "name": "Better Barter",
+            "description": "Increases your sell price by $VAL%",
+            "value": 8.544250000000002,
+            "key": "betterBarter",
+            "quality": "80.59"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 8.0801,
+          "version": "1.6.2"
+        },
+        "dTIName": "dGI",
+        "estimatedPrice": 0.03580091315619945
+      },
+      "type": "GPU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 37,
+      "organizer": "CDR0",
+      "startingPrice": 0.2472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "563458252ce7bd53ccc2abd1f19012e7faa29fe3",
+        "type": "psu",
+        "name": "s1lk A1-1024",
+        "mint": 423,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T12:58:46.749Z",
+        "rarity": "A",
+        "sellPrice": 0.03096,
+        "upgradePrice": 0.060000000000000005,
+        "suffix": "s1lk",
+        "description": "s1lk's Powerhouse PSU: Unleash the power of the darknet right in your PC. Built for life, like Dread's sentence.",
+        "icon": "psu.webp",
+        "iconSmall": "psu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Crypto Mining Power",
+            "description": "Increases your crypto mining power by $VAL%",
+            "starter_value": 16.749,
+            "value": 18.448999999999998,
+            "increasePerLevel": 1.7,
+            "key": "cryptoMiningPower",
+            "quality": "17.49"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 1.749,
+          "version": "1.6.2"
+        },
+        "dTIName": "dPI",
+        "estimatedPrice": 0.3
+      },
+      "type": "PSU",
+      "rarity": "epic",
+      "name": "Epic",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 38,
+      "organizer": "CDR0",
+      "startingPrice": 0.0824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "911608ac7dc906b4a31a3fccd42fe74fb71abadd",
+        "type": "gpu",
+        "name": "GG B2-1024",
+        "mint": 2276,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T12:34:39.372Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "GG",
+        "description": "Limited HelloCatty edition GPU, it's pink and it glows in the dark.",
+        "icon": "gpu.webp",
+        "iconSmall": "gpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Idle Crypto Mining",
+            "description": "Mines $VAL BTC per second",
+            "starter_value": 0.0000204149,
+            "isCrypto": true,
+            "value": 0.000023774900000000002,
+            "increasePerLevel": 0.00000336,
+            "key": "idleCryptoMining",
+            "quality": "25.97"
+          },
+          {
+            "name": "Better Barter",
+            "description": "Increases your sell price by $VAL%",
+            "value": 11.645,
+            "key": "betterBarter",
+            "quality": "91.45"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 4.9813,
+          "version": "1.6.2"
+        },
+        "dTIName": "dGI",
+        "estimatedPrice": 0.1
+      },
+      "type": "GPU",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 39,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "424b1dbc3d3e01b63cda3e419ae82001687fa104",
+        "type": "cpu",
+        "name": "G4Y C3-1024",
+        "mint": 3173,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T13:03:48.276Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "G4Y",
+        "description": "Engineered with precision, a processing powerhouse with pride.",
+        "icon": "cpu.webp",
+        "iconSmall": "cpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Hack Damage",
+            "description": "Increases your hack damage by $VAL",
+            "value": 23.9045,
+            "starter_value": 20.4045,
+            "increasePerLevel": 3.5,
+            "key": "hackDamage",
+            "quality": "36.03"
+          },
+          {
+            "name": "Hack Critical Damage Chance",
+            "description": "Increases your hack critical damage chance by $VAL%",
+            "value": 1.60015,
+            "key": "hackCriticalDamageChance",
+            "quality": "40.01"
+          },
+          {
+            "name": "Hack Critical Damage Bonus",
+            "description": "Increases your hack critical damage bonus by $VAL%",
+            "value": 1.3212,
+            "key": "hackCriticalDamageBonus",
+            "quality": "8.03"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 2.8027,
+          "version": "1.6.2"
+        },
+        "dTIName": "dCI",
+        "estimatedPrice": 0.03
+      },
+      "type": "CPU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 40,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "9f1498a4161a0aaf94d45881e55d3300f886fe8e",
+        "type": "gpu",
+        "name": "robo+ C3-1024",
+        "mint": 3480,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T13:03:32.249Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "robo+",
+        "description": "Built for the cyber warrior, it transforms code into stunning visuals for the ultimate hacking experience.",
+        "icon": "gpu.webp",
+        "iconSmall": "gpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Idle Crypto Mining",
+            "description": "Mines $VAL BTC per second",
+            "starter_value": 0.000017578,
+            "isCrypto": true,
+            "value": 0.000020518,
+            "increasePerLevel": 0.0000029399999999999994,
+            "key": "idleCryptoMining",
+            "quality": "50.60"
+          },
+          {
+            "name": "More Crypto Reward",
+            "description": "Increases your crypto reward by $VAL%",
+            "value": 7.354,
+            "key": "moreCryptoReward",
+            "quality": "64.72"
+          },
+          {
+            "name": "Better Barter",
+            "description": "Increases your sell price by $VAL%",
+            "value": 4.99225,
+            "key": "betterBarter",
+            "quality": "33.23"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 5.5982,
+          "version": "1.6.2"
+        },
+        "dTIName": "dGI",
+        "estimatedPrice": 0.03
+      },
+      "type": "GPU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 41,
+      "organizer": "CDR0",
+      "startingPrice": 0.0824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "3248ffaa0e49b1db3d4bc96cb9a58737213bad5a",
+        "type": "gpu",
+        "name": "3D B2-1024",
+        "mint": 5294,
+        "creator": "CDR0",
+        "creationDate": "2024-10-07T10:04:31.805Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "3D",
+        "description": "A custom made rare GPU.",
+        "icon": "gpu.webp",
+        "iconSmall": "gpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Idle Crypto Mining",
+            "description": "Mines $VAL BTC per second",
+            "starter_value": 0.0000313765,
+            "isCrypto": true,
+            "value": 0.0000347365,
+            "increasePerLevel": 0.00000336,
+            "key": "idleCryptoMining",
+            "quality": "90.45"
+          },
+          {
+            "name": "More Crypto Reward",
+            "description": "Increases your crypto reward by $VAL%",
+            "value": 10.209999999999999,
+            "key": "moreCryptoReward",
+            "quality": "77.10"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 6.5447,
+          "version": "1.6.2"
+        },
+        "dTIName": "dGI",
+        "estimatedPrice": 0.1
+      },
+      "type": "GPU",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 42,
+      "organizer": "CDR0",
+      "startingPrice": 0.0824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "d322e6fc098deff7a5150d3c13d10fccc6410de6",
+        "type": "gpu",
+        "name": "3D B2-1024",
+        "mint": 5099,
+        "creator": "CDR0",
+        "creationDate": "2024-10-03T02:20:01.597Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "3D",
+        "description": "A custom made rare GPU.",
+        "icon": "gpu.webp",
+        "iconSmall": "gpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Idle Crypto Mining",
+            "description": "Mines $VAL BTC per second",
+            "starter_value": 0.0000177544,
+            "isCrypto": true,
+            "value": 0.000021114400000000002,
+            "increasePerLevel": 0.00000336,
+            "key": "idleCryptoMining",
+            "quality": "10.32"
+          },
+          {
+            "name": "Better Barter",
+            "description": "Increases your sell price by $VAL%",
+            "value": 3.193,
+            "key": "betterBarter",
+            "quality": "6.93"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 2.1903,
+          "version": "1.6.2"
+        },
+        "dTIName": "dGI",
+        "estimatedPrice": 0.1
+      },
+      "type": "GPU",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 43,
+      "organizer": "CDR0",
+      "startingPrice": 0.0824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "8c4e379ea7f568647e99afeb98421bf618238755",
+        "type": "firewall",
+        "name": "3D B3-1024",
+        "mint": 5753,
+        "creator": "CDR0",
+        "creationDate": "2024-10-03T02:20:01.600Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "3D",
+        "description": "A custom made rare Firewall.",
+        "icon": "router.webp",
+        "iconSmall": "router-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Firewall Health",
+            "description": "Increases your firewall health by $VAL",
+            "value": 123.37,
+            "starter_value": 107.37,
+            "increasePerLevel": 16,
+            "key": "firewallHealth",
+            "quality": "14.74"
+          },
+          {
+            "name": "Firewall Damage Reduction",
+            "description": "Increases your firewall damage reduction by $VAL%",
+            "value": 7.28425,
+            "key": "firewallDamageReduction",
+            "quality": "63.79"
+          },
+          {
+            "name": "Firewall Advanced Encryption",
+            "description": "Increases the chance to spawn a medium length word for the enemy by $VAL",
+            "value": 10.112,
+            "key": "firewallAdvancedEncryption",
+            "quality": "0.56"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 4.7097,
+          "version": "1.6.2"
+        },
+        "dTIName": "dFI",
+        "estimatedPrice": 0.1
+      },
+      "type": "firewall",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 44,
+      "organizer": "CDR0",
+      "startingPrice": 0.2472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "a4ebf88f10c09ec778cdcdf4c496e7308d35317d",
+        "type": "psu",
+        "name": "3D A1-1024",
+        "mint": 2317,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T12:32:27.009Z",
+        "rarity": "A",
+        "sellPrice": 0.03096,
+        "upgradePrice": 0.060000000000000005,
+        "suffix": "3D",
+        "description": "A custom made epic PSU.",
+        "icon": "psu.webp",
+        "iconSmall": "psu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Crypto Mining Power",
+            "description": "Increases your crypto mining power by $VAL%",
+            "starter_value": 24.514,
+            "value": 26.214,
+            "increasePerLevel": 1.7,
+            "key": "cryptoMiningPower",
+            "quality": "95.14"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 9.514,
+          "version": "1.6.2"
+        },
+        "dTIName": "dPI",
+        "estimatedPrice": 0.5271000000000036
+      },
+      "type": "PSU",
+      "rarity": "epic",
+      "name": "epic",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
       "ended": false
     }
   ]

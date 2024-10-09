@@ -50,8 +50,7 @@ client.on(Events.InteractionCreate, async interaction => {
 client.once(Events.ClientReady, readyClient => {
     client.user.setActivity('Yabluzo auctions', { type: ActivityType.Streaming });
 	try {
-		fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
-			console.log(Date.now())
+		fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) => {
 			fs.writeFileSync('./auctionCache.json', JSON.stringify({
 					"cacheAge": Date.now()/1000,
 					"auctions": listings
@@ -59,9 +58,11 @@ client.once(Events.ClientReady, readyClient => {
 				encoding: "utf8",
 				mode: 0o666
 			})
+		}).catch((e) => {
+			console.warn("API Offline, fetch failed.")
 		});
 	} catch(e){
-		console.log("Fetch failed! Is the API offline?")
+		console.warn(`Fetch failed! Is the API offline?\n${e}`)
 	}
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });

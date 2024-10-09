@@ -2,6 +2,15 @@ const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRow
 const fs = require('fs');
 const moment = require('moment')
 
+const ErrorEmbed = (errorStr) => {
+  const embed = new EmbedBuilder()
+    .setTitle("Something happened!")
+    .setDescription(`${errorStr}`)
+    .setColor("#f50000");
+
+  return embed;
+}
+
 const properRound = (num) => {
     return Math.round((num + Number.EPSILON) * 1000) / 1000
 }
@@ -95,6 +104,7 @@ const generateEmbed = (id, auctionCache) => {
 
 async function processButtons(response, prevId, aCache, collectorFilter, interaction){
     dataParsed = aCache;
+    let embedsList = []
     try { // In case someone spends more than 30 seconds browsing
       const timeDif = Date.now()/1000 - dataParsed.cacheAge;
       if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
@@ -106,6 +116,8 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
                   encoding: "utf8",
                   mode: 0o666
                 })
+          }).catch((e) =>{
+            embedsList.push(ErrorEmbed("API didn't respond, information might be outdated."))
           });
           
           console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
@@ -115,6 +127,7 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
       }
     } catch(e){
       console.log("Fetch failed! Is the API offline?")
+      embedsList.push(ErrorEmbed("API didn't respond, information might be outdated."))
     }
 
     let curId = prevId;
@@ -147,7 +160,8 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
         const row = new ActionRowBuilder()
 			.addComponents(goBack, goForwards);
         const embed = generateEmbed(curId, dataParsed);
-        await action.update({ embeds: [embed], components: [row] })
+        embedsList.push(embed)
+        await action.update({ embeds: embedsList, components: [row] })
 
         processButtons(response, curId, dataParsed, collectorFilter, interaction);
     } catch( exception ){
@@ -169,44 +183,46 @@ module.exports = {
         const data = fs.readFileSync('./auctionCache.json',
             { encoding: 'utf8', flag: 'r' });
         dataParsed = JSON.parse(data);
-        try {
-          const timeDif = Date.now()/1000 - dataParsed.cacheAge;
-          if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
-              fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) =>{
-                  fs.writeFileSync('./auctionCache.json', JSON.stringify({
-                          "cacheAge": Date.now()/1000,
-                          "auctions": listings
-                      },null, 2), {
-                      encoding: "utf8",
-                      mode: 0o666
-                    })
-              });
-              
-              console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
-              const data = fs.readFileSync('./auctionCache.json',
-                { encoding: 'utf8', flag: 'r' });
-              dataParsed = JSON.parse(data);
-          }
-        } catch(e){
-          console.log("Fetch failed! Is the API offline?")
+        let embedList = []
+        let fetchError = false;
+        const timeDif = Date.now()/1000 - dataParsed.cacheAge;
+        if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
+            await fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) => {
+                fs.writeFileSync('./auctionCache.json', JSON.stringify({
+                        "cacheAge": Date.now()/1000,
+                        "auctions": listings
+                    },null, 2), {
+                    encoding: "utf8",
+                    mode: 0o666
+                })
+                console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
+                const data = fs.readFileSync('./auctionCache.json',
+                  { encoding: 'utf8', flag: 'r' });
+                dataParsed = JSON.parse(data);
+            }).catch((e) => {
+              fetchError = true;
+            });
         }
         const embed = generateEmbed(Array(dataParsed.auctions)[0].length, dataParsed);
-
+        if(fetchError) {
+          embedList.push(ErrorEmbed("API didn't respond, information might be outdated."))
+        }
+        embedList.push(embed);
         const goBack = new ButtonBuilder()
-			.setCustomId('back')
-			.setLabel('<-')
-			.setStyle(ButtonStyle.Primary);
+            .setCustomId('back')
+            .setLabel('<-')
+            .setStyle(ButtonStyle.Primary);
 
-		const goForwards = new ButtonBuilder()
-			.setCustomId('forwards')
-			.setLabel('->')
-			.setStyle(ButtonStyle.Primary)
+		    const goForwards = new ButtonBuilder()
+            .setCustomId('forwards')
+            .setLabel('->')
+            .setStyle(ButtonStyle.Primary)
             .setDisabled(true);
 
         const row = new ActionRowBuilder()
-			.addComponents(goBack, goForwards);
-
-        const response = await interaction.reply({ embeds: [embed], components: [row] });
+			      .addComponents(goBack, goForwards);
+        console.log(fetchError)
+        const response = await interaction.reply({ embeds: embedList, components: [row] });
         let currentAuction = Array(dataParsed.auctions)[0].length;
         const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
 
