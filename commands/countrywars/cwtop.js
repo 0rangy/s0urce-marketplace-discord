@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const QuickChart = require('quickchart-js');
 const fs = require('fs')
-const emoji = require('node-emoji')
+
 const ErrorEmbed = (errorStr) => {
     const embed = new EmbedBuilder()
       .setTitle("Something happened!")
@@ -48,7 +48,6 @@ module.exports = {
             // Chart time :D
             const chart = new QuickChart();
 
-            console.log(emoji.emojify(':heart:'))
             let chartLabels = []
             let chartDatasets = []
             let countriesAmt = 0;
@@ -81,9 +80,10 @@ module.exports = {
                 .setTimestamp(dataParsed.cacheAge*1000)
                 .setColor("#1662a4");
             embedsList.push(embed)
-            console.log(chartUrl)
-
-            await interaction.reply({ embeds: embedsList })
+            
+            console.log(embedsList)
+            await interaction.deferReply();
+            await interaction.editReply({ embeds: embedsList })
         }
     }
 }
