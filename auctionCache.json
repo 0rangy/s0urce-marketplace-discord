@@ -1,5 +1,5 @@
 {
-  "cacheAge": 1728481229.286,
+  "cacheAge": 1728530526.573,
   "auctions": [
     {
       "id": 1,
@@ -2480,6 +2480,399 @@
       "type": "PSU",
       "rarity": "epic",
       "name": "epic",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 45,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "6fd7b1104fed49ceb81d1a15c868b93b58992e78",
+        "type": "gpu",
+        "name": "X C3-1024",
+        "mint": 2520,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T14:53:53.751Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "X",
+        "description": "Experience Martian landscapes with X's AI-optimized GPU!.",
+        "icon": "gpu.webp",
+        "iconSmall": "gpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Idle Crypto Mining",
+            "description": "Mines $VAL BTC per second",
+            "starter_value": 0.000021474099999999998,
+            "isCrypto": true,
+            "value": 0.000024414099999999997,
+            "increasePerLevel": 0.0000029399999999999994,
+            "key": "idleCryptoMining",
+            "quality": "80.57"
+          },
+          {
+            "name": "More Crypto Reward",
+            "description": "Increases your crypto reward by $VAL%",
+            "value": 7.024,
+            "key": "moreCryptoReward",
+            "quality": "60.32"
+          },
+          {
+            "name": "Better Barter",
+            "description": "Increases your sell price by $VAL%",
+            "value": 6.694,
+            "key": "betterBarter",
+            "quality": "55.92"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 7.7657,
+          "version": "1.6.2"
+        },
+        "dTIName": "dGI",
+        "estimatedPrice": 0.03382838935939538
+      },
+      "type": "GPU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 46,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "01da763938e3b265cfd1b34eccd3f39be2a6d306",
+        "type": "cpu",
+        "name": "3D C2-1024",
+        "mint": 6853,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T14:04:56.954Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "3D",
+        "description": "A custom made uncommon CPU.",
+        "icon": "cpu.webp",
+        "iconSmall": "cpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Hack Damage",
+            "description": "Increases your hack damage by $VAL",
+            "value": 27.5315,
+            "starter_value": 24.0315,
+            "increasePerLevel": 3.5,
+            "key": "hackDamage",
+            "quality": "60.21"
+          },
+          {
+            "name": "Hack Armor Penetration",
+            "description": "Increases your hack armor penetration by $VAL%",
+            "value": 3.16075,
+            "key": "hackArmorPenetration",
+            "quality": "26.43"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 4.9722,
+          "version": "1.6.2"
+        },
+        "dTIName": "dCI",
+        "estimatedPrice": 0.03
+      },
+      "type": "CPU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 47,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "f42c5fc8ce94a7e6e3961715ac4654444b2db833",
+        "type": "cpu",
+        "name": "n3t C2-1024",
+        "mint": 6166,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T14:34:30.390Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "n3t",
+        "description": "A CPU from Botnet, leveraging the power of distributed computing for optimized hacking performance.",
+        "icon": "cpu.webp",
+        "iconSmall": "cpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Hack Damage",
+            "description": "Increases your hack damage by $VAL",
+            "value": 19.6385,
+            "starter_value": 16.1385,
+            "increasePerLevel": 3.5,
+            "key": "hackDamage",
+            "quality": "7.59"
+          },
+          {
+            "name": "Hack Critical Damage Bonus",
+            "description": "Increases your hack critical damage bonus by $VAL%",
+            "value": 4.243600000000001,
+            "key": "hackCriticalDamageBonus",
+            "quality": "81.09"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 1.4127,
+          "version": "1.6.2"
+        },
+        "dTIName": "dCI",
+        "estimatedPrice": 0.03
+      },
+      "type": "CPU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 48,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "4602ed659a0616ece18e79dce38ffad67e5b5047",
+        "type": "cpu",
+        "name": "Zypher C2-1024",
+        "mint": 6378,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T14:49:17.561Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "Zypher",
+        "description": "A CPU from Cipher, where every instruction is an encoded masterpiece.",
+        "icon": "cpu.webp",
+        "iconSmall": "cpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Hack Damage",
+            "description": "Increases your hack damage by $VAL",
+            "value": 28.741999999999997,
+            "starter_value": 25.241999999999997,
+            "increasePerLevel": 3.5,
+            "key": "hackDamage",
+            "quality": "68.28"
+          },
+          {
+            "name": "Hack Armor Penetration",
+            "description": "Increases your hack armor penetration by $VAL%",
+            "value": 2.80425,
+            "key": "hackArmorPenetration",
+            "quality": "12.17"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 5.1385,
+          "version": "1.6.2"
+        },
+        "dTIName": "dCI",
+        "estimatedPrice": 0.03
+      },
+      "type": "CPU",
+      "rarity": "uncommon",
+      "name": "uncommon",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 49,
+      "organizer": "CDR0",
+      "startingPrice": 0.0824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "5fc563ed6df69afd081ffccd9a7cdf96518a1097",
+        "type": "psu",
+        "name": "s1lk B1-1024",
+        "mint": 1320,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T14:11:47.041Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "s1lk",
+        "description": "s1lk's Powerhouse PSU: Unleash the power of the darknet right in your PC. Built for life, like Dread's sentence.",
+        "icon": "psu.webp",
+        "iconSmall": "psu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Crypto Mining Power",
+            "description": "Increases your crypto mining power by $VAL%",
+            "starter_value": 12.5445,
+            "value": 14.144499999999999,
+            "increasePerLevel": 1.6,
+            "key": "cryptoMiningPower",
+            "quality": "50.89"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 5.5801,
+          "version": "1.6.2"
+        },
+        "dTIName": "dPI",
+        "estimatedPrice": 0.1
+      },
+      "type": "PSU",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 50,
+      "organizer": "CDR0",
+      "startingPrice": 0.0824,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "a161431e41165bc2b9ddac5337d2a9fe9e4b1548",
+        "type": "cpu",
+        "name": "MEGA B3-1024",
+        "mint": 939,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T14:23:53.219Z",
+        "rarity": "B",
+        "sellPrice": 0.017820000000000003,
+        "upgradePrice": 0.057,
+        "suffix": "MEGA",
+        "description": "Unlock unparalleled processing power with MEGA's CPU. Crafted for the elite hacker.",
+        "icon": "cpu.webp",
+        "iconSmall": "cpu-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Hack Damage",
+            "description": "Increases your hack damage by $VAL",
+            "value": 34.379999999999995,
+            "starter_value": 30.38,
+            "increasePerLevel": 4,
+            "key": "hackDamage",
+            "quality": "1.90"
+          },
+          {
+            "name": "True Damage",
+            "description": "Increases your true damage by $VAL. True damage ignores the armor.",
+            "value": 17.881999999999998,
+            "key": "hackTrueDamage",
+            "quality": "78.82"
+          },
+          {
+            "name": "Hack Armor Penetration",
+            "description": "Increases your hack armor penetration by $VAL%",
+            "value": 7.355,
+            "key": "hackArmorPenetration",
+            "quality": "23.55"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 6.2244,
+          "version": "1.6.2"
+        },
+        "dTIName": "dCI",
+        "estimatedPrice": 0.1
+      },
+      "type": "CPU",
+      "rarity": "rare",
+      "name": "rare",
+      "startDate": "2024-10-09T00:00:00.000Z",
+      "endDate": "2024-10-25T00:00:00.000Z",
+      "ended": false
+    },
+    {
+      "id": 51,
+      "organizer": "CDR0",
+      "startingPrice": 0.02472,
+      "highestBid": 0,
+      "highestBidder": null,
+      "item": {
+        "id": "734227952dc0edf81bc608e49696f67888de3363",
+        "type": "firewall",
+        "name": "s1lk C2-1024",
+        "mint": 3037,
+        "creator": "CDR0",
+        "creationDate": "2024-10-09T15:01:10.273Z",
+        "rarity": "C",
+        "sellPrice": 0.00864,
+        "upgradePrice": 0.054000000000000006,
+        "suffix": "s1lk",
+        "description": "Fortify your system with s1lk's Firewall. Engineered for endurance, maybe only crackable by the FBI.",
+        "icon": "router.webp",
+        "iconSmall": "router-s.webp",
+        "stats": [
+          {
+            "primary": true,
+            "name": "Firewall Health",
+            "description": "Increases your firewall health by $VAL",
+            "value": 72.08,
+            "starter_value": 58.08,
+            "increasePerLevel": 14,
+            "key": "firewallHealth",
+            "quality": "16.16"
+          }
+        ],
+        "upgradeLevel": 1
+      },
+      "dTI": {
+        "rank": {
+          "rating": 1.4184,
+          "version": "1.6.2"
+        },
+        "dTIName": "dFI",
+        "estimatedPrice": 0.03
+      },
+      "type": "firewall",
+      "rarity": "uncommon",
+      "name": "uncommon",
       "startDate": "2024-10-09T00:00:00.000Z",
       "endDate": "2024-10-25T00:00:00.000Z",
       "ended": false

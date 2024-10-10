@@ -141,14 +141,14 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
         }
         
         let goBack = new ButtonBuilder()
-			.setCustomId('back')
-			.setLabel('<-')
-			.setStyle(ButtonStyle.Primary);
+          .setCustomId('back')
+          .setLabel('<-')
+          .setStyle(ButtonStyle.Primary);
 
-		let goForwards = new ButtonBuilder()
-			.setCustomId('forwards')
-			.setLabel('->')
-			.setStyle(ButtonStyle.Primary);
+		    let goForwards = new ButtonBuilder()
+          .setCustomId('forwards')
+          .setLabel('->')
+          .setStyle(ButtonStyle.Primary);
 
         switch(curId){
             case 1:
@@ -158,7 +158,7 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
         }
 
         const row = new ActionRowBuilder()
-			.addComponents(goBack, goForwards);
+			    .addComponents(goBack, goForwards);
         const embed = generateEmbed(curId, dataParsed);
         embedsList.push(embed)
         await action.update({ embeds: embedsList, components: [row] })
@@ -203,29 +203,30 @@ module.exports = {
               fetchError = true;
             });
         }
-        const embed = generateEmbed(Array(dataParsed.auctions)[0].length, dataParsed);
-        if(fetchError) {
-          embedList.push(ErrorEmbed("API didn't respond, information might be outdated."))
+        if(interaction.options.getSubcommand() === "listings"){
+          const embed = generateEmbed(Array(dataParsed.auctions)[0].length, dataParsed);
+          if(fetchError) {
+            embedList.push(ErrorEmbed("API didn't respond, information might be outdated."))
+          }
+          embedList.push(embed);
+          const goBack = new ButtonBuilder()
+              .setCustomId('back')
+              .setLabel('<-')
+              .setStyle(ButtonStyle.Primary);
+
+          const goForwards = new ButtonBuilder()
+              .setCustomId('forwards')
+              .setLabel('->')
+              .setStyle(ButtonStyle.Primary)
+              .setDisabled(true);
+
+          const row = new ActionRowBuilder()
+              .addComponents(goBack, goForwards);
+          const response = await interaction.reply({ embeds: embedList, components: [row] });
+          let currentAuction = Array(dataParsed.auctions)[0].length;
+          const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
+
+          await processButtons(response, currentAuction, dataParsed, collectorFilter, interaction)  
         }
-        embedList.push(embed);
-        const goBack = new ButtonBuilder()
-            .setCustomId('back')
-            .setLabel('<-')
-            .setStyle(ButtonStyle.Primary);
-
-		    const goForwards = new ButtonBuilder()
-            .setCustomId('forwards')
-            .setLabel('->')
-            .setStyle(ButtonStyle.Primary)
-            .setDisabled(true);
-
-        const row = new ActionRowBuilder()
-			      .addComponents(goBack, goForwards);
-        const response = await interaction.reply({ embeds: embedList, components: [row] });
-        let currentAuction = Array(dataParsed.auctions)[0].length;
-        const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
-
-        await processButtons(response, currentAuction, dataParsed, collectorFilter, interaction)  
-
     }
 }

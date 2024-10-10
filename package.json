@@ -4,12 +4,14 @@
   "description": "Discord bot for s0urce marketplace using Yabluzo's API (NanderTGA/yabluzo)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./deploy_commands.js && node ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.16.3",
-    "moment": "^2.30.1"
+    "moment": "^2.30.1",
+    "node-emoji": "^2.1.3",
+    "quickchart-js": "^3.1.3"
   }
 }

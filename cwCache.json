@@ -1,0 +1,40 @@
+{
+  "cacheAge": 1728530529.127,
+  "countries": [
+    {
+      "_id": "670719954134482e819abad6",
+      "countryCode": "BO",
+      "unique_day_id": "2024-10-10",
+      "__v": 0,
+      "score": 517
+    },
+    {
+      "_id": "670719094134482e819ab9e8",
+      "countryCode": "AQ",
+      "unique_day_id": "2024-10-10",
+      "__v": 0,
+      "score": 333
+    },
+    {
+      "_id": "67071a1e4134482e819abbdf",
+      "countryCode": "FR",
+      "unique_day_id": "2024-10-10",
+      "__v": 0,
+      "score": 82
+    },
+    {
+      "_id": "670719e34134482e819abb5b",
+      "countryCode": "US",
+      "unique_day_id": "2024-10-10",
+      "__v": 0,
+      "score": 23
+    },
+    {
+      "_id": "6707341c4134482e819ae1c6",
+      "countryCode": "NC",
+      "unique_day_id": "2024-10-10",
+      "__v": 0,
+      "score": 13
+    }
+  ]
+}
