@@ -221,7 +221,6 @@ module.exports = {
 
         const row = new ActionRowBuilder()
 			      .addComponents(goBack, goForwards);
-        console.log(fetchError)
         const response = await interaction.reply({ embeds: embedList, components: [row] });
         let currentAuction = Array(dataParsed.auctions)[0].length;
         const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
