@@ -1,2 +1,4 @@
 config.json
 /node_modules
+cwCache.json
+auctionCache.json

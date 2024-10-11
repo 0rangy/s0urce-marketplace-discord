@@ -68,3 +68,18 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 client.login(token);
+
+const { io } = require('socket.io-client')
+
+const socket = io("wss://s0urce.io/socket.io/?EIO=4&transport=websocket&sid=3Jfu6IN9ZP8yO96_AABI", {
+  reconnectionDelayMax: 10000,
+  rejectUnauthorized: false,
+});
+
+socket.emit("playGame")
+
+console.log(socket.active)
+
+socket.on("event", (data) =>{
+	console.log(data)
+})
