@@ -48,7 +48,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.once(Events.ClientReady, readyClient => {
-    client.user.setActivity('Yabluzo auctions', { type: ActivityType.Streaming });
+    client.user.setActivity('s0urce.io', { type: ActivityType.Playing });
 	try {
 		fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) => {
 			fs.writeFileSync('./auctionCache.json', JSON.stringify({
@@ -67,31 +67,52 @@ client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
-//client.login(token);
+client.login(token);
 
 const { io } = require('socket.io-client')
-let something = fetch("https://s0urce.io/socket.io/?EIO=4&transport=polling").then((data) => data.text().then((res) =>{
+
+// Recursive update function
+const updateStats = (socket) => {
+	if(socket.connected) {
+		console.log("Updating Information...")
+		socket.emit("playerInput", {
+			"event": "getCWLeaderboard",
+			"sortKey": "countries"
+		  }, (response) => {
+			fs.writeFileSync('./cwSeasonCache.json', JSON.stringify({
+				"cacheAge": Date.now()/1000,
+				"countries": response.data
+			},null, 2), {
+			encoding: "utf8",
+			mode: 0o666
+			})
+		  })
+		  setTimeout(() =>{
+			updateStats(socket);
+		  }, 20000)
+	}
+}
+
+
+fetch("https://s0urce.io/socket.io/?EIO=4&transport=polling").then((data) => data.text().then((res) =>{
 	res = res.slice(1,res.length)
 	let resData = JSON.parse(res)
-	console.log(resData.sid)
-	console.log(`wss://s0urce.io/socket.io/?EIO=4&transport=websocket&sid=${resData.sid}/`)
 
 	const socket = io(`wss://s0urce.io/`, {
 		path: '/socket.io',
 		reconnectionDelayMax: 10000,
 		rejectUnauthorized: false,
 		transports: ["websocket"],
-		// autoConnect: !1,
-		// reconnection: !0,
-		// reconnectionAttempts: 1 / 0,
-		// reconnectionDelay: 1e3,
-		// timeout: 2e3,
-		// closeOnBeforeunload: !1
 	  });
 
 	socket.on('connect', ()=>{
 		console.log("Connected")
+		socket.emit("playGame","API", (dt) => {
+			console.log(dt)
+		})
+		updateStats(socket)
 	})
+
 	socket.on("disconnect", () =>{
 		console.log("Disconnected")
 	})
@@ -100,8 +121,17 @@ let something = fetch("https://s0urce.io/socket.io/?EIO=4&transport=polling").th
 		console.log(err)
 	})
 
-	socket.onAny((data) => {
-		console.log(data)
+	socket.on("event", (event, data) => {
+		console.log(event.event)
+		if(event.event === "updateCountryWarsGraph") {
+			fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
+				"cacheAge": Date.now()/1000,
+				"countries": event.arguments[0]
+			},null, 2), {
+			encoding: "utf8",
+			mode: 0o666
+			})
+		}
 	})
 
   })).catch((err) =>{

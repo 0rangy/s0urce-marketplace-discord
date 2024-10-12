@@ -16,35 +16,23 @@ module.exports = {
 	category: 'countrywars',
     data: new SlashCommandBuilder()
         .setName("cwtop")
-        .setDescription("Daily wars information")
+        .setDescription("Daily wars leaderboards")
         .addSubcommand(subcommand =>
             subcommand
                 .setName("today")
                 .setDescription("View daily CW Scores")
+        ).addSubcommand(subcommand =>
+            subcommand
+                .setName("season")
+                .setDescription("View CW seasonal leaderboards")
         ),
     async execute(interaction) {
         if(interaction.options.getSubcommand() === 'today'){
-            const data = fs.readFileSync('./cwCache.json',
+            const data = fs.readFileSync('./cwDailyCache.json',
                 { encoding: 'utf8', flag: 'r' });
             dataParsed = JSON.parse(data);
             let embedsList = []
-            const timeDif = Date.now()/1000 - dataParsed.cacheAge;
-            if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
-                await fetch("https://nandertga.ddns.net:4097/api/v2/countryWarsTopToday").then(res => res.json()).then((countries) => { //TODO: Replace this with 
-                    fs.writeFileSync('./cwCache.json', JSON.stringify({
-                            "cacheAge": Date.now()/1000,
-                            "countries": countries
-                        },null, 2), {
-                        encoding: "utf8",
-                        mode: 0o666
-                    })
-                    console.log(`User ${interaction.user.tag} refreshed cache. (${timeDif})`);
-                    const data = fs.readFileSync('./cwCache.json',{ encoding: 'utf8', flag: 'r' });
-                    dataParsed = JSON.parse(data);
-                }).catch((e) => {
-                embedsList.push(ErrorEmbed("API didn't respond, information might be outdated."))
-                });
-            }
+
             // Chart time :D
             const chart = new QuickChart();
 
@@ -81,9 +69,31 @@ module.exports = {
                 .setColor("#1662a4");
             embedsList.push(embed)
             
-            console.log(embedsList)
             await interaction.deferReply();
             await interaction.editReply({ embeds: embedsList })
+
+
+        } else if(interaction.options.getSubcommand() === 'season') {
+            const data = fs.readFileSync('./cwSeasonCache.json',
+                { encoding: 'utf8', flag: 'r' });
+            dataParsed = JSON.parse(data);
+            
+            let scores = []
+            
+            for(let country of dataParsed.countries) {
+                scores.push(
+                    `*#${scores.length + 1}* :flag_${String(country.countryCode).toLowerCase()}:  ${country.countryCode}: ${country.score}`
+                )
+            }
+
+            const embed = new EmbedBuilder()
+                .setTitle("This Month's Country Wars Leaderboard")
+                .setDescription(scores.join('\n'))
+                .setFooter({
+                    text: "Last Updated",
+                })
+                .setTimestamp(dataParsed.cacheAge*1000);
+            await interaction.reply({embeds: [embed]})
         }
     }
 }
