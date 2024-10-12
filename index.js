@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, ActivityType, WebSocketManager } = require('discord.js');
 const { token } = require('./config.json');
 
 
@@ -67,19 +67,44 @@ client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
-client.login(token);
+//client.login(token);
 
 const { io } = require('socket.io-client')
+let something = fetch("https://s0urce.io/socket.io/?EIO=4&transport=polling").then((data) => data.text().then((res) =>{
+	res = res.slice(1,res.length)
+	let resData = JSON.parse(res)
+	console.log(resData.sid)
+	console.log(`wss://s0urce.io/socket.io/?EIO=4&transport=websocket&sid=${resData.sid}/`)
 
-const socket = io("wss://s0urce.io/socket.io/?EIO=4&transport=websocket&sid=3Jfu6IN9ZP8yO96_AABI", {
-  reconnectionDelayMax: 10000,
-  rejectUnauthorized: false,
-});
+	const socket = io(`wss://s0urce.io/`, {
+		path: '/socket.io',
+		reconnectionDelayMax: 10000,
+		rejectUnauthorized: false,
+		transports: ["websocket"],
+		// autoConnect: !1,
+		// reconnection: !0,
+		// reconnectionAttempts: 1 / 0,
+		// reconnectionDelay: 1e3,
+		// timeout: 2e3,
+		// closeOnBeforeunload: !1
+	  });
 
-socket.emit("playGame")
+	socket.on('connect', ()=>{
+		console.log("Connected")
+	})
+	socket.on("disconnect", () =>{
+		console.log("Disconnected")
+	})
 
-console.log(socket.active)
+	socket.on("connect_error", (err) =>{
+		console.log(err)
+	})
 
-socket.on("event", (data) =>{
-	console.log(data)
-})
+	socket.onAny((data) => {
+		console.log(data)
+	})
+
+  })).catch((err) =>{
+	console.error("Something went wrong with s0urce.io/socket.io")
+	console.log(err)
+  });

@@ -30,7 +30,7 @@ module.exports = {
             let embedsList = []
             const timeDif = Date.now()/1000 - dataParsed.cacheAge;
             if(timeDif >= 30){ // Update info once every 30 seconds, only when prompted.
-                await fetch("https://nandertga.ddns.net:4097/api/v2/countryWarsTopToday").then(res => res.json()).then((countries) => {
+                await fetch("https://nandertga.ddns.net:4097/api/v2/countryWarsTopToday").then(res => res.json()).then((countries) => { //TODO: Replace this with 
                     fs.writeFileSync('./cwCache.json', JSON.stringify({
                             "cacheAge": Date.now()/1000,
                             "countries": countries
