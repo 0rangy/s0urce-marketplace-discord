@@ -1,7 +1,59 @@
 const fs = require('node:fs');
+const { io } = require('socket.io-client')
+const { token, s0urce_cookie } = require('./config.json');
+
+const socket = io(`wss://s0urce.io/`, {
+	path: '/socket.io',
+	reconnection: false,
+	rejectUnauthorized: false,
+	transports: ["websocket"],
+	transportOptions: {
+        polling: {
+            extraHeaders: {
+                'Cookie': s0urce_cookie
+            }
+        },
+		websocket: {
+			extraHeaders: {
+                'Cookie': s0urce_cookie
+            }
+		}
+    }
+});
+
+exports.socket = socket;
+
+socket.on('connect', ()=>{
+	console.log("Connected")
+	setTimeout(() => {
+		socket.emit("playGame","", (dt) => {
+			console.log(dt)
+		})
+	}, 2000)
+})
+
+socket.on("disconnect", () =>{
+	console.log("Disconnected")
+})
+
+socket.on("connect_error", (err) =>{
+	console.log(err)
+})
+
+socket.on("event", (event, data) => {
+	console.log(event.event)
+	if(event.event === "updateCountryWarsGraph") {
+		fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
+			"cacheAge": Date.now()/1000,
+			"countries": event.arguments[0]
+		},null, 2), {
+		encoding: "utf8",
+		mode: 0o666
+		})
+	}
+})
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, ActivityType, WebSocketManager } = require('discord.js');
-const { token } = require('./config.json');
 
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -68,73 +120,3 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 client.login(token);
-
-const { io } = require('socket.io-client')
-
-// Recursive update function
-const updateStats = (socket) => {
-	if(socket.connected) {
-		console.log("Updating Information...")
-		socket.emit("playerInput", {
-			"event": "getCWLeaderboard",
-			"sortKey": "countries"
-		  }, (response) => {
-			fs.writeFileSync('./cwSeasonCache.json', JSON.stringify({
-				"cacheAge": Date.now()/1000,
-				"countries": response.data
-			},null, 2), {
-			encoding: "utf8",
-			mode: 0o666
-			})
-		  })
-		  setTimeout(() =>{
-			updateStats(socket);
-		  }, 20000)
-	}
-}
-
-
-fetch("https://s0urce.io/socket.io/?EIO=4&transport=polling").then((data) => data.text().then((res) =>{
-	res = res.slice(1,res.length)
-	let resData = JSON.parse(res)
-
-	const socket = io(`wss://s0urce.io/`, {
-		path: '/socket.io',
-		reconnectionDelayMax: 10000,
-		rejectUnauthorized: false,
-		transports: ["websocket"],
-	  });
-
-	socket.on('connect', ()=>{
-		console.log("Connected")
-		socket.emit("playGame","API", (dt) => {
-			console.log(dt)
-		})
-		updateStats(socket)
-	})
-
-	socket.on("disconnect", () =>{
-		console.log("Disconnected")
-	})
-
-	socket.on("connect_error", (err) =>{
-		console.log(err)
-	})
-
-	socket.on("event", (event, data) => {
-		console.log(event.event)
-		if(event.event === "updateCountryWarsGraph") {
-			fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
-				"cacheAge": Date.now()/1000,
-				"countries": event.arguments[0]
-			},null, 2), {
-			encoding: "utf8",
-			mode: 0o666
-			})
-		}
-	})
-
-  })).catch((err) =>{
-	console.error("Something went wrong with s0urce.io/socket.io")
-	console.log(err)
-  });

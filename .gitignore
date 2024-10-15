@@ -1,5 +1,4 @@
 config.json
-auctionCache.json
 cwDailyCache.json
-cwSeasonCache.json
 /node_modules
+auctionCache.json

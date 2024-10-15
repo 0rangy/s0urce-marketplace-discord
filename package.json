@@ -4,7 +4,8 @@
   "description": "Discord bot for s0urce marketplace using Yabluzo's API (NanderTGA/yabluzo)",
   "main": "index.js",
   "scripts": {
-    "test": "node ./deploy_commands.js && node ."
+    "test": "node ./deploy_commands.js && node .",
+    "deploy": "node ./global_deploy_commands.js && pm2 start index.js"
   },
   "author": "",
   "license": "ISC",

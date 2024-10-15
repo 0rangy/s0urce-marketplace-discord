@@ -47,8 +47,13 @@ const generateEmbed = (id, auctionCache) => {
     embed.addFields({
       name: "Description",
       value: `${listing.item.description}`,
-      inline: false
+      inline: true
+    },{
+      name: "Creator",
+      value: `${listing.item.creator}`,
+      inline: true
     });
+    
     try {
       for(let stat of listing.item.stats){
         let statDesc = String(stat.description).replace("$VAL", `${properRound(stat.value)}`)
