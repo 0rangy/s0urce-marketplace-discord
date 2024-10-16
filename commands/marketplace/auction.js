@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder} = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Emoji} = require('discord.js');
 const fs = require('fs');
 const moment = require('moment')
 
@@ -98,12 +98,16 @@ const generateEmbed = (id, auctionCache) => {
       inline: true
     },
   )
-  .setThumbnail(`https://s0urce.io/items/${listing.item.icon}`)
   .setColor("#0087bd")
   .setFooter({
     text: "Last Refreshed",
   })
   .setTimestamp(auctionCache.cacheAge*1000);
+  if(listing.item.type === 'avatar') {
+    embed.setImage(`https://s0urce.io/items/${listing.item.icon}`)
+  } else {
+    embed.setThumbnail(`https://s0urce.io/items/${listing.item.icon}`)
+  }
   return embed;
 };
 
@@ -147,12 +151,14 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
         
         let goBack = new ButtonBuilder()
           .setCustomId('back')
-          .setLabel('<-')
+          .setLabel(' ')
+          .setEmoji('◀️')
           .setStyle(ButtonStyle.Primary);
 
 		    let goForwards = new ButtonBuilder()
           .setCustomId('forwards')
-          .setLabel('->')
+          .setLabel(' ')
+          .setEmoji('▶️')
           .setStyle(ButtonStyle.Primary);
 
         switch(curId){
@@ -216,12 +222,14 @@ module.exports = {
           embedList.push(embed);
           const goBack = new ButtonBuilder()
               .setCustomId('back')
-              .setLabel('<-')
+              .setLabel(' ')
+              .setEmoji('◀️')
               .setStyle(ButtonStyle.Primary);
 
           const goForwards = new ButtonBuilder()
               .setCustomId('forwards')
-              .setLabel('->')
+              .setLabel(' ')
+              .setEmoji('▶️')
               .setStyle(ButtonStyle.Primary)
               .setDisabled(true);
 

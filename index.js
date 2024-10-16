@@ -32,8 +32,8 @@ socket.on('connect', ()=>{
 	}, 2000)
 })
 
-socket.on("disconnect", () =>{
-	console.log("Disconnected")
+socket.on("disconnect", (reason) =>{
+	console.log("Disconnected: " + reason)
 })
 
 socket.on("connect_error", (err) =>{
