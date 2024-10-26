@@ -41,7 +41,6 @@ socket.on("connect_error", (err) =>{
 })
 
 socket.on("event", (event, data) => {
-	console.log(event.event)
 	if(event.event === "updateCountryWarsGraph") {
 		fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
 			"cacheAge": Date.now()/1000,
@@ -50,6 +49,8 @@ socket.on("event", (event, data) => {
 		encoding: "utf8",
 		mode: 0o666
 		})
+	} else {
+		console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
 	}
 })
 const path = require('node:path');

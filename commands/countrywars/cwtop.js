@@ -28,6 +28,10 @@ module.exports = {
             subcommand
                 .setName("season")
                 .setDescription("View CW seasonal leaderboards")
+        ).addSubcommand(subcommand =>
+            subcommand
+                .setName("players")
+                .setDescription("View CW top players")
         ),
     async execute(interaction) {
         if(interaction.options.getSubcommand() === 'today'){
@@ -69,7 +73,7 @@ module.exports = {
                 .setImage(chartUrl)
                 .setFooter({ text: "Last Updated"})
                 .setTimestamp(dataParsed.cacheAge*1000)
-                .setColor("#1662a4");
+            embed.setColor("#00b0f4");
             embedsList.push(embed)
             
             await interaction.deferReply();
@@ -99,7 +103,21 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(`Country Wars Leaderboard Season ${dataParsed.currentSeason}`)
                 .setDescription(scores.join('\n'))
+            embed.setColor("#00b0f4");
             await interaction.reply({embeds: [embed]})
+        } else if(interaction.options.getSubcommand() === 'players') {
+            const data = await socket.emitWithAck('playerInput', {
+                "event": "getCWLeaderboard",
+                "sortKey": "players"
+            })
+
+            
+            for(let playerData of data['data']) {
+                let player = JSON.parse(playerData.player_profile);
+                console.log(JSON.stringify(JSON.parse(playerData.player_profile), null , 2))
+
+            }
+            await interaction.reply("aha")
         }
     }
 }
