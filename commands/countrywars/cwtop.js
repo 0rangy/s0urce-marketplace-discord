@@ -4,7 +4,6 @@ const QuickChart = require('quickchart-js');
 const fs = require('fs')
 const moment = require('moment')
 
-
 const ErrorEmbed = (errorStr) => {
     const embed = new EmbedBuilder()
       .setTitle("Something happened!")
@@ -67,6 +66,9 @@ module.exports = {
                 }
             }).setWidth(500).setHeight(300).setBackgroundColor('#111112')
 
+            
+            
+            
             const chartUrl = await chart.getShortUrl()
             const embed = new EmbedBuilder()
                 .setTitle("Today's Country Wars Scores")
@@ -110,14 +112,48 @@ module.exports = {
                 "event": "getCWLeaderboard",
                 "sortKey": "players"
             })
-
             
+            let lb = []            
             for(let playerData of data['data']) {
                 let player = JSON.parse(playerData.player_profile);
                 console.log(JSON.stringify(JSON.parse(playerData.player_profile), null , 2))
+                console.log(JSON.stringify(playerData, null, 2))
 
+                let userTag = '';
+                if(player.player_badge === "JMOD") {
+                    userTag = "<:jmod1:1297953641994391654><:jmod2:1297953643101949993>";
+                } else if (player.player_badge === "MOD") {
+                    userTag = "<:mod1:1297979928804986942><:mod2:1297979929824067596>";
+                } else if (player.player_badge === "ADMIN") {
+                    userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                }
+                if(player.username === 'Evrixol'){
+                    userTag = userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                }
+            
+                let levelTag = "<:bronze:1295854402636353607>";
+                if(player.level > 10) {
+                    levelTag = "<:silver:1295854401327464589>";
+                } if(player.level > 25) {
+                    levelTag = "<:gold:1295854400140607559>";
+                } if(player.level > 50) {
+                    levelTag = "<:platinum:1295854406025216051>";
+                } if(player.level > 75) {
+                    levelTag = "<:diamond:1295854407564398674>";
+                } if(player.level > 100) {
+                    levelTag = "<:master:1295854404699947038>";
+                } if(player.level > 125) {
+                    levelTag = "<:grandmaster:1295854328376197212>";
+                };
+                lb.push(
+                    `${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.username} ${player.online ? '<:online:1298066024507248703>' : ''}:  <:countrywars:1295762816111743107> ${playerData.player_cwp}`
+                )
             }
-            await interaction.reply("aha")
+            const embed = new EmbedBuilder()
+                .setTitle(`Country Wars Players Leaderboard`)
+                .setDescription(lb.join('\n'))
+            embed.setColor("#00b0f4");
+            await interaction.reply({embeds: [embed]})
         }
     }
 }

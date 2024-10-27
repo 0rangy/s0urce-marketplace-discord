@@ -78,7 +78,7 @@ for (const folder of commandFolders) {
 	}
 }
 
-client.on(Events.InteractionCreate, async interaction => {
+client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
 	const command = interaction.client.commands.get(interaction.commandName);
@@ -100,23 +100,17 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
-client.once(Events.ClientReady, readyClient => {
+client.once('ready', readyClient => {
     client.user.setActivity('s0urce.io', { type: ActivityType.Playing });
-	try {
-		fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) => {
-			fs.writeFileSync('./auctionCache.json', JSON.stringify({
-					"cacheAge": Date.now()/1000,
-					"auctions": listings
-				},null, 2), {
-				encoding: "utf8",
-				mode: 0o666
-			})
-		}).catch((e) => {
-			console.warn("API Offline, fetch failed.")
-		});
-	} catch(e){
-		console.warn(`Fetch failed! Is the API offline?\n${e}`)
-	}
+	fetch("https://nandertga.ddns.net:4097/api/v2/auctions").then(res => res.json()).then((listings) => {
+		fs.writeFileSync('./auctionCache.json', JSON.stringify({
+				"cacheAge": Date.now()/1000,
+				"auctions": listings
+			},null, 2), {
+			encoding: "utf8",
+			mode: 0o666
+		})
+	}).catch( e => console.warn("API Offline, fetch failed.") );
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 

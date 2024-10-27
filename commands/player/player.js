@@ -112,7 +112,7 @@ const getRarityEmojiString = (rarity) => {
     return emojiString;
 }
 
-const { itemTodTI, estimatePrice } = require('../../dTIHelper')
+const { itemTodTI, estimatePrice } = require('../../utils/dTIHelper')
 
 const getItemDisplayEmbed = (item) => {
     const embed = new EmbedBuilder();
@@ -177,6 +177,7 @@ const getItemDisplayEmbed = (item) => {
 
 async function viewShelfEmbed(interaction, data, shelfItems, response, action, slot) {
     console.log(`Shelf slot number ${slot}`)
+    console.log(shelfItems)
     const goBack = new ButtonBuilder()
               .setCustomId('back')
               .setLabel(' ')
@@ -259,10 +260,11 @@ async function viewShelfEmbed(interaction, data, shelfItems, response, action, s
                 .addComponents(viewShelf);
             await newAction.update({ embeds: [embed], components: [actionRowTop, actionRowBottom]});
 
-            let shelfItems = []
+            let shelfItems2 = []
             for(let key in data) {
-                if(!key.startsWith('shelf_')){ continue; }
-                shelfItems.push(data[key])
+                if(!key.startsWith('shelf_')) continue;
+                if(!data[key]) continue; 
+                shelfItems2.push(data[key])
             }
 
             try {
@@ -301,21 +303,21 @@ async function viewShelfEmbed(interaction, data, shelfItems, response, action, s
                     action.update({ embeds: [getItemDisplayEmbed(data.nameColor)], components: [actionRow]})
                     await handleBackButton(response, collectorFilter, data, interaction);
                 } else if(action.customId === 'viewshelf') {
-                    await viewShelfEmbed(interaction, data, shelfItems, response, action, 1)
+                    await viewShelfEmbed(interaction, data, shelfItems2, response, action, 1)
                 }
             } catch(err){
                 console.error(err);
             }
         }
     } catch(err) {
-        await interaction.editReply({ embeds: [ErrorEmbed('This interaction timed out.')], components: [] })
+        await interaction.editReply({ embeds: [ErrorEmbed(err)], components: [] })
         console.log("Interaction timed out. \n" + err)
     }
 }
 
 async function handleBackButton(response, collectorFilter, data, interaction) {
-    const action = await response.awaitMessageComponent({ filter: collectorFilter, time: 600_000 }); // Keep buttons active for 10 mins
     try {
+        const action = await response.awaitMessageComponent({ filter: collectorFilter, time: 600_000 }); // Keep buttons active for 10 mins
         if (action.customId === 'back') {
             const embed = playerEmbed(data)
 
@@ -367,10 +369,11 @@ async function handleBackButton(response, collectorFilter, data, interaction) {
                 .addComponents(viewShelf);
             await action.update({ embeds: [embed], components: [actionRowTop, actionRowBottom]});
 
-            let shelfItems = []
+            let shelfItems2 = []
             for(let key in data) {
-                if(!key.startsWith('shelf_')){ continue; }
-                shelfItems.push(data[key])
+                if(!key.startsWith('shelf_')) continue;
+                if(!data[key]) continue; 
+                shelfItems2.push(data[key])
             }
 
             try {
@@ -409,14 +412,14 @@ async function handleBackButton(response, collectorFilter, data, interaction) {
                     action.update({ embeds: [getItemDisplayEmbed(data.nameColor)], components: [actionRow]})
                     await handleBackButton(response, collectorFilter, data, interaction);
                 } else if(action.customId === 'viewshelf') {
-                    await viewShelfEmbed(interaction, data, shelfItems, response, action, 1)
+                    await viewShelfEmbed(interaction, data, shelfItems2, response, action, 1)
                 }
             } catch(err){
                 console.error(err);
             }
         }
     } catch(err){ 
-        interaction.editReply({ embeds: [ErrorEmbed('This interaction timed out.')], components: [] })
+        interaction.editReply({ embeds: [ErrorEmbed(err)], components: [] })
         console.log("Interaction timed out. \n" + err)
     }
 }
@@ -480,7 +483,8 @@ module.exports = {
         let maxShelf = response.data.premium ? 5 : 2;
         let occupiedShelf = 0;
         for(let key in response.data) {
-            if(!key.startsWith('shelf_')){ continue; }
+            if(!key.startsWith('shelf_')) continue;
+            if(!response.data[key]) continue; 
             else {
                 occupiedShelf += response.data[key] === null ? 0 : 1;
             }
@@ -499,7 +503,8 @@ module.exports = {
 
         let shelfItems = []
         for(let key in response.data) {
-            if(!key.startsWith('shelf_')){ continue; }
+            if(!key.startsWith('shelf_')) continue;
+            if(!response.data[key]) continue; 
             shelfItems.push(response.data[key])
         }
         const collectorFilter = i => i.user.id === interaction.user.id;
@@ -543,7 +548,7 @@ module.exports = {
                 await viewShelfEmbed(interaction, response.data, shelfItems, interactionResponse, action, 1)
             }
         } catch(err){
-            interaction.editReply({ embeds: [ErrorEmbed('This interaction timed out.')], components: [] })
+            interaction.editReply({ embeds: [ErrorEmbed(err)], components: [] })
             console.log("Interaction timed out.")
             console.error(err)
         }

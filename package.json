@@ -11,11 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.16.3",
+    "html2canvas": "^1.4.1",
     "moment": "^2.30.1",
     "node-emoji": "^2.1.3",
     "quickchart-js": "^3.1.3",
     "socket-io": "^1.0.0",
     "socket.io-client": "^4.8.0",
     "websocket": "^1.0.35"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.7"
   }
 }
