@@ -1,7 +1,12 @@
-const fs = require('node:fs');
-const { io } = require('socket.io-client')
-const { token, s0urce_cookie } = require('./config.json');
+import { fileURLToPath } from "url";
 
+import * as fs from 'fs';
+import { io } from 'socket.io-client';
+// import { token, s0urce_cookie } from './config.json'  assert { type: "json" };
+
+let configData = JSON.parse(fs.readFileSync('./config.json'));
+let token = configData.token;
+let s0urce_cookie = configData.s0urce_cookie;
 const socket = io(`wss://s0urce.io/`, {
 	path: '/socket.io',
 	reconnection: false,
@@ -21,7 +26,7 @@ const socket = io(`wss://s0urce.io/`, {
     }
 });
 
-exports.socket = socket;
+export { socket }
 
 socket.on('connect', ()=>{
 	console.log("Connected")
@@ -53,12 +58,21 @@ socket.on("event", (event, data) => {
 		console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
 	}
 })
-const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, ActivityType, WebSocketManager } = require('discord.js');
-
-
+import * as path from 'path';
+import { Client, Collection, Events, GatewayIntentBits, ActivityType, WebSocketManager } from 'discord.js';
+import * as cwCommand from './commands/countrywars/cwtop.js';
+import * as auctionCommand from './commands/marketplace/auction.js';
+import * as playerCommand from './commands/player/player.js';
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
+client.commands.set(cwCommand.data.name, cwCommand);
+client.commands.set(auctionCommand.data.name, auctionCommand);
+client.commands.set(playerCommand.data.name, playerCommand);
+console.log(JSON.stringify(cwCommand.data, null, 2))
+console.log(JSON.stringify(auctionCommand.data, null, 2))
+console.log(JSON.stringify(playerCommand.data, null, 2))
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -68,13 +82,7 @@ for (const folder of commandFolders) {
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
-		// Set a new item in the Collection with the key as the command name and the value as the exported module
-		if ('data' in command && 'execute' in command) {
-			client.commands.set(command.data.name, command);
-		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-		}
+		
 	}
 }
 

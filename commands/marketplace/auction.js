@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder} = require('discord.js');
-const fs = require('fs');
-const moment = require('moment')
+import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder} from 'discord.js';
+import * as fs from 'fs';
+import moment from 'moment';
 
 const ErrorEmbed = (errorStr) => {
   const embed = new EmbedBuilder()
@@ -134,7 +134,7 @@ const generateEmbed = (id, auctionCache) => {
 };
 
 async function processButtons(response, prevId, aCache, collectorFilter, interaction){
-    dataParsed = aCache;
+    let dataParsed = aCache;
     let embedsList = []
     try { // In case someone spends more than 30 seconds browsing
       const timeDif = Date.now()/1000 - dataParsed.cacheAge;
@@ -202,21 +202,19 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
         console.log("Interaction timed out")
     }
 }
-
-module.exports = {
-	category: 'marketplace',
-    data: new SlashCommandBuilder()
+let category =  'marketplace';
+let data = new SlashCommandBuilder()
     .setName("auction")
     .setDescription("Everything for auctions")
     .addSubcommand(subcommand =>
         subcommand
             .setName("listings")
             .setDescription("Get all available auctions")
-    ),
-    async execute(interaction){
+    );
+let  execute = (async(interaction) => {
         const data = fs.readFileSync('./auctionCache.json',
             { encoding: 'utf8', flag: 'r' });
-        dataParsed = JSON.parse(data);
+        let dataParsed = JSON.parse(data);
         let embedList = []
         let fetchError = false;
         const timeDif = Date.now()/1000 - dataParsed.cacheAge;
@@ -264,5 +262,6 @@ module.exports = {
 
           await processButtons(response, currentAuction, dataParsed, collectorFilter, interaction)  
         }
-    }
-}
+    });
+  
+    export {data, category, execute}

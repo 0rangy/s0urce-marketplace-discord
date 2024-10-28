@@ -1,5 +1,5 @@
 // d0t's indexes stats
-stats = {
+let stats = {
 	cpu: [
         { hack: [8, 18], trueDam: [0, 0], pen: [0, 0], chance: [0, 0], dam: [0, 0] },
         { hack: [18.5, 33.5], trueDam: [0, 10], pen: [0, 5], chance: [0, 2.5], dam: [1, 5] },
@@ -63,8 +63,6 @@ stats = {
     ],
 };
 
-module.exports.stats = stats;
-
 const firewallEncryption = (hp, rd, regen, ad, ms) => {
     rd /= 100;
     const cShort = [3.7027,100];
@@ -99,7 +97,7 @@ const netBTCperHour = (idle, barter, crypto) => {
 
 
 const dPS = (dTI,level,rarity,type) => {
-    let basePrice = this.stats.filament_price[rarity];
+    let basePrice = stats.filament_price[rarity];
     const value = (level-1)*3*basePrice + basePrice;
     if (type != "cpu" && type != "router") basePrice /= 2
     if (rarity < 5) {
@@ -127,9 +125,9 @@ const dPS = (dTI,level,rarity,type) => {
 }
 
 const dGI = (idle,barter,crypto,level,rarity) => {
-    const item = this.stats.gpu[rarity];
-    const bestGPU = netBTCperHour(item.idle[1]+this.stats.gpu_term[rarity]*level,item.bart[1],item.crip[1]);
-    const worstGPU = netBTCperHour(item.idle[0]+this.stats.gpu_term[rarity]*level,item.bart[0],item.crip[0]);
+    const item = stats.gpu[rarity];
+    const bestGPU = netBTCperHour(item.idle[1]+stats.gpu_term[rarity]*level,item.bart[1],item.crip[1]);
+    const worstGPU = netBTCperHour(item.idle[0]+stats.gpu_term[rarity]*level,item.bart[0],item.crip[0]);
     const actualGPU = netBTCperHour(idle,barter,crypto);
     const qualityRange = bestGPU - worstGPU;
     const actualRange = actualGPU - worstGPU;
@@ -140,16 +138,16 @@ const dGI = (idle,barter,crypto,level,rarity) => {
 }
 
 const boostBTCperHour = (boost,rarity) => {
-    const idle = (this.stats.gpu[rarity].idle[1]+this.stats.gpu_term[rarity]) * 3600
+    const idle = (stats.gpu[rarity].idle[1]+stats.gpu_term[rarity]) * 3600
     boost /= 100;
 
     return idle*(1+boost) - idle;
 }
 
 const dPI = (boost,level,rarity) => {
-    const item = this.stats.psu[rarity];
-    const bestPSU = boostBTCperHour(item.boost[1]+this.stats.psu_term[rarity]*level,rarity)
-    const worstPSU = boostBTCperHour(item.boost[0]+this.stats.psu_term[rarity]*level,rarity)
+    const item = stats.psu[rarity];
+    const bestPSU = boostBTCperHour(item.boost[1]+stats.psu_term[rarity]*level,rarity)
+    const worstPSU = boostBTCperHour(item.boost[0]+stats.psu_term[rarity]*level,rarity)
     const actualPSU = boostBTCperHour(boost,rarity)
     const qualityRange = bestPSU - worstPSU;
     const actualRange = actualPSU - worstPSU;
@@ -160,12 +158,12 @@ const dPI = (boost,level,rarity) => {
 }
 
 const dFI = (hp, rd, rg, enc, level, rarity) => {
-    const item = this.stats.firewall[rarity];
-    const cpu = this.stats.cpu[rarity];
-    const cpuV = hackPower(cpu.hack[1]+this.stats.cputerm[rarity]*(level-1), cpu.trueDam[1], cpu.pen[1], cpu.chance[1], cpu.dam[1]);
+    const item = stats.firewall[rarity];
+    const cpu = stats.cpu[rarity];
+    const cpuV = hackPower(cpu.hack[1]+stats.cputerm[rarity]*(level-1), cpu.trueDam[1], cpu.pen[1], cpu.chance[1], cpu.dam[1]);
     const cpsAverage = 5;
-    const bestPort = firewallEncryption(item.hp[1]+this.stats.fireterm[rarity]*(level-1),item.rd[1],item.regen[1],item.medium[1],item.long[1]);
-    const worstPort = firewallEncryption(item.hp[0]+this.stats.fireterm[rarity]*(level-1),item.rd[0],item.regen[0],item.medium[0],item.long[0]);
+    const bestPort = firewallEncryption(item.hp[1]+stats.fireterm[rarity]*(level-1),item.rd[1],item.regen[1],item.medium[1],item.long[1]);
+    const worstPort = firewallEncryption(item.hp[0]+stats.fireterm[rarity]*(level-1),item.rd[0],item.regen[0],item.medium[0],item.long[0]);
     const bestHoldout = penTest(bestPort, cpuV, bestPort[3]/cpsAverage+.3);
     const worstHoldout = penTest(worstPort, cpuV, worstPort[3]/cpsAverage+.3);
     const actualHoldout = penTest([hp,rd,rg],cpuV,enc/cpsAverage+.3);
@@ -185,11 +183,11 @@ const hackPower = (hack, trueDam, pen, chance, dam) => {
 }
 
 const dCI = (raw, pen, trueDam, level, rarity) => {
-    const item = this.stats.cpu[rarity];
-    const port = this.stats.port[rarity];
+    const item = stats.cpu[rarity];
+    const port = stats.port[rarity];
     
-    const bestHackPower = hackPower(item.hack[1]+this.stats.cputerm[rarity]*(level-1), item.trueDam[1], item.pen[1], item.chance[1], item.dam[1]);
-    const worstHackPower = hackPower(item.hack[0]+this.stats.cputerm[rarity]*(level-1), item.trueDam[0], item.pen[0], item.chance[0], item.dam[0]);
+    const bestHackPower = hackPower(item.hack[1]+stats.cputerm[rarity]*(level-1), item.trueDam[1], item.pen[1], item.chance[1], item.dam[1]);
+    const worstHackPower = hackPower(item.hack[0]+stats.cputerm[rarity]*(level-1), item.trueDam[0], item.pen[0], item.chance[0], item.dam[0]);
     const best = port.hp/(bestHackPower[0]*(1+bestHackPower[1]-port.rd)+bestHackPower[2])
     const worst = port.hp/(worstHackPower[0]*(1+worstHackPower[1]-port.rd)+worstHackPower[2])
     const actual = port.hp/(raw*(1+pen-port.rd) + trueDam)
@@ -244,12 +242,14 @@ const statsToEffect = (stats) => {
     return effects;
 }
 
-module.exports.itemTodTI = (item) => {
+let itemTodTI = (item) => {
     return getItemGrade(item.type,item.upgradeLevel,rarities.indexOf(String(item.rarity).toLowerCase()),statsToEffect(item.stats))
 }
 
-module.exports.estimatePrice = (item) => {
-    let itemdTI = this.itemTodTI(item);
+let estimatePrice = (item) => {
+    let itemdTI = itemTodTI(item);
     let price = dPS(itemdTI,item.upgradeLevel, rarities.indexOf(String(item.rarity).toLowerCase()), item.type);
-    return dPS(itemdTI,item.upgradeLevel, rarities.indexOf(String(item.rarity).toLowerCase()), item.type);
+    return price;
 }
+
+export {itemTodTI, estimatePrice}

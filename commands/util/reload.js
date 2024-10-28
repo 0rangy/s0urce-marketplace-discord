@@ -1,15 +1,17 @@
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommandBuilder } from 'discord.js';
 
-module.exports = {
-	category: 'util',
-	data: new SlashCommandBuilder()
+
+
+
+let category = 'util';
+let data = new SlashCommandBuilder()
 		.setName('reload')
 		.setDescription('Reloads a command.')
 		.addStringOption(option =>
 			option.setName('command')
 				.setDescription('The command to reload.')
-				.setRequired(true)),
-	async execute(interaction) {
+				.setRequired(true));
+let execute = (async(interaction) => {
 		const commandName = interaction.options.getString('command', true).toLowerCase();
 		const command = interaction.client.commands.get(commandName);
 
@@ -21,12 +23,13 @@ module.exports = {
 
 		try {
 	        interaction.client.commands.delete(command.data.name);
-	        const newCommand = require(`../${command.category}/${command.data.name}.js`);
+			// Command most likely can't work with ES5 :/
+	        // import * as newCommand from `../${command.category}/${command.data.name}.js`;
 	        interaction.client.commands.set(newCommand.data.name, newCommand);
 	        await interaction.reply(`Command \`${newCommand.data.name}\` was reloaded!`);
 		} catch (error) {
 	        console.error(error);
 	        await interaction.reply(`There was an error while reloading a command \`${command.data.name}\`:\n\`${error.message}\``);
 		}
-	},
-};
+	});
+	export {data, category, execute}

@@ -1,20 +1,33 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+import html2canvas from 'html2canvas';
+import nodeHtmlToImage from 'node-html-to-image'
+import * as fs from 'fs';
 
-const { html2canvas } = require('html2canvas')
 
-const points = [13947, 11743, 396, 345, 257];
-const minPoints = points.at(-1);
-const maxPoints = points[0];
-const minPercent = 20;
-const maxPercent = 100;
+let generateCwDailyGraph = (async(cwData) => {
+    let countryCodes = []
+    let countryScores = []
+    console.log(JSON.stringify(cwData.countries, null, 2))
+    for(let country of cwData.countries) {
+        console.log(JSON.stringify(country, null, 2))
+        countryCodes.push(country.countryCode)
+        countryScores.push(country.score)
+    }
 
-const percentages = points.map(point => {
-    const percentage = ((point - minPoints) / (maxPoints - minPoints)) * (maxPercent - minPercent) + minPercent;
-    return percentage.toFixed(4); // Four decimal places
-});
+    const minPoints = countryScores.at(-1);
+    const maxPoints = countryScores[0];
+    const minPercent = 20;
+    const maxPercent = 100;
 
-const dom = new JSDOM(`<html>
+
+    const percentages = countryScores.map(point => {
+        const percentage = ((point - minPoints) / (maxPoints - minPoints)) * (maxPercent - minPercent) + minPercent;
+        return percentage.toFixed(4); // Four decimal places
+    });
+    console.log(percentages)
+    console.log(countryCodes)
+    console.log(countryScores)
+
+    let htmlThing = `<html>
 
 <head>
     <meta charset="utf-8">
@@ -49,36 +62,36 @@ const dom = new JSDOM(`<html>
             <div
                 style="position: relative; width: 40px; height: 100%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div style="position: absolute; width: 100%; text-align: center; top: 5px;">
-                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/AQ.svg" alt="AQ Flag"></div>
-                    <div style="font-size: 12px; font-weight: 500;">13947</div>
+                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/${countryCodes[0]}.svg" alt="AQ Flag"></div>
+                    <div style="font-size: 12px; font-weight: 500;">${countryScores[0]}</div>
                 </div>
             </div>
             <div
-                style="position: relative; width: 40px; height: 87.1205%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                style="position: relative; width: 40px; height: ${percentages[1]}%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div style="position: absolute; width: 100%; text-align: center; top: 5px;">
-                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/FR.svg" alt="FR Flag"></div>
-                    <div style="font-size: 12px; font-weight: 500;">11743</div>
+                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/${countryCodes[1]}.svg" alt="FR Flag"></div>
+                    <div style="font-size: 12px; font-weight: 500;">${countryScores[1]}</div>
                 </div>
             </div>
             <div
-                style="position: relative; width: 40px; height: 20.8123%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                style="position: relative; width: 40px; height: ${percentages[2]}%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div style="position: absolute; width: 100%; text-align: center; top: -20px;">
-                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/BE.svg" alt="BE Flag"></div>
-                    <div style="font-size: 12px; font-weight: 500;">396</div>
+                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/${countryCodes[2]}.svg" alt="BE Flag"></div>
+                    <div style="font-size: 12px; font-weight: 500;">${countryScores[2]}</div>
                 </div>
             </div>
             <div
-                style="position: relative; width: 40px; height: 20.5142%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                style="position: relative; width: 40px; height: ${percentages[3]}%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div style="position: absolute; width: 100%; text-align: center; top: -20px;">
-                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/RU.svg" alt="RU Flag"></div>
-                    <div style="font-size: 12px; font-weight: 500;">345</div>
+                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/${countryCodes[3]}.svg" alt="RU Flag"></div>
+                    <div style="font-size: 12px; font-weight: 500;">${countryScores[3]}</div>
                 </div>
             </div>
             <div
                 style="position: relative; width: 40px; height: 20%; background-color: var(--color-blue); border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div style="position: absolute; width: 100%; text-align: center; top: -20px;">
-                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/CA.svg" alt="CA Flag"></div>
-                    <div style="font-size: 12px; font-weight: 500;">257</div>
+                    <div><img class="icon flag svelte-10h13dd" src="https://s0urce.io/flags/${countryCodes[4]}.svg" alt="CA Flag"></div>
+                    <div style="font-size: 12px; font-weight: 500;">${countryScores[4]}</div>
                 </div>
             </div>
         </div>
@@ -103,6 +116,14 @@ const dom = new JSDOM(`<html>
     </div>
 </body>
 
-</html>`);
+</html>`
+    await nodeHtmlToImage({
+        output: './image.png',
+        html: htmlThing,
+        selector: "body > div > div:nth-child(2)"
+      })
+});
 
-console.log((await html2canvas.default(dom.querySelector("body > div:nth-child(1) > main:nth-child(1) > div:nth-child(4) > div:nth-child(2)"))).toDataURL())
+export { generateCwDailyGraph }
+
+// console.log((await html2canvas(document.querySelector('body'))))//.querySelector("body > div:nth-child(1) > main:nth-child(1) > div:nth-child(4) > div:nth-child(2)"))).toDataURL())

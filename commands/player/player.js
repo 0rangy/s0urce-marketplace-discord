@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
-const { socket } = require('../../index');
+import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } from 'discord.js';
+import { socket } from '../../index.js';
 
 const properRound = (num) => {
     return Math.round((Number(num) + Number.EPSILON) * 1000) / 1000
@@ -112,7 +112,7 @@ const getRarityEmojiString = (rarity) => {
     return emojiString;
 }
 
-const { itemTodTI, estimatePrice } = require('../../utils/dTIHelper')
+import { itemTodTI, estimatePrice } from '../../utils/dTIHelper.js';
 
 const getItemDisplayEmbed = (item) => {
     const embed = new EmbedBuilder();
@@ -136,6 +136,7 @@ const getItemDisplayEmbed = (item) => {
             inline: true
         })
     } catch(err) {
+        console.log(err)
         embed.addFields(
             {
                 name: "dTI",
@@ -424,16 +425,15 @@ async function handleBackButton(response, collectorFilter, data, interaction) {
     }
 }
 
-module.exports = {
-    category: 'player',
-    data: new SlashCommandBuilder()
+let category = 'player';
+let data = new SlashCommandBuilder()
         .setName("player")
         .setDescription("View player stats")
         .addStringOption(option =>
             option.setName('name')
                 .setDescription('The name of the player')
-                .setRequired(true)),
-    async execute(interaction) {
+                .setRequired(true));
+let execute = (async(interaction) => {
         if(String(interaction.options.getString('name')).length < 3) {
             await interaction.reply({embeds: [ErrorEmbed("Profile name must be at least 3 characters!")]})
             return;
@@ -552,5 +552,5 @@ module.exports = {
             console.log("Interaction timed out.")
             console.error(err)
         }
-    }
-}
+    });
+    export {data, category, execute}

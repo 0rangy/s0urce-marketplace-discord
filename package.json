@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "s0urce-marketplace-discord",
   "version": "1.0.0",
   "description": "Discord bot for s0urce marketplace using Yabluzo's API (NanderTGA/yabluzo)",
@@ -11,9 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.16.3",
+    "happy-dom": "^15.7.4",
     "html2canvas": "^1.4.1",
+    "jsdom": "^25.0.1",
     "moment": "^2.30.1",
     "node-emoji": "^2.1.3",
+    "node-html-to-image": "^5.0.0",
     "quickchart-js": "^3.1.3",
     "socket-io": "^1.0.0",
     "socket.io-client": "^4.8.0",

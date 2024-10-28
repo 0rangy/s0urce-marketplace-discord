@@ -1,8 +1,8 @@
-const { socket } = require('../../index');
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const QuickChart = require('quickchart-js');
-const fs = require('fs')
-const moment = require('moment')
+import { socket } from '../../index.js' 
+import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
+import QuickChart from 'quickchart-js';
+import * as fs from 'fs';
+import { generateCwDailyGraph } from '../../utils/balls.js'
 
 const ErrorEmbed = (errorStr) => {
     const embed = new EmbedBuilder()
@@ -12,11 +12,8 @@ const ErrorEmbed = (errorStr) => {
   
     return embed;
   }
-
-
-module.exports = {
-	category: 'countrywars',
-    data: new SlashCommandBuilder()
+let category= 'countrywars'
+let data = new SlashCommandBuilder()
         .setName("cwtop")
         .setDescription("Daily wars leaderboards")
         .addSubcommand(subcommand =>
@@ -31,55 +28,28 @@ module.exports = {
             subcommand
                 .setName("players")
                 .setDescription("View CW top players")
-        ),
-    async execute(interaction) {
+        );
+let execute = (async(interaction) => {
         if(interaction.options.getSubcommand() === 'today'){
             const data = fs.readFileSync('./cwDailyCache.json',
                 { encoding: 'utf8', flag: 'r' });
-            dataParsed = JSON.parse(data);
+            let dataParsed = JSON.parse(data);
             let embedsList = []
 
-            // Chart time :D
-            const chart = new QuickChart();
 
-            let chartLabels = []
-            let chartDatasets = []
-            let countriesAmt = 0;
-            for(let country of dataParsed.countries) {
-                if(countriesAmt < 5){
-                    chartLabels.push(country.countryCode)
-                    chartDatasets.push(country.score)
-                } else {
-                    break
-                }
-            }
-
-            chart.setConfig({
-                type: "bar",
-                data: {
-                    labels: chartLabels,
-                    datasets: [{
-                        label: `Points`,
-                        data: chartDatasets,
-                        backgroundColor: '#1662a4'
-                    }]
-                }
-            }).setWidth(500).setHeight(300).setBackgroundColor('#111112')
-
-            
-            
-            
-            const chartUrl = await chart.getShortUrl()
+            await interaction.deferReply()
+            await generateCwDailyGraph(dataParsed)
+            const attachment = new AttachmentBuilder('./image.png')
+            console.log(attachment.toJSON())
             const embed = new EmbedBuilder()
                 .setTitle("Today's Country Wars Scores")
-                .setImage(chartUrl)
+                .setImage('attachment://image.png')
                 .setFooter({ text: "Last Updated"})
                 .setTimestamp(dataParsed.cacheAge*1000)
             embed.setColor("#00b0f4");
             embedsList.push(embed)
             
-            await interaction.deferReply();
-            await interaction.editReply({ embeds: embedsList })
+            await interaction.editReply({ embeds: embedsList, files: [attachment] })
 
 
         } else if(interaction.options.getSubcommand() === 'season') {
@@ -87,7 +57,7 @@ module.exports = {
                 "event": "getCWLeaderboard",
                 "sortKey": "countries"
             });
-            dataParsed = {
+            let dataParsed = {
                 'cacheAge': Date.now()/1000,
                 "countries": data.data,
                 "currentSeason": data.currentSeason,
@@ -155,5 +125,6 @@ module.exports = {
             embed.setColor("#00b0f4");
             await interaction.reply({embeds: [embed]})
         }
-    }
-}
+    });
+
+export {data, category, execute}
