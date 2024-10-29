@@ -1,8 +1,10 @@
 import { socket } from '../../index.js' 
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import QuickChart from 'quickchart-js';
 import * as fs from 'fs';
 import { generateCwDailyGraph } from '../../utils/balls.js'
+import { time } from 'console';
+
+let lastUpdatedTodayGraph = 0;
 
 const ErrorEmbed = (errorStr) => {
     const embed = new EmbedBuilder()
@@ -38,14 +40,19 @@ let execute = (async(interaction) => {
 
 
             await interaction.deferReply()
-            await generateCwDailyGraph(dataParsed)
+            const timeDif = Date.now()/1000 - lastUpdatedTodayGraph;
+            if(timeDif >= 30){
+                await generateCwDailyGraph(dataParsed)
+                lastUpdatedTodayGraph = Date.now()/1000
+                console.log("Updating")
+            }
             const attachment = new AttachmentBuilder('./image.png')
             console.log(attachment.toJSON())
             const embed = new EmbedBuilder()
                 .setTitle("Today's Country Wars Scores")
                 .setImage('attachment://image.png')
                 .setFooter({ text: "Last Updated"})
-                .setTimestamp(dataParsed.cacheAge*1000)
+                .setTimestamp(lastUpdatedTodayGraph*1000)
             embed.setColor("#00b0f4");
             embedsList.push(embed)
             

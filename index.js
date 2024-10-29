@@ -9,7 +9,7 @@ let token = configData.token;
 let s0urce_cookie = configData.s0urce_cookie;
 const socket = io(`wss://s0urce.io/`, {
 	path: '/socket.io',
-	reconnection: false,
+	reconnection: true,
 	rejectUnauthorized: false,
 	transports: ["websocket"],
 	transportOptions: {

@@ -1,4 +1,3 @@
-import html2canvas from 'html2canvas';
 import nodeHtmlToImage from 'node-html-to-image'
 import * as fs from 'fs';
 
@@ -12,7 +11,7 @@ let generateCwDailyGraph = (async(cwData) => {
         countryCodes.push(country.countryCode)
         countryScores.push(country.score)
     }
-
+    
     const minPoints = countryScores.at(-1);
     const maxPoints = countryScores[0];
     const minPercent = 20;
