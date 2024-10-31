@@ -66,6 +66,7 @@ import * as cwCommand from './commands/countrywars/cwtop.js';
 import * as auctionCommand from './commands/marketplace/auction.js';
 import * as playerCommand from './commands/player/player.js';
 import * as reloadCommand from './commands/util/reload.js';
+import * as lbCommand from './commands/player/leaderboard.js';
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -74,10 +75,12 @@ client.commands.set(cwCommand.data.name, cwCommand);
 client.commands.set(auctionCommand.data.name, auctionCommand);
 client.commands.set(playerCommand.data.name, playerCommand);
 client.commands.set(reloadCommand.data.name, reloadCommand);
+client.commands.set(lbCommand.data.name, lbCommand);
 // console.log(JSON.stringify(cwCommand.data, null, 2))
 // console.log(JSON.stringify(auctionCommand.data, null, 2))
 // console.log(JSON.stringify(playerCommand.data, null, 2))
 // console.log(JSON.stringify(reloadCommand.data, null, 2))
+console.log(JSON.stringify(lbCommand.data, null, 2))
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);

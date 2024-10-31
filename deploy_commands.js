@@ -73,6 +73,25 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		"name": "reload",
 		"description": "Reloads a command.",
 		"type": 1
+	  },
+	  {
+		"options": [
+		  {
+			"type": 1,
+			"name": "bitcoin",
+			"description": "View the bitcoin leaderboard",
+			"options": []
+		  },
+		  {
+			"type": 1,
+			"name": "level",
+			"description": "View the level leaderboard",
+			"options": []
+		  }
+		],
+		"name": "leaderboard",
+		"description": "View different in-game leaderboards",
+		"type": 1
 	  }
 ];
 
