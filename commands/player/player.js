@@ -136,7 +136,7 @@ const getItemDisplayEmbed = (item) => {
             inline: true
         })
     } catch(err) {
-        console.log(err)
+        // console.log(err)
         embed.addFields(
             {
                 name: "dTI",
@@ -167,10 +167,11 @@ const getItemDisplayEmbed = (item) => {
       } catch(e){
         // Have to put it outside since listing.item.stats is being iterated over :smh:
       }
-    if(item.type === 'avatar') {
-    embed.setImage(`https://s0urce.io/items/${item.icon}`)
+    let fullImageDisplay = ["avatar", "namePlate", "nameColor"]
+    if(fullImageDisplay.includes(item.type)) {
+        embed.setImage(`https://s0urce.io/items/${item.icon}`)
     } else {
-    embed.setThumbnail(`https://s0urce.io/items/${item.icon}`)
+        embed.setThumbnail(`https://s0urce.io/items/${item.icon}`)
     }
     embed.setColor("#00b0f4");
     return embed;

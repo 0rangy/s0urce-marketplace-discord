@@ -45,6 +45,7 @@ socket.on("connect_error", (err) =>{
 	console.log(err)
 })
 
+let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "initPlayer"]
 socket.on("event", (event, data) => {
 	if(event.event === "updateCountryWarsGraph") {
 		fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
@@ -55,6 +56,7 @@ socket.on("event", (event, data) => {
 		mode: 0o666
 		})
 	} else {
+		if(eventLogBlacklist.includes(event.event)) return;
 		console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
 	}
 })
@@ -63,6 +65,7 @@ import { Client, Collection, Events, GatewayIntentBits, ActivityType, WebSocketM
 import * as cwCommand from './commands/countrywars/cwtop.js';
 import * as auctionCommand from './commands/marketplace/auction.js';
 import * as playerCommand from './commands/player/player.js';
+import * as reloadCommand from './commands/util/reload.js';
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -70,21 +73,15 @@ client.commands = new Collection();
 client.commands.set(cwCommand.data.name, cwCommand);
 client.commands.set(auctionCommand.data.name, auctionCommand);
 client.commands.set(playerCommand.data.name, playerCommand);
-console.log(JSON.stringify(cwCommand.data, null, 2))
-console.log(JSON.stringify(auctionCommand.data, null, 2))
-console.log(JSON.stringify(playerCommand.data, null, 2))
+client.commands.set(reloadCommand.data.name, reloadCommand);
+// console.log(JSON.stringify(cwCommand.data, null, 2))
+// console.log(JSON.stringify(auctionCommand.data, null, 2))
+// console.log(JSON.stringify(playerCommand.data, null, 2))
+// console.log(JSON.stringify(reloadCommand.data, null, 2))
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
-for (const folder of commandFolders) {
-	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-		const filePath = path.join(commandsPath, file);
-		
-	}
-}
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;

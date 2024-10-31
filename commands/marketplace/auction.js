@@ -125,11 +125,12 @@ const generateEmbed = (id, auctionCache) => {
     text: "Last Refreshed",
   })
   .setTimestamp(auctionCache.cacheAge*1000);
-  if(listing.item.type === 'avatar') {
-    embed.setImage(`https://s0urce.io/items/${listing.item.icon}`)
-  } else {
-    embed.setThumbnail(`https://s0urce.io/items/${listing.item.icon}`)
-  }
+  let fullImageDisplay = ["avatar", "namePlate", "nameColor"]
+    if(fullImageDisplay.includes(listing.item.type)) {
+        embed.setImage(`https://s0urce.io/items/${listing.item.icon}`)
+    } else {
+        embed.setThumbnail(`https://s0urce.io/items/${listing.item.icon}`)
+    }
   return embed;
 };
 

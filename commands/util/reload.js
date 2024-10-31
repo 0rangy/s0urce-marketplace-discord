@@ -19,14 +19,14 @@ let execute = (async(interaction) => {
 			return interaction.reply(`There is no command with name \`${commandName}\`!`);
 		}
 
-		delete require.cache[require.resolve(`../${command.category}/${command.data.name}.js`)];
+		// Hopefully this isnt' THAT important :D
+		// delete require.cache[require.resolve(`../${command.category}/${command.data.name}.js`)];
 
 		try {
 	        interaction.client.commands.delete(command.data.name);
-			// Command most likely can't work with ES5 :/
-	        // import * as newCommand from `../${command.category}/${command.data.name}.js`;
+	        let newCommand = await import(`../${command.category}/${command.data.name}.js`);
 	        interaction.client.commands.set(newCommand.data.name, newCommand);
-	        await interaction.reply(`Command \`${newCommand.data.name}\` was reloaded!`);
+	        await interaction.reply(`Command \`${command.data.name}\` was reloaded!`);
 		} catch (error) {
 	        console.error(error);
 	        await interaction.reply(`There was an error while reloading a command \`${command.data.name}\`:\n\`${error.message}\``);

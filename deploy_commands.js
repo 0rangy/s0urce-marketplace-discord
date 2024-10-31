@@ -60,6 +60,19 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		"name": "player",
 		"description": "View player stats",
 		"type": 1
+	  },
+	  {
+		"options": [
+		  {
+			"type": 3,
+			"name": "command",
+			"description": "The command to reload.",
+			"required": true
+		  }
+		],
+		"name": "reload",
+		"description": "Reloads a command.",
+		"type": 1
 	  }
 ];
 
