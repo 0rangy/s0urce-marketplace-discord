@@ -74,16 +74,16 @@ client.commands = new Collection();
 client.commands.set(cwCommand.data.name, cwCommand);
 client.commands.set(auctionCommand.data.name, auctionCommand);
 client.commands.set(playerCommand.data.name, playerCommand);
-client.commands.set(reloadCommand.data.name, reloadCommand);
+if(String(token).includes('Ub37IY')) {
+	client.commands.set(reloadCommand.data.name, reloadCommand); // Only include reload commadn if code is running on DebugBot
+}
 client.commands.set(lbCommand.data.name, lbCommand);
 // console.log(JSON.stringify(cwCommand.data, null, 2))
 // console.log(JSON.stringify(auctionCommand.data, null, 2))
 // console.log(JSON.stringify(playerCommand.data, null, 2))
 // console.log(JSON.stringify(reloadCommand.data, null, 2))
-console.log(JSON.stringify(lbCommand.data, null, 2))
+// console.log(JSON.stringify(lbCommand.data, null, 2))
 
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
 
 
 client.on('interactionCreate', async interaction => {

@@ -64,19 +64,6 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 	  {
 		"options": [
 		  {
-			"type": 3,
-			"name": "command",
-			"description": "The command to reload.",
-			"required": true
-		  }
-		],
-		"name": "reload",
-		"description": "Reloads a command.",
-		"type": 1
-	  },
-	  {
-		"options": [
-		  {
 			"type": 1,
 			"name": "bitcoin",
 			"description": "View the bitcoin leaderboard",
