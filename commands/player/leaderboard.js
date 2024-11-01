@@ -34,7 +34,9 @@ let execute = (async(interaction) => {
         })
         
         let lb = []            
+        let position = 0
         for(let playerData of response['data']) {
+            position += 1;
             let player = JSON.parse(playerData.player_profile);
 
             let userTag = '';
@@ -64,7 +66,7 @@ let execute = (async(interaction) => {
                 levelTag = "<:grandmaster:1295854328376197212>";
             };
             lb.push(
-                `${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:btc:1295855267312963758> ${properRound(playerData.player_btc)}`
+                `*#${position}*   ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:btc:1295855267312963758> ${properRound(playerData.player_btc)}`
             )
         }
 
@@ -79,9 +81,11 @@ let execute = (async(interaction) => {
             "sortKey": "level"
         })
 
-        let lb = []            
+        let lb = []      
+        let position = 0;      
         for(let playerData of response['data']) {
             let player = JSON.parse(playerData.player_profile);
+            position += 1;
 
             let userTag = '';
             if(player.player_badge === "JMOD") {
@@ -110,7 +114,7 @@ let execute = (async(interaction) => {
                 levelTag = "<:grandmaster:1295854328376197212>";
             };
             lb.push(
-                `${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:btc:1295855267312963758> ${properRound(playerData.player_btc)}`
+                `*#${position}*   ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:btc:1295855267312963758> ${properRound(playerData.player_btc)}`
             )
         }
         const embed = new EmbedBuilder()

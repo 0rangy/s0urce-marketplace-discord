@@ -90,9 +90,11 @@ let execute = (async(interaction) => {
                 "sortKey": "players"
             })
             
-            let lb = []            
+            let lb = []    
+            let position = 0;        
             for(let playerData of data['data']) {
                 let player = JSON.parse(playerData.player_profile);
+                position += 1;
 
                 let userTag = '';
                 if(player.player_badge === "JMOD") {
@@ -121,7 +123,7 @@ let execute = (async(interaction) => {
                     levelTag = "<:grandmaster:1295854328376197212>";
                 };
                 lb.push(
-                    `${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:countrywars:1295762816111743107> ${playerData.player_cwp}`
+                    `*#${position}* ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:countrywars:1295762816111743107> ${playerData.player_cwp}`
                 )
             }
             const embed = new EmbedBuilder()
