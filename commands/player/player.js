@@ -112,7 +112,7 @@ const getRarityEmojiString = (rarity) => {
     return emojiString;
 }
 
-import { itemTodTI, estimatePrice } from '../../utils/dTIHelper.js';
+import { itemTodPM, apiItemToGrade, estimatePrice } from '../../utils/dTIHelper.js';
 
 const getItemDisplayEmbed = (item) => {
     const embed = new EmbedBuilder();
@@ -122,17 +122,35 @@ const getItemDisplayEmbed = (item) => {
         name: "Name",
         value: `${item.name} (#${item.mint})`,
         inline: true
-    },
-    {
-        name: "⠀Rarity",
-        value: `${getRarityEmojiString(String(item.rarity).toLowerCase())}`,
-        inline: true
     });
+    try {
+        const percentile = itemTodPM(item)
+        let percentileText;
+        if (percentile == 3 || (percentile > 20 && percentile % 10 == 3)) percentileText = percentile+"rd Percentile"; 
+        else if (percentile == 2 || (percentile > 20 && percentile % 10 == 2)) percentileText = percentile+"nd Percentile";
+        else if (percentile == 1 || (percentile > 20 && percentile % 10 == 1)) percentileText = percentile+"st Percentile";
+        else percentileText = percentile+"th Percentile";
+
+        embed.addFields(
+            {
+                name: "⠀Rarity",
+                value: `${getRarityEmojiString(String(item.rarity).toLowerCase())}\n⠀${percentileText}`,
+                inline: true
+            });
+    } catch (err) {
+        console.log(err);
+        embed.addFields(
+            {
+                name: "⠀Rarity",
+                value: `${getRarityEmojiString(String(item.rarity).toLowerCase())}`,
+                inline: true
+            });
+    }
     try {
         embed.addFields(
         {
             name: "dTI",
-            value: `${itemTodTI(item)}/10\n<:btc:1295855267312963758> ${String(estimatePrice(item))}`,
+            value: `${apiItemToGrade(item)}/10\n<:btc:1295855267312963758> ${String(estimatePrice(item))}`,
             inline: true
         })
     } catch(err) {
