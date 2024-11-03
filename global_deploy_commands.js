@@ -79,6 +79,12 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		"name": "leaderboard",
 		"description": "View different in-game leaderboards",
 		"type": 1
+	  },
+	  {
+		"options": [],
+		"name": "changelog",
+		"description": "View changelogs of this bot",
+		"type": 1
 	  }
 ];
 

@@ -124,5 +124,3 @@ let generateCwDailyGraph = (async(cwData) => {
 });
 
 export { generateCwDailyGraph }
-
-// console.log((await html2canvas(document.querySelector('body'))))//.querySelector("body > div:nth-child(1) > main:nth-child(1) > div:nth-child(4) > div:nth-child(2)"))).toDataURL())
