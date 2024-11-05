@@ -35,7 +35,7 @@ let execute = (async(interaction) => {
             return {'status': 'timeout'};
         });
         if(response.status === 'timeout') {
-            await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+            await interaction.editReply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
             attemptSocketConection()
             return;
         }
@@ -82,7 +82,7 @@ let execute = (async(interaction) => {
                 .setTitle(`Player Bitcoin Leaderboard`)
                 .setDescription(lb.join('\n'))
             embed.setColor("#00b0f4");
-        await interaction.reply({embeds: [embed]})
+        await interaction.editReply({embeds: [embed]})
     } else if(interaction.options.getSubcommand() === 'level'){
         const response = await socket.timeout(5000).emitWithAck('playerInput',{
             "event": "getLeaderboard",
@@ -91,7 +91,7 @@ let execute = (async(interaction) => {
             return {'status': 'timeout'};
         });
         if(response.status === 'timeout') {
-            await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+            await interaction.editReply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
             attemptSocketConection()
             return;
         }
@@ -136,7 +136,7 @@ let execute = (async(interaction) => {
                 .setTitle(`Player Level Leaderboard`)
                 .setDescription(lb.join('\n'))
             embed.setColor("#00b0f4");
-        await interaction.reply({embeds: [embed]})
+        await interaction.editReply({embeds: [embed]})
     }
 })
 
