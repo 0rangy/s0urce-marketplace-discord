@@ -1,8 +1,9 @@
-import { socket } from '../../index.js' 
+import { socket, attemptSocketConection } from '../../index.js' 
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
 import * as fs from 'fs';
 import { generateCwDailyGraph } from '../../utils/balls.js'
-import { time } from 'console';
+import { errorMonitor } from 'events';
+
 
 let lastUpdatedTodayGraph = 0;
 
@@ -38,32 +39,40 @@ let execute = (async(interaction) => {
             let dataParsed = JSON.parse(data);
             let embedsList = []
 
-
-            await interaction.deferReply()
-            const timeDif = Date.now()/1000 - lastUpdatedTodayGraph;
-            if(timeDif >= 30){
-                await generateCwDailyGraph(dataParsed)
-                lastUpdatedTodayGraph = Date.now()/1000
-                console.log("Updating")
-            }
-            const attachment = new AttachmentBuilder('./image.png')
-            console.log(attachment.toJSON())
-            const embed = new EmbedBuilder()
-                .setTitle("Today's Country Wars Scores")
-                .setImage('attachment://image.png')
-                .setFooter({ text: "Last Updated"})
-                .setTimestamp(lastUpdatedTodayGraph*1000)
-            embed.setColor("#00b0f4");
-            embedsList.push(embed)
+            interaction.reply({ embeds: [ErrorEmbed("This command is currently broken. Sorry!")]})
+            // await interaction.deferReply()
+            // const timeDif = Date.now()/1000 - lastUpdatedTodayGraph;
+            // if(timeDif >= 30){
+            //     await generateCwDailyGraph(dataParsed)
+            //     lastUpdatedTodayGraph = Date.now()/1000
+            //     console.log("Updating")
+            // }
+            // const attachment = new AttachmentBuilder('./image.png')
+            // console.log(attachment.toJSON())
+            // const embed = new EmbedBuilder()
+            //     .setTitle("Today's Country Wars Scores")
+            //     .setImage('attachment://image.png')
+            //     .setFooter({ text: "Last Updated"})
+            //     .setTimestamp(lastUpdatedTodayGraph*1000)
+            // embed.setColor("#00b0f4");
+            // embedsList.push(embed)
             
-            await interaction.editReply({ embeds: embedsList, files: [attachment] })
+            // await interaction.editReply({ embeds: embedsList, files: [attachment] })
 
 
         } else if(interaction.options.getSubcommand() === 'season') {
-            const data = await socket.emitWithAck('playerInput', {
+            interaction.deferReply()
+            const data = await socket.timeout(5000).emitWithAck('playerInput', {
                 "event": "getCWLeaderboard",
                 "sortKey": "countries"
+            }).catch( err => {
+                return {"status":"timeout"};
             });
+            if(response.status === 'timeout') {
+                await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+                attemptSocketConection()
+                return;
+            }
             let dataParsed = {
                 'cacheAge': Date.now()/1000,
                 "countries": data.data,
@@ -85,10 +94,18 @@ let execute = (async(interaction) => {
             embed.setColor("#00b0f4");
             await interaction.reply({embeds: [embed]})
         } else if(interaction.options.getSubcommand() === 'players') {
-            const data = await socket.emitWithAck('playerInput', {
+            interaction.deferReply()
+            const data = await socket.timeout(5000).emitWithAck('playerInput', {
                 "event": "getCWLeaderboard",
                 "sortKey": "players"
-            })
+            }).catch( err => {
+                return {'status': 'timeout'};
+            });
+            if(response.status === 'timeout') {
+                await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+                attemptSocketConection()
+                return;
+            }
             
             let lb = []    
             let position = 0;        

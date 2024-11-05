@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { socket } from '../../index.js';
+import { socket, attemptSocketConection } from '../../index.js';
 
 const properRound = (num) => {
     return Math.round((Number(num) + Number.EPSILON) * 1000) / 1000
@@ -28,11 +28,19 @@ let data = new SlashCommandBuilder()
     );
 let execute = (async(interaction) => {
     if(interaction.options.getSubcommand() === 'bitcoin') {
-        const response = await socket.emitWithAck('playerInput',{
+        const response = await socket.timeout(5000).emitWithAck('playerInput',{
             "event": "getLeaderboard",
             "sortKey": "btc"
-        })
-        
+        }).catch( err => {
+            return {'status': 'timeout'};
+        });
+        if(response.status === 'timeout') {
+            await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+            attemptSocketConection()
+            return;
+        }
+
+
         let lb = []            
         let position = 0
         for(let playerData of response['data']) {
@@ -76,10 +84,17 @@ let execute = (async(interaction) => {
             embed.setColor("#00b0f4");
         await interaction.reply({embeds: [embed]})
     } else if(interaction.options.getSubcommand() === 'level'){
-        const response = await socket.emitWithAck('playerInput',{
+        const response = await socket.timeout(5000).emitWithAck('playerInput',{
             "event": "getLeaderboard",
             "sortKey": "level"
-        })
+        }).catch( err => {
+            return {'status': 'timeout'};
+        });
+        if(response.status === 'timeout') {
+            await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+            attemptSocketConection()
+            return;
+        }
 
         let lb = []      
         let position = 0;      

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } from 'discord.js';
-import { socket } from '../../index.js';
+import { socket, attemptSocketConection } from '../../index.js';
 
 const properRound = (num) => {
     return Math.round((Number(num) + Number.EPSILON) * 1000) / 1000
@@ -175,7 +175,7 @@ const getItemDisplayEmbed = (item) => {
     },);
     try { // Copied straight out of auctions.js, like a lot of the shelf code :P
         for(let stat of item.stats){
-            let statDesc = String(stat.description).replace("$VAL", `${properRound(stat.value)}`)
+            let statDesc = String(stat.description).replace("$VAL", `${stat.value}`)
             embed.addFields({
                 name: `${stat.name}`,
                 value: `${statDesc} `,
@@ -457,7 +457,15 @@ let execute = (async(interaction) => {
             await interaction.reply({embeds: [ErrorEmbed("Profile name must be at least 3 characters!")]})
             return;
         }
-        let response = await socket.emitWithAck('playerInput', {'event': 'searchToAddFriend', "searchID": interaction.options.getString('name')});
+        interaction.deferReply()
+        let response = await socket.timeout(5000).emitWithAck('playerInput', {'event': 'searchToAddFriend', "searchID": interaction.options.getString('name')}).catch(async(e) => {
+            return {"status":"timeout"};
+        });
+        if(response.status === 'timeout') {
+            await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+            attemptSocketConection()
+            return;
+        }
         if(response.status !== "success") {
             try {
                 await interaction.reply({embeds: [ErrorEmbed("Couldn't fetch statistics! Does this player exist?")]})
