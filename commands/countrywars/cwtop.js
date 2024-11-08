@@ -68,8 +68,8 @@ let execute = (async(interaction) => {
                 "sortKey": "countries"
             }).catch( err => {
                 return {"status":"timeout"};
-            });``
-            if(data.status === 'timeout') {
+            });
+            if(response.status === 'timeout') {
                 await interaction.editReply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
                 attemptSocketConection()
                 return;
@@ -102,7 +102,7 @@ let execute = (async(interaction) => {
             }).catch( err => {
                 return {'status': 'timeout'};
             });
-            if(data.status === 'timeout') {
+            if(response.status === 'timeout') {
                 await interaction.editReply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
                 attemptSocketConection()
                 return;
