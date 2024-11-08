@@ -462,13 +462,13 @@ let execute = (async(interaction) => {
             return {"status":"timeout"};
         });
         if(response.status === 'timeout') {
-            await interaction.editReply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+            await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
             attemptSocketConection()
             return;
         }
         if(response.status !== "success") {
             try {
-                await interaction.editReply({embeds: [ErrorEmbed("Couldn't fetch statistics! Does this player exist?")]})
+                await interaction.reply({embeds: [ErrorEmbed("Couldn't fetch statistics! Does this player exist?")]})
             } catch(err) {
                 console.error(err)
                 await interaction.editReply({embeds: [ErrorEmbed("Couldn't fetch statistics! Does this player exist?")]})

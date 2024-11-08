@@ -40,25 +40,24 @@ let execute = (async(interaction) => {
             let embedsList = []
 
             interaction.reply({ embeds: [ErrorEmbed("This command is currently broken. Sorry!")]})
-            return;
-            await interaction.deferReply()
-            const timeDif = Date.now()/1000 - lastUpdatedTodayGraph;
-            if(timeDif >= 30){
-                await generateCwDailyGraph(dataParsed)
-                lastUpdatedTodayGraph = Date.now()/1000
-                console.log("Updating")
-            }
-            const attachment = new AttachmentBuilder('./image.png')
-            console.log(attachment.toJSON())
-            const embed = new EmbedBuilder()
-                .setTitle("Today's Country Wars Scores")
-                .setImage('attachment://image.png')
-                .setFooter({ text: "Last Updated"})
-                .setTimestamp(lastUpdatedTodayGraph*1000)
-            embed.setColor("#00b0f4");
-            embedsList.push(embed)
+            // await interaction.deferReply()
+            // const timeDif = Date.now()/1000 - lastUpdatedTodayGraph;
+            // if(timeDif >= 30){
+            //     await generateCwDailyGraph(dataParsed)
+            //     lastUpdatedTodayGraph = Date.now()/1000
+            //     console.log("Updating")
+            // }
+            // const attachment = new AttachmentBuilder('./image.png')
+            // console.log(attachment.toJSON())
+            // const embed = new EmbedBuilder()
+            //     .setTitle("Today's Country Wars Scores")
+            //     .setImage('attachment://image.png')
+            //     .setFooter({ text: "Last Updated"})
+            //     .setTimestamp(lastUpdatedTodayGraph*1000)
+            // embed.setColor("#00b0f4");
+            // embedsList.push(embed)
             
-            await interaction.editReply({ embeds: embedsList, files: [attachment] })
+            // await interaction.editReply({ embeds: embedsList, files: [attachment] })
 
 
         } else if(interaction.options.getSubcommand() === 'season') {
@@ -70,7 +69,7 @@ let execute = (async(interaction) => {
                 return {"status":"timeout"};
             });
             if(response.status === 'timeout') {
-                await interaction.editReply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+                await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
                 attemptSocketConection()
                 return;
             }
@@ -93,7 +92,7 @@ let execute = (async(interaction) => {
                 .setTitle(`Country Wars Leaderboard Season ${dataParsed.currentSeason}`)
                 .setDescription(scores.join('\n'))
             embed.setColor("#00b0f4");
-            await interaction.editReply({embeds: [embed]})
+            await interaction.reply({embeds: [embed]})
         } else if(interaction.options.getSubcommand() === 'players') {
             interaction.deferReply()
             const data = await socket.timeout(5000).emitWithAck('playerInput', {
@@ -103,7 +102,7 @@ let execute = (async(interaction) => {
                 return {'status': 'timeout'};
             });
             if(response.status === 'timeout') {
-                await interaction.editReply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
+                await interaction.reply({embeds: [ErrorEmbed("Disconnected from s0urce.io! Please try again later.\n\n*If this keeps happening, please report to @orangyyy.*")]});
                 attemptSocketConection()
                 return;
             }
@@ -148,7 +147,7 @@ let execute = (async(interaction) => {
                 .setTitle(`Country Wars Players Leaderboard`)
                 .setDescription(lb.join('\n'))
             embed.setColor("#00b0f4");
-            await interaction.editReply({embeds: [embed]})
+            await interaction.reply({embeds: [embed]})
         }
     });
 
