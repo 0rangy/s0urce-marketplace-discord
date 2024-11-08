@@ -44,6 +44,18 @@ const socket = io(`wss://s0urce.io/`, {
 
 export { socket }
 
+let renewSession = (async() => {
+	await fetch('https://s0urce.io', {
+		headers: { // Don't know which one is the good one so put both ;)
+			Cookie: s0urce_cookie,
+			cookie: s0urce_cookie
+		}
+	})
+	setTimeout(() => {
+		renewSession();
+	}, 60 * 60 * 1000)
+})
+
 socket.on('connect', ()=>{
 	console.log("Connected")
 	setTimeout(() => {
