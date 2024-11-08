@@ -44,11 +44,25 @@ const socket = io(`wss://s0urce.io/`, {
 
 export { socket }
 
+let refreshSession = (async() => {
+	console.log("Refreshing session...")
+	await fetch('https://s0urce.io', {
+		headers: {
+			Cookie: s0urce_cookie,
+			cookie: s0urce_cookie
+		}
+	})
+	setTimeout(() => {
+		refreshSession();
+	}, 60 * 60 * 1000)
+})
+
 socket.on('connect', ()=>{
 	console.log("Connected")
 	setTimeout(() => {
 		socket.emit("playGame","", (dt) => {
 			console.log(dt)
+			if(dt.status === 'success') refreshSession()
 		})
 	}, 2000)
 })
