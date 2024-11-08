@@ -20,55 +20,46 @@ import { io } from 'socket.io-client';
 
 let configData = JSON.parse(fs.readFileSync('./config.json'));
 let token = configData.token;
+let s0urce_cookie = configData.s0urce_cookie;
 let repoToken = configData.repoAccessToken;
 
-let socket;
-
-let attemptSocketConection = () => {
-	let configData2 = JSON.parse(fs.readFileSync('./config.json'));
-	let s0urce_cookie = configData2.s0urce_cookie;
-	socket = io(`wss://s0urce.io/`, {
-		path: '/socket.io',
-		reconnection: true,
-		rejectUnauthorized: false,
-		transports: ["websocket"],
-		transportOptions: {
-			polling: {
-				extraHeaders: {
-					'Cookie': s0urce_cookie
-				}
-			},
-			websocket: {
-				extraHeaders: {
-					'Cookie': s0urce_cookie
-				}
-			}
+const socket = io(`wss://s0urce.io/`, {
+	path: '/socket.io',
+	reconnection: true,
+	rejectUnauthorized: false,
+	transports: ["websocket"],
+	transportOptions: {
+        polling: {
+            extraHeaders: {
+                'Cookie': s0urce_cookie
+            }
+        },
+		websocket: {
+			extraHeaders: {
+                'Cookie': s0urce_cookie
+            }
 		}
-	});
-	
-	
-	
-	socket.on('connect', ()=>{
-		console.log("Connected")
-		setTimeout(() => {
-			socket.emit("playGame","", (dt) => {
-				console.log(dt)
-			})
-		}, 2000)
-	})
-	
-	socket.on("disconnect", (reason) =>{
-		console.log("Disconnected: " + reason)
-	})
-	
-	socket.on("connect_error", (err) =>{
-		console.log(err)
-	})
-}
+    }
+});
 
-attemptSocketConection()
+export { socket }
 
-export { socket, attemptSocketConection }
+socket.on('connect', ()=>{
+	console.log("Connected")
+	setTimeout(() => {
+		socket.emit("playGame","", (dt) => {
+			console.log(dt)
+		})
+	}, 2000)
+})
+
+socket.on("disconnect", (reason) =>{
+	console.log("Disconnected: " + reason)
+})
+
+socket.on("connect_error", (err) =>{
+	console.log(err)
+})
 
 let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "initPlayer"]
 socket.on("event", (event, data) => {

@@ -19,8 +19,7 @@ let execute = (async(interaction) => {
 			return interaction.reply(`There is no command with name \`${commandName}\`!`);
 		}
 
-		// Hopefully this isnt' THAT important :D UPDATE: It's important :(
-		// Reload command doesn't work without this :((
+		// Hopefully this isnt' THAT important :D
 		// delete require.cache[require.resolve(`../${command.category}/${command.data.name}.js`)];
 
 		try {
