@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { socket } from '../../index.js';
+import { socket, Emojis } from '../../index.js';
 
 const properRound = (num) => {
     return Math.round((Number(num) + Number.EPSILON) * 1000) / 1000
@@ -41,32 +41,32 @@ let execute = (async(interaction) => {
 
             let userTag = '';
             if(player.player_badge === "JMOD") {
-                userTag = "<:jmod1:1297953641994391654><:jmod2:1297953643101949993>";
+                userTag = Emojis.JMOD;
             } else if (player.player_badge === "MOD") {
-                userTag = "<:mod1:1297979928804986942><:mod2:1297979929824067596>";
+                userTag = Emojis.MOD;
             } else if (player.player_badge === "ADMIN") {
-                userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                userTag = Emojis.ADMIN;
             }
             if(player.username === 'Evrixol'){
-                userTag = userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                userTag = userTag = Emojis.ADMIN;
             }
         
-            let levelTag = "<:bronze:1295854402636353607>";
+            let levelTag = Emojis.RANK_BRONZE
             if(player.level > 10) {
-                levelTag = "<:silver:1295854401327464589>";
+                levelTag = Emojis.RANK_SILVER;
             } if(player.level > 25) {
-                levelTag = "<:gold:1295854400140607559>";
+                levelTag = Emojis.RANK_GOLD;
             } if(player.level > 50) {
-                levelTag = "<:platinum:1295854406025216051>";
+                levelTag = Emojis.RANK_PLATINUM;
             } if(player.level > 75) {
-                levelTag = "<:diamond:1295854407564398674>";
+                levelTag = Emojis.RANK_DIAMOND;
             } if(player.level > 100) {
-                levelTag = "<:master:1295854404699947038>";
+                levelTag = Emojis.RANK_MASTER;
             } if(player.level > 125) {
-                levelTag = "<:grandmaster:1295854328376197212>";
+                levelTag = Emojis.RANK_GRANDMASTER;
             };
             lb.push(
-                `*#${position}*   ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:btc:1295855267312963758> ${properRound(playerData.player_btc)}`
+                `*#${position}*   ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? Emojis.ONLINE : ''}:  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
             )
         }
 
@@ -89,32 +89,32 @@ let execute = (async(interaction) => {
 
             let userTag = '';
             if(player.player_badge === "JMOD") {
-                userTag = "<:jmod1:1297953641994391654><:jmod2:1297953643101949993>";
+                userTag = Emojis.JMOD;
             } else if (player.player_badge === "MOD") {
-                userTag = "<:mod1:1297979928804986942><:mod2:1297979929824067596>";
+                userTag = Emojis.MOD;
             } else if (player.player_badge === "ADMIN") {
-                userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                userTag = Emojis.ADMIN;
             }
             if(player.username === 'Evrixol'){
-                userTag = userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                userTag = userTag = Emojis.ADMIN;
             }
         
-            let levelTag = "<:bronze:1295854402636353607>";
+            let levelTag = Emojis.RANK_BRONZE
             if(player.level > 10) {
-                levelTag = "<:silver:1295854401327464589>";
+                levelTag = Emojis.RANK_SILVER;
             } if(player.level > 25) {
-                levelTag = "<:gold:1295854400140607559>";
+                levelTag = Emojis.RANK_GOLD;
             } if(player.level > 50) {
-                levelTag = "<:platinum:1295854406025216051>";
+                levelTag = Emojis.RANK_PLATINUM;
             } if(player.level > 75) {
-                levelTag = "<:diamond:1295854407564398674>";
+                levelTag = Emojis.RANK_DIAMOND;
             } if(player.level > 100) {
-                levelTag = "<:master:1295854404699947038>";
+                levelTag = Emojis.RANK_MASTER;
             } if(player.level > 125) {
-                levelTag = "<:grandmaster:1295854328376197212>";
+                levelTag = Emojis.RANK_GRANDMASTER;
             };
             lb.push(
-                `*#${position}*   ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:btc:1295855267312963758> ${properRound(playerData.player_btc)}`
+                `*#${position}*   ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? Emojis.ONLINE : ''}:  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
             )
         }
         const embed = new EmbedBuilder()

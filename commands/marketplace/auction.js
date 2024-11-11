@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder} from 'discord.js';
 import * as fs from 'fs';
 import moment from 'moment';
+import { Emojis } from '../../index.js';
 
 const ErrorEmbed = (errorStr) => {
   const embed = new EmbedBuilder()
@@ -17,20 +18,20 @@ const properRound = (num) => {
 
 const getRarityEmojiString = (rarity) => {
   let emojiString = ''
-  if(rarity === 'd' || rarity === 'common') {
-      emojiString = '<:d1:1298104350035415055><:d2:1298104358512361533><:d3:1298104359909064785>'
-  } else if(rarity === 'c' || rarity === 'uncommon') { // Uncommon
-      emojiString = '<:c1:1298072932668538942><:c2:1298072934136414320><:c3:1298072935076069489>'
-  } else if(rarity === 'b' || rarity === 'rare') { // Rare
-      emojiString = '<:b1:1298072388747001876><:b2:1298072390152093727><:b3:1298072391326502912>'
-  } else if(rarity === 'a' || rarity === 'epic') { // Epic
-      emojiString = '<:a1:1298104729208881172><:a2:1298104730257592371><:a3:1298104731457163405>'
-  } else if(rarity === 's' || rarity === 'legendary') { // Legendary
-      emojiString = '<:s1:1298070710513565737><:s2:1298070711495032913><:s3:1298070712933810227>'
-  } else if(rarity === 'ss' || rarity === 'mythic') { // Mythic
-      emojiString = '<:ss1:1298105245234364526><:ss2:1298105246387671050><:ss3:1298105247293509633>'
-  } else if(rarity === 'sss' || rarity === 'ethereal') { // Ethereal
-      emojiString = '<:sss1:1298105607873626256><:sss2:1298105609022865479><:sss3:1298105610100801689>'
+  if(rarity === ('d' || 'common')) {
+      emojiString = Emojis.RARITY_D
+  } else if(rarity === ('c' || 'uncommon')) { // Uncommon
+      emojiString = Emojis.RARITY_C
+  } else if(rarity === ('b' || 'rare')) { // Rare
+      emojiString = Emojis.RARITY_B
+  } else if(rarity === ('a' || 'epic')) { // Epic
+      emojiString = Emojis.RARITY_A
+  } else if(rarity === ('s' || 'legendary')) { // Legendary
+      emojiString = Emojis.RARITY_S
+  } else if(rarity === ('ss' || 'mythic')) { // Mythic
+      emojiString = Emojis.RARITY_SS
+  } else if(rarity === ('sss' || 'ethereal')) { // Ethereal
+      emojiString = Emojis.RARITY_SSS
   } 
   return emojiString;
 }
@@ -60,7 +61,7 @@ const generateEmbed = (id, auctionCache) => {
         embed.addFields(
             {
             name: "dTI",
-            value: `${properRound(listing.dTI.rank.rating)}/10 (<:btc:1295855267312963758> ${properRound(listing.dTI.estimatedPrice)})`,
+            value: `${properRound(listing.dTI.rank.rating)}/10 (${Emojis.BTC} ${properRound(listing.dTI.estimatedPrice)})`,
             inline: true
             });
     } catch(e){

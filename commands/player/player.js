@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } from 'discord.js';
-import { socket } from '../../index.js';
+import { socket, Emojis } from '../../index.js';
 
 const properRound = (num) => {
     return Math.round((Number(num) + Number.EPSILON) * 1000) / 1000
@@ -19,29 +19,29 @@ const playerEmbed = (player) => {
     let userTag = "";
 
     if(player.player_badge === "JMOD") {
-        userTag = "<:jmod1:1297953641994391654><:jmod2:1297953643101949993>";
+        userTag = Emojis.JMOD;
     } else if (player.player_badge === "MOD") {
-        userTag = "<:mod1:1297979928804986942><:mod2:1297979929824067596>";
+        userTag = Emojis.MOD;
     } else if (player.player_badge === "ADMIN") {
-        userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+        userTag = Emojis.ADMIN;
     }
     if(player.username === 'Evrixol'){
-        userTag = userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+        userTag = userTag = Emojis.ADMIN;
     }
 
-    let levelTag = "<:bronze:1295854402636353607>";
+    let levelTag = Emojis.RANK_BRONZE
     if(player.level > 10) {
-        levelTag = "<:silver:1295854401327464589>";
+        levelTag = Emojis.RANK_SILVER;
     } if(player.level > 25) {
-        levelTag = "<:gold:1295854400140607559>";
+        levelTag = Emojis.RANK_GOLD;
     } if(player.level > 50) {
-        levelTag = "<:platinum:1295854406025216051>";
+        levelTag = Emojis.RANK_PLATINUM;
     } if(player.level > 75) {
-        levelTag = "<:diamond:1295854407564398674>";
+        levelTag = Emojis.RANK_DIAMOND;
     } if(player.level > 100) {
-        levelTag = "<:master:1295854404699947038>";
+        levelTag = Emojis.RANK_MASTER;
     } if(player.level > 125) {
-        levelTag = "<:grandmaster:1295854328376197212>";
+        levelTag = Emojis.RANK_GRANDMASTER;
     };
 
     let nameColor = "Default";
@@ -61,11 +61,11 @@ const playerEmbed = (player) => {
     
 
 
-    embed.setDescription(`\n${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} Level ${player.level} ${player.online ? '<:online:1298066024507248703>' : ''}`);
+    embed.setDescription(`\n${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} Level ${player.level} ${player.online ? Emojis.ONLINE : ''}`);
     embed.addFields(
     {
         name: "Balance",
-        value: `<:btc:1295855267312963758> ${properRound(player.btc)}⠀⠀⠀⠀⠀`,
+        value: `${Emojis.BTC} ${properRound(player.btc)}⠀⠀⠀⠀⠀`,
         inline: true
     },
     {
@@ -95,19 +95,19 @@ const playerEmbed = (player) => {
 const getRarityEmojiString = (rarity) => {
     let emojiString = ''
     if(rarity === ('d' || 'common')) {
-        emojiString = '<:d1:1298104350035415055><:d2:1298104358512361533><:d3:1298104359909064785>'
+        emojiString = Emojis.RARITY_D
     } else if(rarity === ('c' || 'uncommon')) { // Uncommon
-        emojiString = '<:c1:1298072932668538942><:c2:1298072934136414320><:c3:1298072935076069489>'
+        emojiString = Emojis.RARITY_C
     } else if(rarity === ('b' || 'rare')) { // Rare
-        emojiString = '<:b1:1298072388747001876><:b2:1298072390152093727><:b3:1298072391326502912>'
+        emojiString = Emojis.RARITY_B
     } else if(rarity === ('a' || 'epic')) { // Epic
-        emojiString = '<:a1:1298104729208881172><:a2:1298104730257592371><:a3:1298104731457163405>'
+        emojiString = Emojis.RARITY_A
     } else if(rarity === ('s' || 'legendary')) { // Legendary
-        emojiString = '<:s1:1298070710513565737><:s2:1298070711495032913><:s3:1298070712933810227>'
+        emojiString = Emojis.RARITY_S
     } else if(rarity === ('ss' || 'mythic')) { // Mythic
-        emojiString = '<:ss1:1298105245234364526><:ss2:1298105246387671050><:ss3:1298105247293509633>'
+        emojiString = Emojis.RARITY_SS
     } else if(rarity === ('sss' || 'ethereal')) { // Ethereal
-        emojiString = '<:sss1:1298105607873626256><:sss2:1298105609022865479><:sss3:1298105610100801689>'
+        emojiString = Emojis.RARITY_SSS
     } 
     return emojiString;
 }
@@ -150,7 +150,7 @@ const getItemDisplayEmbed = (item) => {
         embed.addFields(
         {
             name: "dTI",
-            value: `${apiItemToGrade(item)}/10\n<:btc:1295855267312963758> ${String(estimatePrice(item))}`,
+            value: `${apiItemToGrade(item)}/10\n${Emojis.BTC} ${String(estimatePrice(item))}`,
             inline: true
         })
     } catch(err) {

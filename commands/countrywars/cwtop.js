@@ -1,4 +1,4 @@
-import { socket } from '../../index.js' 
+import { socket, Emojis } from '../../index.js' 
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
 import * as fs from 'fs';
 import { generateCwDailyGraph } from '../../utils/balls.js'
@@ -75,7 +75,7 @@ let execute = (async(interaction) => {
             
             for(let country of dataParsed.countries) {
                 scores.push(
-                    `*#${scores.length + 1}* :flag_${String(country.countryCode).toLowerCase()}:  ${country.countryCode}: ${country.score} <:countrywars:1295762816111743107>`
+                    `*#${scores.length + 1}* :flag_${String(country.countryCode).toLowerCase()}:  ${country.countryCode}: ${country.score} ${Emojis.COUNTRYWARS}`
                 )
             }
 
@@ -98,32 +98,32 @@ let execute = (async(interaction) => {
 
                 let userTag = '';
                 if(player.player_badge === "JMOD") {
-                    userTag = "<:jmod1:1297953641994391654><:jmod2:1297953643101949993>";
+                    userTag = Emojis.JMOD;
                 } else if (player.player_badge === "MOD") {
-                    userTag = "<:mod1:1297979928804986942><:mod2:1297979929824067596>";
+                    userTag = Emojis.MOD;
                 } else if (player.player_badge === "ADMIN") {
-                    userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                    userTag = Emojis.ADMIN;
                 }
                 if(player.username === 'Evrixol'){
-                    userTag = userTag = "<:admin1:1297939284728479795><:admin2:1297939272967651338>";
+                    userTag = userTag = Emojis.ADMIN;
                 }
             
-                let levelTag = "<:bronze:1295854402636353607>";
+                let levelTag = Emojis.RANK_BRONZE
                 if(player.level > 10) {
-                    levelTag = "<:silver:1295854401327464589>";
+                    levelTag = Emojis.RANK_SILVER;
                 } if(player.level > 25) {
-                    levelTag = "<:gold:1295854400140607559>";
+                    levelTag = Emojis.RANK_GOLD;
                 } if(player.level > 50) {
-                    levelTag = "<:platinum:1295854406025216051>";
+                    levelTag = Emojis.RANK_PLATINUM;
                 } if(player.level > 75) {
-                    levelTag = "<:diamond:1295854407564398674>";
+                    levelTag = Emojis.RANK_DIAMOND;
                 } if(player.level > 100) {
-                    levelTag = "<:master:1295854404699947038>";
+                    levelTag = Emojis.RANK_MASTER;
                 } if(player.level > 125) {
-                    levelTag = "<:grandmaster:1295854328376197212>";
+                    levelTag = Emojis.RANK_GRANDMASTER;
                 };
                 lb.push(
-                    `*#${position}* ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? "<:premium:1298066540540723250>" : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? '<:online:1298066024507248703>' : ''}:  <:countrywars:1295762816111743107> ${playerData.player_cwp}`
+                    `*#${position}* ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? Emojis.ONLINE : ''}:  ${Emojis.COUNTRYWARS} ${playerData.player_cwp}`
                 )
             }
             const embed = new EmbedBuilder()

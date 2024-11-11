@@ -16,24 +16,32 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 			"type": 1,
 			"name": "today",
 			"description": "View daily CW Scores",
-			"options": []
+			"options": [],
+			"integration_types": [0, 1],
+			"contexts": [0, 1, 2]
 		  },
 		  {
 			"type": 1,
 			"name": "season",
 			"description": "View CW seasonal leaderboards",
-			"options": []
+			"options": [],
+			"integration_types": [0, 1],
+			"contexts": [0, 1, 2]
 		  },
 		  {
 			"type": 1,
 			"name": "players",
 			"description": "View CW top players",
-			"options": []
+			"options": [],
+			"integration_types": [0, 1],
+			"contexts": [0, 1, 2]
 		  }
 		],
 		"name": "cwtop",
 		"description": "Daily wars leaderboards",
-		"type": 1
+		"type": 1,
+		"integration_types": [0, 1],
+		"contexts": [0, 1, 2]
 	  },
 	  {
 		"options": [
@@ -41,12 +49,16 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 			"type": 1,
 			"name": "listings",
 			"description": "Get all available auctions",
-			"options": []
+			"options": [],
+			"integration_types": [0, 1],
+			"contexts": [0, 1, 2]
 		  }
 		],
 		"name": "auction",
 		"description": "Everything for auctions",
-		"type": 1
+		"type": 1,
+		"integration_types": [0, 1],
+		"contexts": [0, 1, 2]
 	  },
 	  {
 		"options": [
@@ -59,7 +71,9 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		],
 		"name": "player",
 		"description": "View player stats",
-		"type": 1
+		"type": 1,
+		"integration_types": [0, 1],
+		"contexts": [0, 1, 2]
 	  },
 	  {
 		"options": [
@@ -67,24 +81,32 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 			"type": 1,
 			"name": "bitcoin",
 			"description": "View the bitcoin leaderboard",
-			"options": []
+			"options": [],
+			"integration_types": [0, 1],
+			"contexts": [0, 1, 2]
 		  },
 		  {
 			"type": 1,
 			"name": "level",
 			"description": "View the level leaderboard",
-			"options": []
+			"options": [],
+			"integration_types": [0, 1],
+			"contexts": [0, 1, 2]
 		  }
 		],
 		"name": "leaderboard",
 		"description": "View different in-game leaderboards",
-		"type": 1
+		"type": 1,
+		"integration_types": [0, 1],
+		"contexts": [0, 1, 2]
 	  },
 	  {
 		"options": [],
 		"name": "changelog",
 		"description": "View changelogs of this bot",
-		"type": 1
+		"type": 1,
+		"integration_types": [0, 1],
+		"contexts": [0, 1, 2]
 	  }
 ];
 
@@ -105,7 +127,6 @@ const rest = new REST().setToken(token);
 
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
 	// } catch (error) {
-	// And of course, make sure you catch and log any errors!
 	// 	console.error(error);
 	// }
 })();
