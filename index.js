@@ -68,6 +68,27 @@ let socket = io(`wss://s0urce.io/`, {
     }
 });
 
+let reconnectSocket = () => {
+	socket = io(`wss://s0urce.io/`, {
+		path: '/socket.io',
+		reconnection: true,
+		rejectUnauthorized: false,
+		transports: ["websocket"],
+		transportOptions: {
+			polling: {
+				extraHeaders: {
+					'Cookie': s0urce_cookie
+				}
+			},
+			websocket: {
+				extraHeaders: {
+					'Cookie': s0urce_cookie
+				}
+			}
+		}
+	})
+};
+
 export { socket }
 let refreshingSession = false;
 
@@ -97,25 +118,9 @@ socket.on('connect', ()=>{
 				console.log("Connection failed! Retrying in 30 seconds..")
 				setTimeout(() => {
 					console.log("Retrying...")
-					socket = io(`wss://s0urce.io/`, {
-						path: '/socket.io',
-						reconnection: true,
-						rejectUnauthorized: false,
-						transports: ["websocket"],
-						transportOptions: {
-							polling: {
-								extraHeaders: {
-									'Cookie': s0urce_cookie
-								}
-							},
-							websocket: {
-								extraHeaders: {
-									'Cookie': s0urce_cookie
-								}
-							}
-						}
-					}, 30000); // Retry connection after 30 seconds
-				})
+					reconnectSocket()
+					 // Retry connection after 30 seconds
+				}, 30000);
 			}
 		})
 	}, 15000)
