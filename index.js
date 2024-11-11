@@ -92,7 +92,7 @@ socket.on('connect', ()=>{
 				})
 			}
 		})
-	}, 2000)
+	}, 15000)
 })
 
 socket.on("disconnect", (reason) =>{
