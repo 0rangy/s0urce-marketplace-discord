@@ -17,7 +17,7 @@ const properRound = (num) => {
 }
 
 const getRarityEmojiString = (rarity) => {
-  let emojiString = ''
+  let emojiString = 'error'
   if(rarity === ('d' || 'common')) {
       emojiString = Emojis.RARITY_D
   } else if(rarity === ('c' || 'uncommon')) { // Uncommon
@@ -53,8 +53,8 @@ const generateEmbed = (id, auctionCache) => {
       inline: true
     },
     {
-      name: "⠀Rarity",
-      value: `${getRarityEmojiString(listing.rarity)}`,
+      name: "-Rarity-",
+      value: `${getRarityEmojiString(String(listing.item.rarity).toLowerCase())}`,
       inline: true
     });
     try {
@@ -79,7 +79,7 @@ const generateEmbed = (id, auctionCache) => {
     
     try {
       for(let stat of listing.item.stats){
-        let statDesc = String(stat.description).replace("$VAL", `${properRound(stat.value)}`)
+        let statDesc = String(stat.description).replace("$VAL", `${stat.value}`)
         embed.addFields({
             name: `${stat.name}`,
             value: `${statDesc} `,
