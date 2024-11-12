@@ -63,7 +63,7 @@ let processButtons = (async(response, prevId, ghCache, collectorFilter, interact
 
         processButtons(response, curId, ghCache, collectorFilter, interaction);
     } catch( exception ){
-        interaction.editReply({ embeds: [ErrorEmbed(exception)], components: [] })
+        interaction.editReply({ components: [] })
         console.log(exception)
     }
 });
