@@ -36,27 +36,36 @@ let execute = (async(interaction) => {
             const data = fs.readFileSync('./cwDailyCache.json',
                 { encoding: 'utf8', flag: 'r' });
             let dataParsed = JSON.parse(data);
-            let embedsList = []
 
+            await interaction.deferReply();
 
-            await interaction.deferReply()
-            const timeDif = Date.now()/1000 - lastUpdatedTodayGraph;
-            if(timeDif >= 30){
-                await generateCwDailyGraph(dataParsed)
-                lastUpdatedTodayGraph = Date.now()/1000
-                console.log("Updating")
+            let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
+            let countryNames = [];
+            for(let country of dataParsed.countries){
+                countryNames.push(regionNames.of(country.countryCode));
             }
-            const attachment = new AttachmentBuilder('./image.png')
-            console.log(attachment.toJSON())
-            const embed = new EmbedBuilder()
-                .setTitle("Today's Country Wars Scores")
-                .setImage('attachment://image.png')
-                .setFooter({ text: "Last Updated"})
-                .setTimestamp(lastUpdatedTodayGraph*1000)
-            embed.setColor("#00b0f4");
-            embedsList.push(embed)
+
+            let maxLength = 0;
+            for(let countryName of countryNames) {
+                if (String(countryName).length > maxLength) {
+                    maxLength = String(countryName).length;
+                }
+            }
             
-            await interaction.editReply({ embeds: embedsList, files: [attachment] })
+            let scores = []
+            for(let country of dataParsed['countries']){
+                let position = scores.length +1;
+                scores.push(
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} :flag_${String(country.countryCode).toLowerCase()}:  \`${regionNames.of(country.countryCode)}${" ".repeat(maxLength - String(regionNames.of(country.countryCode)).length)}\` ${Emojis.COUNTRYWARS} ${country.score}`
+                )
+            }
+            
+            const embed = new EmbedBuilder()
+                .setTitle("Country Wars Daily Leaderboard")
+                .setDescription(scores.join('\n'));
+            embed.setColor("#00b0f4")
+            
+            await interaction.editReply({ embeds: [embed] })
 
 
         } else if(interaction.options.getSubcommand() === 'season') {
@@ -71,11 +80,26 @@ let execute = (async(interaction) => {
                 "seasonEnd": data.seasonEnd
             };
             
-            let scores = []
+            await interaction.deferReply();
+
+            let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
+            let countryNames = [];
+            for(let country of dataParsed.countries){
+                countryNames.push(regionNames.of(country.countryCode));
+            }
+
+            let maxLength = 0;
+            for(let countryName of countryNames) {
+                if (String(countryName).length > maxLength) {
+                    maxLength = String(countryName).length;
+                }
+            }
             
+            let scores = []
             for(let country of dataParsed.countries) {
+                let position = scores.length +1;
                 scores.push(
-                    `*#${scores.length + 1}* :flag_${String(country.countryCode).toLowerCase()}:  ${country.countryCode}: ${country.score} ${Emojis.COUNTRYWARS}`
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} :flag_${String(country.countryCode).toLowerCase()}:  \`${regionNames.of(country.countryCode)}${" ".repeat(maxLength - String(regionNames.of(country.countryCode)).length)}\` ${Emojis.COUNTRYWARS} ${country.score}`
                 )
             }
 
@@ -83,20 +107,31 @@ let execute = (async(interaction) => {
                 .setTitle(`Country Wars Leaderboard Season ${dataParsed.currentSeason}`)
                 .setDescription(scores.join('\n'))
             embed.setColor("#00b0f4");
-            await interaction.reply({embeds: [embed]})
+            await interaction.editReply({embeds: [embed]})
         } else if(interaction.options.getSubcommand() === 'players') {
             const data = await socket.emitWithAck('playerInput', {
                 "event": "getCWLeaderboard",
                 "sortKey": "players"
             })
+
+            let maxLength = 0;
+            for(let playerData of data['data']) {
+                let player = JSON.parse(playerData.player_profile);
+                if (String(player.username).length > maxLength) {
+                    maxLength = String(player.username).length;
+                }
+            }
             
-            let lb = []    
+            await interaction.deferReply();
+            
+            let lb = [];
+            let lb2 = [];
             let position = 0;        
             for(let playerData of data['data']) {
                 let player = JSON.parse(playerData.player_profile);
                 position += 1;
 
-                let userTag = '';
+                let userTag = Emojis.STAFF_NONE;
                 if(player.player_badge === "JMOD") {
                     userTag = Emojis.JMOD;
                 } else if (player.player_badge === "MOD") {
@@ -121,16 +156,25 @@ let execute = (async(interaction) => {
                     levelTag = Emojis.RANK_MASTER;
                 } if(player.level > 125) {
                     levelTag = Emojis.RANK_GRANDMASTER;
-                };
-                lb.push(
-                    `*#${position}* ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? Emojis.ONLINE : ''}:  ${Emojis.COUNTRYWARS} ${playerData.player_cwp}`
-                )
+                }
+                if(position < 11) {
+                    lb.push(
+                        `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.COUNTRYWARS} ${playerData.player_cwp}`
+                    );
+                } else {
+                    lb2.push(
+                        `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.COUNTRYWARS} ${playerData.player_cwp}`
+                    );
+                }
             }
             const embed = new EmbedBuilder()
                 .setTitle(`Country Wars Players Leaderboard`)
                 .setDescription(lb.join('\n'))
+            const embed2 = new EmbedBuilder()
+                .setDescription(lb2.join('\n'))
             embed.setColor("#00b0f4");
-            await interaction.reply({embeds: [embed]})
+            embed2.setColor("#00b0f4")
+            await interaction.editReply({embeds: [embed,embed2]})
         }
     });
 

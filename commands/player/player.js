@@ -133,7 +133,7 @@ const getItemDisplayEmbed = (item) => {
 
         embed.addFields(
             {
-                name: "⠀Rarity",
+                name: "-Rarity-",
                 value: `${getRarityEmojiString(String(item.rarity).toLowerCase())}\n⠀${percentileText}`,
                 inline: true
             });
@@ -175,7 +175,7 @@ const getItemDisplayEmbed = (item) => {
     },);
     try { // Copied straight out of auctions.js, like a lot of the shelf code :P
         for(let stat of item.stats){
-            let statDesc = String(stat.description).replace("$VAL", `${properRound(stat.value)}`)
+            let statDesc = String(stat.description).replace("$VAL", `${stat.value}`)
             embed.addFields({
                 name: `${stat.name}`,
                 value: `${statDesc} `,
@@ -185,7 +185,7 @@ const getItemDisplayEmbed = (item) => {
       } catch(e){
         // Have to put it outside since listing.item.stats is being iterated over :smh:
       }
-    let fullImageDisplay = ["avatar", "namePlate", "nameColor"]
+    let fullImageDisplay = ["avatar", "namePlate", "nameColor"] // Things to have a big image for
     if(fullImageDisplay.includes(item.type)) {
         embed.setImage(`https://s0urce.io/items/${item.icon}`)
     } else {
@@ -203,14 +203,14 @@ async function viewShelfEmbed(interaction, data, shelfItems, response, action, s
               .setLabel(' ')
               .setEmoji('◀️')
               .setStyle(ButtonStyle.Primary)
-              .setDisabled(slot === 1 ? true : false);
+              .setDisabled(slot === 1);
 
     const goForwards = new ButtonBuilder()
         .setCustomId('forwards')
         .setLabel(' ')
         .setEmoji('▶️')
         .setStyle(ButtonStyle.Primary)
-        .setDisabled(shelfItems.length === slot ? true : false)
+        .setDisabled(shelfItems.length === slot)
 
     const exitButton = new ButtonBuilder()
         .setCustomId('exit')

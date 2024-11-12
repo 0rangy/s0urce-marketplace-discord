@@ -32,14 +32,25 @@ let execute = (async(interaction) => {
             "event": "getLeaderboard",
             "sortKey": "btc"
         })
+
+        let maxLength = 0;
+        for(let playerData of response['data']){
+            let player = JSON.parse(playerData.player_profile);
+            if(String(player.username).length > maxLength){
+                maxLength = String(player.username).length;
+            }
+        }
         
-        let lb = []            
+        await interaction.deferReply();
+        
+        let lb = [];          
+        let lb2 = [];
         let position = 0
         for(let playerData of response['data']) {
             position += 1;
             let player = JSON.parse(playerData.player_profile);
 
-            let userTag = '';
+            let userTag = Emojis.STAFF_NONE;
             if(player.player_badge === "JMOD") {
                 userTag = Emojis.JMOD;
             } else if (player.player_badge === "MOD") {
@@ -64,17 +75,26 @@ let execute = (async(interaction) => {
                 levelTag = Emojis.RANK_MASTER;
             } if(player.level > 125) {
                 levelTag = Emojis.RANK_GRANDMASTER;
-            };
-            lb.push(
-                `*#${position}*   ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} ${player.level} **${player.username}** ${player.online ? Emojis.ONLINE : ''}:  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
-            )
+            }
+            if(position < 11) {
+                lb.push(
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
+                );
+            } else {
+                lb2.push(
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
+                );
+            }
         }
-
         const embed = new EmbedBuilder()
-                .setTitle(`Player Bitcoin Leaderboard`)
-                .setDescription(lb.join('\n'))
-            embed.setColor("#00b0f4");
-        await interaction.reply({embeds: [embed]})
+            .setTitle(`Player Bitcoin Leaderboard`)
+            .setDescription(lb.join('\n'))
+        embed.setColor("#00b0f4");
+        const embed2 = new EmbedBuilder()
+            .setDescription(lb2.join('\n'))
+        embed2.setColor("#00b0f4");
+        await interaction.editReply({embeds: [embed, embed2]})
+        
     } else if(interaction.options.getSubcommand() === 'level'){
         const response = await socket.emitWithAck('playerInput',{
             "event": "getLeaderboard",
@@ -88,9 +108,11 @@ let execute = (async(interaction) => {
                 maxLength = String(player.username).length;
             }
         }
+        
+        await interaction.deferReply();
 
-        let lb = []      
-        let lb2 = [] 
+        let lb = [];
+        let lb2 = [];
         let position = 0;      
         for(let playerData of response['data']) {
             let player = JSON.parse(playerData.player_profile);
@@ -121,28 +143,25 @@ let execute = (async(interaction) => {
                 levelTag = Emojis.RANK_MASTER;
             } if(player.level > 125) {
                 levelTag = Emojis.RANK_GRANDMASTER;
-            };
-            if(position < 11){
+            }
+            if(position < 11) {
                 lb.push(
-                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} \`${player.level}${"".repeat(4-String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : ''}:  ${player.online ? '' : Emojis.EMPTY}${player.premium ? '' : Emojis.EMPTY}${Emojis.BTC} ${properRound(playerData.player_btc)}`
-                )
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
+                );
             } else {
                 lb2.push(
-                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag} :flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : ''} ${levelTag} \`${player.level}${"".repeat(4-String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : ''}:  ${player.online ? '' : Emojis.EMPTY}${player.premium ? '' : Emojis.EMPTY}${Emojis.BTC} ${properRound(playerData.player_btc)}`
-                )
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
+                );
             }
         }
         const embed = new EmbedBuilder()
-                .setTitle(`Player Level Leaderboard - Page 1`)
+                .setTitle(`Player Level Leaderboard`)
                 .setDescription(lb.join('\n'))
             embed.setColor("#00b0f4");
         const embed2 = new EmbedBuilder()
-            .setTitle(`Player Level Leaderboard - Page 2`)
             .setDescription(lb2.join('\n'))
-            embed2.setColor("#00b0f4");
-        await interaction.reply({embeds: [embed, embed2]})
-        // await interaction.reply(lb.join('\n'))
-        // await interaction.followUp(lb2.join('\n'))
+        embed2.setColor("#00b0f4");
+        await interaction.editReply({embeds: [embed, embed2]})
     }
 })
 
