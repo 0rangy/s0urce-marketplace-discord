@@ -44,33 +44,30 @@ server.listen(port, hostname, () => {
 
 import * as fs from 'fs';
 import { io } from 'socket.io-client';
-// import { token, s0urce_cookie } from './config.json'  assert { type: "json" };
 
 let configData = JSON.parse(fs.readFileSync('./config.json'));
 let token = configData.token;
 let s0urce_cookie = configData.s0urce_cookie;
 let repoToken = configData.repoAccessToken;
 
-let socket = io(`wss://s0urce.io/`, {
-	path: '/socket.io',
-	reconnection: true,
-	rejectUnauthorized: false,
-	transports: ["websocket"],
-	transportOptions: {
-        polling: {
-            extraHeaders: {
-                'Cookie': s0urce_cookie
-            }
-        },
-		websocket: {
-			extraHeaders: {
-                'Cookie': s0urce_cookie
-            }
-		}
-    }
-});
+let socket;
 
-let reconnectSocket = () => {
+let refreshingSession = false;
+
+let refreshSession = (async() => {
+	refreshingSession = true;
+	console.log("Refreshing session...")
+	await fetch('https://s0urce.io', {
+		headers: {
+			Cookie: s0urce_cookie,
+			cookie: s0urce_cookie
+		}
+	})
+	setTimeout(() => {
+		// Refresh session here
+	}, 60 * 60 * 1000)
+})
+let startSocket = () => {
 	socket = io(`wss://s0urce.io/`, {
 		path: '/socket.io',
 		reconnection: true,
@@ -88,69 +85,62 @@ let reconnectSocket = () => {
 				}
 			}
 		}
+	});
+	
+	
+	
+	
+	socket.on('connect', ()=>{
+		console.log("Connected")
+		setTimeout(() => {
+			socket.emit("playGame","", (dt) => {
+				console.log(dt)
+				
+				if(dt.status === 'success') {
+					if(!refreshingSession) refreshSession();
+				} else if(dt.status === 'error') {
+					console.log("Connection failed! Retrying in 30 seconds..")
+					socket.disconnect();
+					setTimeout(() => {
+						console.log("Retrying...")
+						startSocket();
+						 // Retry connection after 30 seconds
+					}, 30000);
+				}
+			})
+		}, 10000)
+	})
+	
+	socket.on("disconnect", (reason) =>{
+		console.log("Disconnected: " + reason)
+	})
+	
+	socket.on("connect_error", (err) =>{
+		console.log(err)
+	})
+	
+	
+	let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "initPlayer", "logEnemyAttack"] // NO LOGGING POINTLESS SHIT
+	socket.on("event", (event, data) => {
+		if(event.event === "updateCountryWarsGraph") {
+			fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
+				"cacheAge": Date.now()/1000,
+				"countries": event.arguments[0]
+			},null, 2), {
+			encoding: "utf8",
+			mode: 0o666
+			})
+		} else {
+			if(eventLogBlacklist.includes(event.event)) return;
+			console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
+		}
 	})
 };
 
 export { socket }
-let refreshingSession = false;
 
-let refreshSession = (async() => {
-	refreshingSession = true;
-	console.log("Refreshing session...")
-	await fetch('https://s0urce.io', {
-		headers: {
-			Cookie: s0urce_cookie,
-			cookie: s0urce_cookie
-		}
-	})
-	setTimeout(() => {
-		refreshSession();
-	}, 60 * 60 * 1000)
-})
+startSocket();
 
-socket.on('connect', ()=>{
-	console.log("Connected")
-	setTimeout(() => {
-		socket.emit("playGame","", (dt) => {
-			console.log(dt)
-			
-			if(dt.status === 'success') {
-				if(!refreshingSession) refreshSession();
-			} else if(dt.status === 'error') {
-				console.log("Connection failed! Retrying in 30 seconds..")
-				setTimeout(() => {
-					console.log("Retrying...")
-					reconnectSocket()
-					 // Retry connection after 30 seconds
-				}, 30000);
-			}
-		})
-	}, 15000)
-})
-
-socket.on("disconnect", (reason) =>{
-	console.log("Disconnected: " + reason)
-})
-
-socket.on("connect_error", (err) =>{
-	console.log(err)
-})
-
-let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "initPlayer", "logEnemyAttack"] // NO LOGGING POINTLESS SHIT
-socket.on("event", (event, data) => {
-	if(event.event === "updateCountryWarsGraph") {
-		fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
-			"cacheAge": Date.now()/1000,
-			"countries": event.arguments[0]
-		},null, 2), {
-		encoding: "utf8",
-		mode: 0o666
-		})
-	} else {
-		if(eventLogBlacklist.includes(event.event)) return;
-		console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
-	}
-})
 import axios from 'axios';
 import { Client, Collection, Events, GatewayIntentBits, ActivityType, WebSocketManager } from 'discord.js';
 import * as cwCommand from './commands/countrywars/cwtop.js';
@@ -245,7 +235,7 @@ client.once('ready', readyClient => {
 			mode: 0o666
 		})
 	}).catch( err => {
-		console.log("Something fucked with GitHub!\n", err)
+		console.log(`Something fucked with GitHub: ${err}`)
 	});
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
