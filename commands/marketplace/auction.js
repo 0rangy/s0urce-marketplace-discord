@@ -200,7 +200,7 @@ async function processButtons(response, prevId, aCache, collectorFilter, interac
 
         processButtons(response, curId, dataParsed, collectorFilter, interaction);
     } catch( exception ){
-        interaction.editReply({ embeds: [ErrorEmbed(exception)], components: [] })
+        interaction.editReply({ components: [] })
         console.log("Interaction timed out")
     }
 }
