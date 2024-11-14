@@ -214,6 +214,8 @@ let data = new SlashCommandBuilder()
             .setDescription("Get all available auctions")
     );
 let  execute = (async(interaction) => {
+        await interaction.deferReply();    
+    
         const data = fs.readFileSync('./auctionCache.json',
             { encoding: 'utf8', flag: 'r' });
         let dataParsed = JSON.parse(data);
@@ -258,7 +260,7 @@ let  execute = (async(interaction) => {
 
           const row = new ActionRowBuilder()
               .addComponents(goBack, goForwards);
-          const response = await interaction.reply({ embeds: embedList, components: [row] });
+          const response = await interaction.editReply({ embeds: embedList, components: [row] });
           let currentAuction = Array(dataParsed.auctions)[0].length;
           const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
 

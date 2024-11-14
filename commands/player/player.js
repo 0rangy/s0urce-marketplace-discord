@@ -468,7 +468,9 @@ let execute = (async(interaction) => {
             return;
         }
         console.log(JSON.stringify(response, null, 2))        
-
+    
+        await interaction.deferReply();    
+    
         const embed = playerEmbed(response.data)
 
         const viewAvatar = new ButtonBuilder()
@@ -518,7 +520,7 @@ let execute = (async(interaction) => {
 
         const actionRowBottom = new ActionRowBuilder()
             .addComponents(viewShelf);
-        const interactionResponse = await interaction.reply({ embeds: [embed], components: [actionRowTop, actionRowBottom]});
+        const interactionResponse = await interaction.editReply({ embeds: [embed], components: [actionRowTop, actionRowBottom]});
 
         let shelfItems = []
         for(let key in response.data) {
