@@ -330,7 +330,7 @@ async function viewShelfEmbed(interaction, data, shelfItems, response, action, s
             }
         }
     } catch(err) {
-        await interaction.editReply({ embeds: [ErrorEmbed(err)], components: [] })
+        await interaction.editReply({  components: [] })
         console.log("Interaction timed out. \n" + err)
     }
 }
@@ -439,7 +439,7 @@ async function handleBackButton(response, collectorFilter, data, interaction) {
             }
         }
     } catch(err){ 
-        interaction.editReply({ embeds: [ErrorEmbed(err)], components: [] })
+        interaction.editReply({ components: [] })
         console.log("Interaction timed out. \n" + err)
     }
 }
@@ -468,7 +468,9 @@ let execute = (async(interaction) => {
             return;
         }
         console.log(JSON.stringify(response, null, 2))        
-
+    
+        await interaction.deferReply();    
+    
         const embed = playerEmbed(response.data)
 
         const viewAvatar = new ButtonBuilder()
@@ -518,7 +520,7 @@ let execute = (async(interaction) => {
 
         const actionRowBottom = new ActionRowBuilder()
             .addComponents(viewShelf);
-        const interactionResponse = await interaction.reply({ embeds: [embed], components: [actionRowTop, actionRowBottom]});
+        const interactionResponse = await interaction.editReply({ embeds: [embed], components: [actionRowTop, actionRowBottom]});
 
         let shelfItems = []
         for(let key in response.data) {
@@ -567,7 +569,7 @@ let execute = (async(interaction) => {
                 await viewShelfEmbed(interaction, response.data, shelfItems, interactionResponse, action, 1)
             }
         } catch(err){
-            interaction.editReply({ embeds: [ErrorEmbed(err)], components: [] })
+            interaction.editReply({ components: [] })
             console.log("Interaction timed out.")
             console.error(err)
         }
