@@ -64,7 +64,7 @@ let refreshSession = (async() => {
 		}
 	})
 	setTimeout(() => {
-		// Refresh session here
+		refreshSession();
 	}, 60 * 60 * 1000)
 })
 let startSocket = () => {
