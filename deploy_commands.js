@@ -98,7 +98,19 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		"name": "changelog",
 		"description": "View changelogs of this bot",
 		"type": 1
-	  }
+	  },
+	{
+		"options": [],
+		"name": "challenges",
+		"description": "Everything challenge related!",
+		"type": 1
+	},
+	{
+		"options": [],
+		"name": "link",
+		"description": "Link your game account to the bot",
+		"type": 1
+	}
 ];
 
 

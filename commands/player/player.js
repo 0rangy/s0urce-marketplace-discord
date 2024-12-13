@@ -466,8 +466,7 @@ let execute = (async(interaction) => {
                 await interaction.editReply({embeds: [ErrorEmbed("Couldn't fetch statistics! Does this player exist?")]})
             }
             return;
-        }
-        console.log(JSON.stringify(response, null, 2))        
+        }       
     
         await interaction.deferReply();    
     

@@ -107,7 +107,23 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		"type": 1,
 		"integration_types": [0, 1],
 		"contexts": [0, 1, 2]
-	  }
+	  },
+	{
+		"options": [],
+		"name": "challenges",
+		"description": "Everything challenge related!",
+		"type": 1,
+		"integration_types": [0, 1],
+		"contexts": [0, 1, 2]
+	},
+	{
+		"options": [],
+		"name": "link",
+		"description": "Link your game account to the bot",
+		"type": 1,
+		"integration_types": [0, 1],
+		"contexts": [0, 1, 2]
+	}
 ];
 
 
