@@ -164,7 +164,7 @@ let showChallengeEmbed = async (interaction, id, action) => {
         participantsNum++;
     }
     
-    let author = await interaction.client.users.cache.get(challengeJson.author);
+    let author = await interaction.client.users.fetch(challengeJson.author);
     
     const embed = new EmbedBuilder()
         .setAuthor({
