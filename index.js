@@ -172,7 +172,6 @@ let startSocket = () => {
 			const eventData = event.arguments[0]
 			if(eventData.progression !== 100) return;
 			if(hackedQueue.indexOf(eventData.attacker) !== -1) return;
-			if(!dCheckIfLoggedIn(eventData.attacker)) return;
 			if(!isParticipating("speedyHacker", eventData.attacker)) return;
 			if(eventData.port !== 1) {
 				socket.emit('playerInput', {
