@@ -81,17 +81,17 @@ let execute = (async(interaction) => {
               .setStyle(ButtonStyle.Primary)
               .setDisabled(true);
 
-          const goForwards = new ButtonBuilder()
-              .setCustomId('forwards')
-              .setLabel(' ')
-              .setEmoji('▶️')
-              .setStyle(ButtonStyle.Primary)
+      const goForwards = new ButtonBuilder()
+          .setCustomId('forwards')
+          .setLabel(' ')
+          .setEmoji('▶️')
+          .setStyle(ButtonStyle.Primary)
 
-          const row = new ActionRowBuilder()
-              .addComponents(goBack, goForwards);
-          const response = await interaction.editReply({ embeds: [commitEmbedBuilder(data, 0)], components: [row] });
-          const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
+      const row = new ActionRowBuilder()
+          .addComponents(goBack, goForwards);
+      const response = await interaction.editReply({ embeds: [commitEmbedBuilder(data, 0)], components: [row] });
+      const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
 
-          await processButtons(response, 0, data, collectorFilter, interaction)
+      await processButtons(response, 0, data, collectorFilter, interaction)
 })
 export { category, data, execute }
