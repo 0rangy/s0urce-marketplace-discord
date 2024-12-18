@@ -76,6 +76,14 @@ const properRound = (num) => {
 	return Math.round((num + Number.EPSILON) * 1000) / 1000
 }
 
+let properLog = (msg) => {
+	let d = new Date();
+
+	let datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+		d.getHours() + ":" + d.getMinutes();
+	fs.appendFile('logs.txt', `[${datestring}]: ${msg}\n`)
+}
+
 let hackedQueue = []
 let startSocket = () => {
 	socket = io(`wss://s0urce.io/`, {
@@ -142,6 +150,7 @@ let startSocket = () => {
 				mode: 0o666
 			})
 		} else if(event.event === 'gotChatMessage'){
+			properLog("")
 			const message = event.arguments[0].message;
 			const username = event.arguments[0].username;
 			for(let linkingUser of linkingQueue) {
@@ -255,7 +264,7 @@ client.commands = new Collection();
 client.commands.set(cwCommand.data.name, cwCommand);
 client.commands.set(auctionCommand.data.name, auctionCommand);
 client.commands.set(playerCommand.data.name, playerCommand);
-client.commands.set(changelogCommand.data.name, changelogCommand);
+// client.commands.set(changelogCommand.data.name, changelogCommand); // Broken :/
 client.commands.set(challengeCommand.data.name, challengeCommand);
 if(String(token).includes('Ub37IY')) {
 	client.commands.set(reloadCommand.data.name, reloadCommand); // Only include reload commadn if code is running on DebugBot
@@ -296,23 +305,6 @@ client.on('interactionCreate', async interaction => {
 		}
 	}
 });
-
-
-function censor(censor) {
-	var i = 0;
-	
-	return function(key, value) {
-	  if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value) 
-		return '[Circular]'; 
-	  
-	  if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
-		return '[Unknown]';
-	  
-	  ++i; // so we know we aren't using the original object anymore
-	  
-	  return value;  
-	}
-  }
 
 
 client.once('ready', readyClient => {
