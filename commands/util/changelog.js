@@ -29,7 +29,6 @@ let commitEmbedBuilder = (ghCache, commitId) => {
 }
 
 let processButtons = (async(response, prevId, ghCache, collectorFilter, interaction) => {
-    
     let curId = prevId;
     try {
         const action = await response.awaitMessageComponent({ filter: collectorFilter, time: 600_000 }); // Keep buttons active for 10 mins
@@ -74,6 +73,7 @@ let data = new SlashCommandBuilder()
         .setDescription("View changelogs of this bot")
 let execute = (async(interaction) => {
     const data = JSON.parse(fs.readFileSync('./githubCache.json',{ encoding: 'utf8', flag: 'r' }));
+    await interaction.deferReply();
     const goBack = new ButtonBuilder()
               .setCustomId('back')
               .setLabel(' ')
@@ -81,17 +81,17 @@ let execute = (async(interaction) => {
               .setStyle(ButtonStyle.Primary)
               .setDisabled(true);
 
-          const goForwards = new ButtonBuilder()
-              .setCustomId('forwards')
-              .setLabel(' ')
-              .setEmoji('▶️')
-              .setStyle(ButtonStyle.Primary)
+      const goForwards = new ButtonBuilder()
+          .setCustomId('forwards')
+          .setLabel(' ')
+          .setEmoji('▶️')
+          .setStyle(ButtonStyle.Primary)
 
-          const row = new ActionRowBuilder()
-              .addComponents(goBack, goForwards);
-          const response = await interaction.reply({ embeds: [commitEmbedBuilder(data, 0)], components: [row] });
-          const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
+      const row = new ActionRowBuilder()
+          .addComponents(goBack, goForwards);
+      const response = await interaction.editReply({ embeds: [commitEmbedBuilder(data, 0)], components: [row] });
+      const collectorFilter = i => i.user.id === interaction.user.id; // Only person that triggers 
 
-          await processButtons(response, 0, data, collectorFilter, interaction)
+      await processButtons(response, 0, data, collectorFilter, interaction)
 })
 export { category, data, execute }

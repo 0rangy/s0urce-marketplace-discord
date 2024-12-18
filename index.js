@@ -54,7 +54,7 @@ let socket;
 
 let refreshingSession = false;
 
-let refreshSession = (async() => {
+let refreshSession = async() => {
 	refreshingSession = true;
 	console.log("Refreshing session...")
 	await fetch('https://s0urce.io', {
@@ -63,10 +63,28 @@ let refreshSession = (async() => {
 			cookie: s0urce_cookie
 		}
 	})
+	socket.emit('playerInput', {'event': 'searchToAddFriend', "searchID": 'Orangy'})
 	setTimeout(() => {
 		refreshSession();
 	}, 60 * 60 * 1000)
-})
+}
+
+import { linkingQueue, dCheckIfLoggedIn } from "./commands/player/link.js"
+import { isParticipating, getPlayerPB, updatePlayerPB, getLeaderboard, getPlayerPosition } from "./commands/misc/challenges.js"
+
+const properRound = (num) => {
+	return Math.round((num + Number.EPSILON) * 1000) / 1000
+}
+
+let properLog = (msg) => {
+	let d = new Date();
+
+	let datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+		d.getHours() + ":" + d.getMinutes();
+	fs.appendFile('logs.txt', `[${datestring}]: ${msg}\n`)
+}
+
+let hackedQueue = []
 let startSocket = () => {
 	socket = io(`wss://s0urce.io/`, {
 		path: '/socket.io',
@@ -120,19 +138,108 @@ let startSocket = () => {
 	})
 	
 	
-	let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "initPlayer", "logEnemyAttack"] // NO LOGGING POINTLESS SHIT
+	let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "updateCountryWarsGraph", "initPlayer"] // NO LOGGING POINTLESS SHIT
 	socket.on("event", (event, data) => {
+		if(!eventLogBlacklist.includes(event.event)) console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
 		if(event.event === "updateCountryWarsGraph") {
 			fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
-				"cacheAge": Date.now()/1000,
+				"cacheAge": Date.now() / 1000,
 				"countries": event.arguments[0]
-			},null, 2), {
-			encoding: "utf8",
-			mode: 0o666
+			}, null, 2), {
+				encoding: "utf8",
+				mode: 0o666
 			})
-		} else {
-			if(eventLogBlacklist.includes(event.event)) return;
-			console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
+		} else if(event.event === 'gotChatMessage'){
+			properLog("")
+			const message = event.arguments[0].message;
+			const username = event.arguments[0].username;
+			for(let linkingUser of linkingQueue) {
+				if(linkingUser.sName === username) {
+					if(message === linkingUser.dId){
+						socket.emit('playerInput', {
+							"event": "sendChatMessage",
+							"id": linkingUser.sId,
+							"username": linkingUser.sName,
+							"message": "Linked successfully! You can use challenge features now."
+						});
+						linkingQueue.splice(linkingQueue.indexOf(linkingUser), 1);
+						console.log(linkingQueue)
+						let linkedUsers = JSON.parse(fs.readFileSync("./linkedUsers.json").toString());
+						linkedUsers[linkingUser.dId] = linkingUser.sName;
+						fs.writeFileSync("./linkedUsers.json", JSON.stringify(linkedUsers));
+					} else {
+						socket.emit('playerInput', {
+							"event": "sendChatMessage",
+							"id": linkingUser.sId,
+							"username": linkingUser.sName,
+							"message": "ID doesn't match!"
+						});
+					}
+				}
+			}
+		} else if(event.event === 'logEnemyAttack') {
+			const eventData = event.arguments[0]
+			if(eventData.progression !== 100) return;
+			if(hackedQueue.indexOf(eventData.attacker) !== -1) return;
+			if(!isParticipating("speedyHacker", eventData.attacker)) return;
+			if(eventData.port !== 1) {
+				socket.emit('playerInput', {
+					"event": "sendChatMessage",
+					"id": eventData.id,
+					"username": eventData.attacker,
+					"message": "Nice try, but you have to hack me on port 22 for it to count."
+				});
+				console.log("not right port")
+				return;
+			} // At this point, hack counts for challenge
+			hackedQueue.push(eventData.attacker);
+			console.log(hackedQueue)
+		} else if(event.event === 'gotHacked') {
+			const eventData = event.arguments[1]
+			if(!hackedQueue.includes(eventData.attacker)) return;
+			for(let word of eventData.wps_info) {
+				if(word.success !== true) {
+					socket.emit('playerInput', {
+						"event": "sendChatMessage",
+						"id": eventData.id,
+						"username": eventData.attacker,
+						"message": `Wow impressive, but you failed a word. Doesn't count.`
+					});
+					return;
+				}
+			}
+			const wordsAmt = Array(eventData.wps_info)[0].length;
+			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
+			hackedQueue.splice(hackedQueue.indexOf(eventData.attacker), 1)
+			socket.emit('playerInput', {
+				"event": "sendChatMessage",
+				"id": eventData.id,
+				"username": eventData.attacker,
+				"message": `You hacked me in ${eventData.total_hack_duration} seconds! That's ${properRound(WP2M)} words per 2 minutes.`
+			});
+			const oldPb = getPlayerPB('speedyHacker', eventData.attacker);
+			if(oldPb < WP2M){
+				updatePlayerPB('speedyHacker', eventData.attacker, properRound(WP2M));
+				let posText;
+				let pos = getPlayerPosition('speedyHacker', eventData.attacker);
+				if (pos == 3 || (pos > 20 && pos % 10 == 3)) posText = pos+"rd";
+				else if (pos == 2 || (pos > 20 && pos % 10 == 2)) posText = pos+"nd";
+				else if (pos == 1 || (pos > 20 && pos % 10 == 1)) posText = pos+"st";
+				else posText = pos+"th";
+				socket.emit('playerInput', {
+					"event": "sendChatMessage",
+					"id": eventData.id,
+					"username": eventData.attacker,
+					"message": `New PB! ${properRound(oldPb)} -> ${properRound(WP2M)}. You are now ${posText}!`
+				});
+			} else {
+				socket.emit('playerInput', {
+					"event": "sendChatMessage",
+					"id": eventData.id,
+					"username": eventData.attacker,
+					"message": `Yikes! That didn't beat your PB of ${properRound(oldPb)}.`
+				});
+			}
 		}
 	})
 };
@@ -149,17 +256,21 @@ import * as playerCommand from './commands/player/player.js';
 import * as reloadCommand from './commands/util/reload.js';
 import * as lbCommand from './commands/player/leaderboard.js';
 import * as changelogCommand from './commands/util/changelog.js';
+import * as challengeCommand from './commands/misc/challenges.js';
+import * as linkCommand from './commands/player/link.js';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 client.commands.set(cwCommand.data.name, cwCommand);
 client.commands.set(auctionCommand.data.name, auctionCommand);
 client.commands.set(playerCommand.data.name, playerCommand);
-client.commands.set(changelogCommand.data.name, changelogCommand);
+// client.commands.set(changelogCommand.data.name, changelogCommand); // Broken :/
+client.commands.set(challengeCommand.data.name, challengeCommand);
 if(String(token).includes('Ub37IY')) {
 	client.commands.set(reloadCommand.data.name, reloadCommand); // Only include reload commadn if code is running on DebugBot
 }
 client.commands.set(lbCommand.data.name, lbCommand);
+client.commands.set(linkCommand.data.name, linkCommand);
 
 
 // console.log(JSON.stringify(cwCommand.data, null, 2))
@@ -168,47 +279,32 @@ client.commands.set(lbCommand.data.name, lbCommand);
 // console.log(JSON.stringify(reloadCommand.data, null, 2))
 // console.log(JSON.stringify(lbCommand.data, null, 2))
 // console.log(JSON.stringify(changelogCommand.data, null, 2))
+// console.log(JSON.stringify(challengeCommand.data, null, 2))
+// console.log(JSON.stringify(linkCommand.data, null, 2))
 
 
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isChatInputCommand()) return;
+	if (interaction.isChatInputCommand()) {
+		const command = interaction.client.commands.get(interaction.commandName);
 
-	const command = interaction.client.commands.get(interaction.commandName);
+		if (!command) {
+			console.error(`No command matching ${interaction.commandName} was found.`);
+			return;
+		}
 
-	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
-		return;
-	}
-
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-		console.error(error);
-		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		try {
+			await command.execute(interaction);
+		} catch (error) {
+			console.error(error);
+			if (interaction.replied || interaction.deferred) {
+				await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			} else {
+				await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			}
 		}
 	}
 });
-
-
-function censor(censor) {
-	var i = 0;
-	
-	return function(key, value) {
-	  if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value) 
-		return '[Circular]'; 
-	  
-	  if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
-		return '[Unknown]';
-	  
-	  ++i; // so we know we aren't using the original object anymore
-	  
-	  return value;  
-	}
-  }
 
 
 client.once('ready', readyClient => {
@@ -222,6 +318,15 @@ client.once('ready', readyClient => {
 			mode: 0o666
 		})
 	}).catch( e => console.warn("API Offline, fetch failed.") );
+	try {
+		const users = fs.readFileSync('./linkedUsers.json',
+			{encoding: 'utf8', flag: 'r'});
+	} catch {
+		fs.writeFileSync('./linkedUsers.json',JSON.stringify({},null, 2), {
+			encoding: "utf8",
+			mode: 0o666
+		});
+	}
 	const response = axios.get('https://api.github.com/repos/0rangy/s0urce-marketplace-discord/commits',{
         headers:{
             'Authorization':`token ${repoToken}`
