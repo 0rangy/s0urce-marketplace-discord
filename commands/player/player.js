@@ -92,7 +92,7 @@ const playerEmbed = (player) => {
     return embed;
 }
 
-const getRarityEmojiString = (rarity) => {
+export const getRarityEmojiString = (rarity) => {
     let emojiString = ''
     if(rarity === ('d' || 'common')) {
         emojiString = Emojis.RARITY_D

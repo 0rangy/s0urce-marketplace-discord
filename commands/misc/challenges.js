@@ -11,6 +11,7 @@ import {
 import fs from "fs";
 import { Emojis } from '../../index.js'
 import { checkIfLoggedIn } from "../player/link.js"
+import { getRarityEmojiString } from "../player/player.js"
 
 
 let getPlayerPosition = (cId, sName) => {
@@ -27,7 +28,7 @@ let getPlayerPosition = (cId, sName) => {
 let getLeaderboard = (cId) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     let challengeJson = dataParsed['challenges'][cId];
     let leaderboard = []
     for(let participant in challengeJson['participants']){ 
@@ -44,13 +45,13 @@ let getLeaderboard = (cId) => {
 let getPlayerPB = (cId, sName) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     return dataParsed['challenges'][cId]['participants'][sName]['personalBest'];
 }
 let updatePlayerPB = (cId, sName, pb) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     dataParsed['challenges'][cId]['participants'][sName]['personalBest'] = pb;
     fs.writeFileSync("./challenges.json", JSON.stringify(dataParsed, null, 2));
 }
@@ -58,21 +59,21 @@ let updatePlayerPB = (cId, sName, pb) => {
 let removeParticipant = (cId, sName) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     delete dataParsed['challenges'][cId]['participants'][sName];
     fs.writeFileSync("./challenges.json", JSON.stringify(dataParsed, null, 2));
 }
 let addParticipant = (cId, sName) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     dataParsed['challenges'][cId]['participants'][sName] = JSON.parse(`{"${dataParsed['challenges'][cId]['lbStat']}": ${dataParsed['challenges'][cId]['startingValue']}}`);
     fs.writeFileSync("./challenges.json", JSON.stringify(dataParsed, null, 2));
 }
 let isParticipating = (cId, sId) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     let challengeJson = dataParsed['challenges'][cId];
     for(let playerId in challengeJson.participants) {
         if(playerId === sId){
@@ -98,7 +99,7 @@ function camelCaseToWords(input) {
 let showLeaderboardEmbed = async(cId, interaction) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     let challengeJson = dataParsed['challenges'][cId];
     
     let author = interaction.client.users.cache.get(challengeJson.author);
@@ -124,7 +125,7 @@ let showLeaderboardEmbed = async(cId, interaction) => {
     
     const lStr = []
     for(let player of leaderboard) {
-        lStr.push(`\`${player.playerName}: ${" ".repeat(maxLength - String(player.playerName).length)}${player.player[challengeJson.lbStat]}\``);
+        lStr.push(`\`${player.playerName}: ${" ".repeat(maxLength - String(player.playerName).length)}${player.player[challengeJson.lbStat]}${challengeJson.lbUnit}\``);
     }
     const lStrReal = lStr.join('\n');
     
@@ -156,7 +157,7 @@ let showLeaderboardEmbed = async(cId, interaction) => {
 let showChallengeEmbed = async (interaction, id, action) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     let challengeJson = dataParsed['challenges'][id];
 
     let participantsNum = 0;
@@ -183,8 +184,17 @@ let showChallengeEmbed = async (interaction, id, action) => {
                 value: `${challengeJson.prize}`,
                 inline: true
             },
+            {
+                name: "Difficulty",
+                value: `${getRarityEmojiString(challengeJson.difficulty)}`,
+                inline: true
+            }
         )
         .setColor("#00b0f4")
+        .setFooter({
+            text: "Challenge Ending On"
+        })
+        .setTimestamp(challengeJson.ending*1000)
         .setThumbnail(author.displayAvatarURL());
     if(challengeJson.official){
         embed.setThumbnail(interaction.client.user.displayAvatarURL());
@@ -336,7 +346,7 @@ const showMainEmbed = async (interaction) => {
 
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
-    let dataParsed = JSON.parse(data);
+    let dataParsed = JSON.parse(data.trimStart());
     let chalAmt = 0;
     for(let challenge in dataParsed.challenges){
         chalAmt++;

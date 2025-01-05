@@ -38,12 +38,22 @@ const server = http.createServer((req, res) => {
   res.end('Nothing to see here! Maybe one day this will be something. Who knows?');
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+// server.listen(port, hostname, () => {
+//   console.log(`Server running at http://${hostname}:${port}/`);
+// });
 
 import * as fs from 'fs';
 import { io } from 'socket.io-client';
+
+let properLog = (msg) => {
+	let d = new Date();
+
+	let datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+		d.getHours() + ":" + d.getMinutes();
+	fs.appendFile('logs.txt', `[${datestring}]: ${msg}\n`, (err) => {
+		 if(err) console.log(err);
+	})
+}
 
 let configData = JSON.parse(fs.readFileSync('./config.json'));
 let token = configData.token;
@@ -63,7 +73,8 @@ let refreshSession = async() => {
 			cookie: s0urce_cookie
 		}
 	})
-	socket.emit('playerInput', {'event': 'searchToAddFriend', "searchID": 'Orangy'})
+	socket.emit('playerInput', {'event': 'claimFilamentLoot'})
+	socket.emit('playerInput', {'event': 'shredComponentLoot'})
 	setTimeout(() => {
 		refreshSession();
 	}, 60 * 60 * 1000)
@@ -76,15 +87,7 @@ const properRound = (num) => {
 	return Math.round((num + Number.EPSILON) * 1000) / 1000
 }
 
-let properLog = (msg) => {
-	let d = new Date();
-
-	let datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
-		d.getHours() + ":" + d.getMinutes();
-	fs.appendFile('logs.txt', `[${datestring}]: ${msg}\n`)
-}
-
-let hackedQueue = []
+let playerPortDict = {};
 let startSocket = () => {
 	socket = io(`wss://s0urce.io/`, {
 		path: '/socket.io',
@@ -115,9 +118,11 @@ let startSocket = () => {
 				console.log(dt)
 				
 				if(dt.status === 'success') {
+					properLog("Connection successful!");
 					if(!refreshingSession) refreshSession();
 				} else if(dt.status === 'error') {
-					console.log("Connection failed! Retrying in 30 seconds..")
+					properLog("Connection failed! Retrying in 30 seconds...");
+					console.log("Connection failed! Retrying in 30 seconds..");
 					socket.disconnect();
 					setTimeout(() => {
 						console.log("Retrying...")
@@ -130,7 +135,8 @@ let startSocket = () => {
 	})
 	
 	socket.on("disconnect", (reason) =>{
-		console.log("Disconnected: " + reason)
+		console.log("Disconnected: " + reason);
+		properLog("Disconnected: " + reason);
 	})
 	
 	socket.on("connect_error", (err) =>{
@@ -150,9 +156,9 @@ let startSocket = () => {
 				mode: 0o666
 			})
 		} else if(event.event === 'gotChatMessage'){
-			properLog("")
 			const message = event.arguments[0].message;
 			const username = event.arguments[0].username;
+			properLog(`Received message from ${username}: ${message}`)
 			for(let linkingUser of linkingQueue) {
 				if(linkingUser.sName === username) {
 					if(message === linkingUser.dId){
@@ -180,23 +186,11 @@ let startSocket = () => {
 		} else if(event.event === 'logEnemyAttack') {
 			const eventData = event.arguments[0]
 			if(eventData.progression !== 100) return;
-			if(hackedQueue.indexOf(eventData.attacker) !== -1) return;
 			if(!isParticipating("speedyHacker", eventData.attacker)) return;
-			if(eventData.port !== 1) {
-				socket.emit('playerInput', {
-					"event": "sendChatMessage",
-					"id": eventData.id,
-					"username": eventData.attacker,
-					"message": "Nice try, but you have to hack me on port 22 for it to count."
-				});
-				console.log("not right port")
-				return;
-			} // At this point, hack counts for challenge
-			hackedQueue.push(eventData.attacker);
-			console.log(hackedQueue)
+			playerPortDict[eventData.attacker] = eventData.port;
+			console.log(JSON.stringify(playerPortDict, null, 2));
 		} else if(event.event === 'gotHacked') {
 			const eventData = event.arguments[1]
-			if(!hackedQueue.includes(eventData.attacker)) return;
 			for(let word of eventData.wps_info) {
 				if(word.success !== true) {
 					socket.emit('playerInput', {
@@ -210,18 +204,19 @@ let startSocket = () => {
 			}
 			const wordsAmt = Array(eventData.wps_info)[0].length;
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
-			hackedQueue.splice(hackedQueue.indexOf(eventData.attacker), 1)
+			const hackedPort = playerPortDict[eventData.attacker];
+			if(hackedPort === 2) return;
 			socket.emit('playerInput', {
 				"event": "sendChatMessage",
 				"id": eventData.id,
 				"username": eventData.attacker,
 				"message": `You hacked me in ${eventData.total_hack_duration} seconds! That's ${properRound(WP2M)} words per 2 minutes.`
 			});
-			const oldPb = getPlayerPB('speedyHacker', eventData.attacker);
+			const oldPb = getPlayerPB(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker);
 			if(oldPb < WP2M){
-				updatePlayerPB('speedyHacker', eventData.attacker, properRound(WP2M));
+				updatePlayerPB(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker, properRound(WP2M));
 				let posText;
-				let pos = getPlayerPosition('speedyHacker', eventData.attacker);
+				let pos = getPlayerPosition(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker);
 				if (pos == 3 || (pos > 20 && pos % 10 == 3)) posText = pos+"rd";
 				else if (pos == 2 || (pos > 20 && pos % 10 == 2)) posText = pos+"nd";
 				else if (pos == 1 || (pos > 20 && pos % 10 == 1)) posText = pos+"st";
@@ -230,14 +225,15 @@ let startSocket = () => {
 					"event": "sendChatMessage",
 					"id": eventData.id,
 					"username": eventData.attacker,
-					"message": `New PB! ${properRound(oldPb)} -> ${properRound(WP2M)}. You are now ${posText}!`
+					"message": `New PB in ${hackedPort === 1 ? 'Speedy Hacker Ethereal' : 'Speedy Hacker Legendary'}! ${properRound(oldPb)} -> ${properRound(WP2M)}. You are now ${posText}!`
 				});
+				properLog(`New PB by ${eventData.attacker}! (${WP2M})`)
 			} else {
 				socket.emit('playerInput', {
 					"event": "sendChatMessage",
 					"id": eventData.id,
 					"username": eventData.attacker,
-					"message": `Yikes! That didn't beat your PB of ${properRound(oldPb)}.`
+					"message": `Yikes! That didn't beat your PB of ${properRound(oldPb)} in ${hackedPort === 1 ? 'Speedy Hacker Ethereal' : 'Speedy Hacker Legendary'}.`
 				});
 			}
 		}
