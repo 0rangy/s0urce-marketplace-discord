@@ -201,6 +201,10 @@ let startSocket = () => {
 			console.log(JSON.stringify(playerPortDict, null, 2));
 		} else if(event.event === 'gotHacked') {
 			const eventData = event.arguments[1]
+			const wordsAmt = Array(eventData.wps_info)[0].length;
+			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
+			const hackedPort = playerPortDict[eventData.attacker];
+			properLog(`Got hacked on port ${hackedPort+21} by ${eventData.attacker} in ${WP2M} WP2M.`)
 			for(let word of eventData.wps_info) {
 				if(word.success !== true) {
 					socket.emit('playerInput', {
@@ -212,10 +216,6 @@ let startSocket = () => {
 					return;
 				}
 			}
-			const wordsAmt = Array(eventData.wps_info)[0].length;
-			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
-			const hackedPort = playerPortDict[eventData.attacker];
-			properLog(`Got hacked on port ${hackedPort} by ${eventData.attacker} in ${WP2M} WP2M.`)
 			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
 			if(hackedPort === 2) return;
 			socket.emit('playerInput', {
