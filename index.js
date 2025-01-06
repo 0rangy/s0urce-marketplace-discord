@@ -155,6 +155,16 @@ let startSocket = () => {
 				encoding: "utf8",
 				mode: 0o666
 			})
+		}else if(event.event === 'gotHackMessage'){
+			const eventData = event.arguments[0]
+			properLog(`Got hack message '${eventData.message}' from ${eventData.username}`)
+		} else if(event.event === 'gotGlobalRoomMessage') {
+			const message = event.arguments[0].content;
+			const isSystem = event.arguments[0].system;
+			if(!isSystem){
+				const sender = event.arguments[0].sender;
+				properLog(`${sender.username}: ${message}`)
+			}
 		} else if(event.event === 'gotChatMessage'){
 			const message = event.arguments[0].message;
 			const username = event.arguments[0].username;
@@ -205,6 +215,8 @@ let startSocket = () => {
 			const wordsAmt = Array(eventData.wps_info)[0].length;
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
 			const hackedPort = playerPortDict[eventData.attacker];
+			properLog(`Got hacked on port ${hackedPort + 21} by ${eventData.attacker} in ${WP2M} WP2M.`)
+			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
 			if(hackedPort === 2) return;
 			socket.emit('playerInput', {
 				"event": "sendChatMessage",
@@ -236,6 +248,8 @@ let startSocket = () => {
 					"message": `Yikes! That didn't beat your PB of ${properRound(oldPb)} in ${hackedPort === 1 ? 'Speedy Hacker Ethereal' : 'Speedy Hacker Legendary'}.`
 				});
 			}
+		} else if(event.event === 'rareItemAnnouncement') {
+			properLog("Rare item not done :(")
 		}
 	})
 };
