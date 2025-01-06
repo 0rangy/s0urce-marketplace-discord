@@ -49,7 +49,7 @@ let properLog = (msg) => {
 	let d = new Date();
 
 	let datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
-		d.getHours() + ":" + d.getMinutes() > 9 ? d.getMinutes() : `0${d.getMinutes()}`;
+		d.getHours() + ":" + (d.getMinutes() > 9 ? d.getMinutes() : `0${d.getMinutes()}`);
 	fs.appendFile('logs.txt', `[${datestring}]: ${msg}\n`, (err) => {
 		 if(err) console.log(err);
 	})
@@ -148,7 +148,7 @@ let startSocket = () => {
 	})
 	
 	
-	let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "updateCountryWarsGraph", "initPlayer"] // NO LOGGING POINTLESS SHIT
+	let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "updateCountryWarsGraph", "initPlayer", "gotGlobalRoomMessage"] // NO LOGGING POINTLESS SHIT
 	socket.on("event", (event, data) => {
 		if(!eventLogBlacklist.includes(event.event)) console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
 		if(event.event === "updateCountryWarsGraph") {
@@ -199,9 +199,9 @@ let startSocket = () => {
 			}
 		} else if(event.event === 'logEnemyAttack') {
 			const eventData = event.arguments[0]
+			playerPortDict[eventData.attacker] = eventData.port;
 			if(eventData.progression !== 100) return;
 			if(!isParticipating("speedyHacker", eventData.attacker)) return;
-			playerPortDict[eventData.attacker] = eventData.port;
 			console.log(JSON.stringify(playerPortDict, null, 2));
 		} else if(event.event === 'gotHacked') {
 			console.log(JSON.stringify(playerPortDict, null, 2));
