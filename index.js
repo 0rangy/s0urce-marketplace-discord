@@ -49,7 +49,7 @@ let properLog = (msg) => {
 	let d = new Date();
 
 	let datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
-		d.getHours() + ":" + d.getMinutes();
+		d.getHours() + ":" + d.getMinutes() > 9 ? d.getMinutes() : `0${d.getMinutes()}`;
 	fs.appendFile('logs.txt', `[${datestring}]: ${msg}\n`, (err) => {
 		 if(err) console.log(err);
 	})
@@ -215,7 +215,7 @@ let startSocket = () => {
 			const wordsAmt = Array(eventData.wps_info)[0].length;
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
 			const hackedPort = playerPortDict[eventData.attacker];
-			properLog(`Got hacked on port ${hackedPort + 21} by ${eventData.attacker} in ${WP2M} WP2M.`)
+			properLog(`Got hacked on port ${hackedPort} by ${eventData.attacker} in ${WP2M} WP2M.`)
 			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
 			if(hackedPort === 2) return;
 			socket.emit('playerInput', {
