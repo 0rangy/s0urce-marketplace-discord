@@ -120,6 +120,10 @@ let startSocket = () => {
 				if(dt.status === 'success') {
 					properLog("Connection successful!");
 					if(!refreshingSession) refreshSession();
+					socket.emit("playerInput", {
+						"event": "joinGlobalChat",
+						"join": true
+					})
 				} else if(dt.status === 'error') {
 					properLog("Connection failed! Retrying in 30 seconds...");
 					console.log("Connection failed! Retrying in 30 seconds..");
@@ -200,6 +204,7 @@ let startSocket = () => {
 			playerPortDict[eventData.attacker] = eventData.port;
 			console.log(JSON.stringify(playerPortDict, null, 2));
 		} else if(event.event === 'gotHacked') {
+			console.log(JSON.stringify(playerPortDict, null, 2));
 			const eventData = event.arguments[1]
 			const wordsAmt = Array(eventData.wps_info)[0].length;
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
