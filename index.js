@@ -118,14 +118,14 @@ let startSocket = () => {
 				console.log(dt)
 				
 				if(dt.status === 'success') {
-					properLog("Connection successful!");
+					properLog("[SOCKET LOG] Connection successful!");
 					if(!refreshingSession) refreshSession();
 					socket.emit("playerInput", {
 						"event": "joinGlobalChat",
 						"join": true
 					})
 				} else if(dt.status === 'error') {
-					properLog("Connection failed! Retrying in 30 seconds...");
+					properLog("[SOCKET LOG] Connection failed! Retrying in 30 seconds...");
 					console.log("Connection failed! Retrying in 30 seconds..");
 					socket.disconnect();
 					setTimeout(() => {
@@ -140,7 +140,7 @@ let startSocket = () => {
 	
 	socket.on("disconnect", (reason) =>{
 		console.log("Disconnected: " + reason);
-		properLog("Disconnected: " + reason);
+		properLog("[SOCKET LOG] Disconnected: " + reason);
 	})
 	
 	socket.on("connect_error", (err) =>{
@@ -161,18 +161,18 @@ let startSocket = () => {
 			})
 		}else if(event.event === 'gotHackMessage'){
 			const eventData = event.arguments[0]
-			properLog(`Got hack message '${eventData.message}' from ${eventData.username}`)
+			properLog(`[HACK LOG] Got hack message '${eventData.message}' from ${eventData.username}`)
 		} else if(event.event === 'gotGlobalRoomMessage') {
 			const message = event.arguments[0].content;
 			const isSystem = event.arguments[0].system;
 			if(!isSystem){
 				const sender = event.arguments[0].sender;
-				properLog(`${sender.username}: ${message}`)
+				properLog(`[CHAT LOG] ${sender.username} (${sender.authenticated ? 'Authenticated' : 'Unauthenticated'}): ${message}`)
 			}
 		} else if(event.event === 'gotChatMessage'){
 			const message = event.arguments[0].message;
 			const username = event.arguments[0].username;
-			properLog(`Received message from ${username}: ${message}`)
+			properLog(`[MESSAGE LOG] Received message from ${username}: ${message}`)
 			for(let linkingUser of linkingQueue) {
 				if(linkingUser.sName === username) {
 					if(message === linkingUser.dId){
@@ -209,7 +209,7 @@ let startSocket = () => {
 			const wordsAmt = Array(eventData.wps_info)[0].length;
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
 			const hackedPort = playerPortDict[eventData.attacker];
-			properLog(`Got hacked on port ${hackedPort+21} by ${eventData.attacker} in ${WP2M} WP2M.`)
+			properLog(`[HACK LOG] Got hacked on port ${hackedPort+21} by ${eventData.attacker} in ${WP2M} WP2M.`)
 			for(let word of eventData.wps_info) {
 				if(word.success !== true) {
 					socket.emit('playerInput', {
@@ -244,7 +244,7 @@ let startSocket = () => {
 					"username": eventData.attacker,
 					"message": `New PB in ${hackedPort === 1 ? 'Speedy Hacker Ethereal' : 'Speedy Hacker Legendary'}! ${properRound(oldPb)} -> ${properRound(WP2M)}. You are now ${posText}!`
 				});
-				properLog(`New PB by ${eventData.attacker}! (${WP2M})`)
+				properLog(`[CHALLENGES] New PB by ${eventData.attacker}! (${WP2M})`)
 			} else {
 				socket.emit('playerInput', {
 					"event": "sendChatMessage",
@@ -254,7 +254,9 @@ let startSocket = () => {
 				});
 			}
 		} else if(event.event === 'rareItemAnnouncement') {
-			properLog("Rare item not done :(")
+			const eventData = event.arguments[0]
+			const eventItem = eventData.item;
+			properLog(`[RARE DROP] User ${eventData.username} dropped ${eventItem.rarity} #${eventItem.mint} ${eventItem.type === 'avatar' ? eventItem.name : String(eventItem.type).toUpperCase()} ${eventItem.type === 'avatar' ? '' : `(${eventItem.name})`}`)
 		}
 	})
 };
