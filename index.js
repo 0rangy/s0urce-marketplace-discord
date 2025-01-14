@@ -5,6 +5,8 @@ const hostname = '0.0.0.0';
 const port = 80;
 
 const Emojis = {
+	ARROW_LEFT: "<:arrowleft:1328439777917276170>",
+	ARROW_RIGHT: "<:arrowright:1328439721185116170>",
 	EMPTY: "<:empty:1305677963768893500>",
 	BTC: "<:btc:1305563860702462002>",
 	COUNTRYWARS: "<:countrywars:1305567532169695293>",
@@ -161,13 +163,13 @@ let startSocket = () => {
 			})
 		}else if(event.event === 'gotHackMessage'){
 			const eventData = event.arguments[0]
-			properLog(`[HACK LOG] Got hack message '${eventData.message}' from ${eventData.username}`)
+			properLog(`[HACKING LOG] Got hack message '${eventData.message}' from ${eventData.username}`)
 		} else if(event.event === 'gotGlobalRoomMessage') {
 			const message = event.arguments[0].content;
 			const isSystem = event.arguments[0].system;
 			if(!isSystem){
 				const sender = event.arguments[0].sender;
-				properLog(`[CHAT LOG] ${sender.username} (${sender.authenticated ? 'Authenticated' : 'Unauthenticated'}): ${message}`)
+				// properLog(`[CHAT LOG] ${sender.username} (${sender.authenticated ? 'Authenticated' : 'Unauthenticated'}): ${message}`)
 			}
 		} else if(event.event === 'gotChatMessage'){
 			const message = event.arguments[0].message;
@@ -209,7 +211,7 @@ let startSocket = () => {
 			const wordsAmt = Array(eventData.wps_info)[0].length;
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
 			const hackedPort = playerPortDict[eventData.attacker];
-			properLog(`[HACK LOG] Got hacked on port ${hackedPort+21} by ${eventData.attacker} in ${WP2M} WP2M.`)
+			properLog(`[HACKING LOG] Got hacked on port ${hackedPort+21} by ${eventData.attacker} in ${WP2M} WP2M.`)
 			for(let word of eventData.wps_info) {
 				if(word.success !== true) {
 					socket.emit('playerInput', {
