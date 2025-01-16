@@ -223,13 +223,13 @@ let startSocket = () => {
 					return;
 				}
 			}
-			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
 			if(hackedPort === 2) return;
+			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
 			socket.emit('playerInput', {
 				"event": "sendChatMessage",
 				"id": eventData.id,
 				"username": eventData.attacker,
-				"message": `You hacked me in ${eventData.total_hack_duration} seconds! That's ${properRound(WP2M)} words per 2 minutes.`
+				"message": `You hacked me in ${wordsAmt} words and ${eventData.total_hack_duration} seconds! That's ${properRound(WP2M)} words per 2 minutes.`
 			});
 			const oldPb = getPlayerPB(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker);
 			if(oldPb < WP2M){
