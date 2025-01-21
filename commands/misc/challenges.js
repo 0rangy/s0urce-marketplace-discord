@@ -96,6 +96,7 @@ function camelCaseToWords(input) {
     return formattedWords;
 }
 
+import { getPlayerLeaderboardString, getPlayerData } from "../player/leaderboard.js"
 let showLeaderboardEmbed = async(cId, interaction) => {
     const data = fs.readFileSync('./challenges.json',
         { encoding: 'utf8', flag: 'r' });
@@ -124,8 +125,11 @@ let showLeaderboardEmbed = async(cId, interaction) => {
     }
     
     const lStr = []
+    let position = 0;
     for(let player of leaderboard) {
-        lStr.push(`\`${player.playerName}: ${" ".repeat(maxLength - String(player.playerName).length)}${player.player[challengeJson.lbStat]}${challengeJson.lbUnit}\``);
+        position++;
+        lStr.push(`\`${position> 9 ? "0" : ""}${position}\`${getPlayerLeaderboardString(await getPlayerData(player.playerName), maxLength)} ${player.player[challengeJson.lbStat]}${challengeJson.lbUnit}`);
+        if(position > 10) break;
     }
     const lStrReal = lStr.join('\n');
     

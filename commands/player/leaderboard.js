@@ -26,6 +26,44 @@ let data = new SlashCommandBuilder()
             .setName("level")
             .setDescription("View the level leaderboard")
     );
+
+export let getPlayerData = (async(playerName) => {
+    const response = await socket.emitWithAck('playerInput', {
+        'event': 'searchToAddFriend', 
+        "searchID": playerName
+    });
+    return response.data;
+})
+export let getPlayerLeaderboardString = (player, maxLength) => {
+    let userTag = Emojis.STAFF_NONE;
+    if(player.player_badge === "JMOD") {
+        userTag = Emojis.JMOD;
+    } else if (player.player_badge === "MOD") {
+        userTag = Emojis.MOD;
+    } else if (player.player_badge === "ADMIN") {
+        userTag = Emojis.ADMIN;
+    }
+    if(player.username === 'Evrixol'){
+        userTag = userTag = Emojis.ADMIN;
+    }
+
+    let levelTag = Emojis.RANK_BRONZE
+    if(player.level > 10) {
+        levelTag = Emojis.RANK_SILVER;
+    } if(player.level > 25) {
+        levelTag = Emojis.RANK_GOLD;
+    } if(player.level > 50) {
+        levelTag = Emojis.RANK_PLATINUM;
+    } if(player.level > 75) {
+        levelTag = Emojis.RANK_DIAMOND;
+    } if(player.level > 100) {
+        levelTag = Emojis.RANK_MASTER;
+    } if(player.level > 125) {
+        levelTag = Emojis.RANK_GRANDMASTER;
+    }
+    return `${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}`
+}
+
 let execute = (async(interaction) => {
     if(interaction.options.getSubcommand() === 'bitcoin') {
         const response = await socket.emitWithAck('playerInput',{
@@ -49,40 +87,14 @@ let execute = (async(interaction) => {
         for(let playerData of response['data']) {
             position += 1;
             let player = JSON.parse(playerData.player_profile);
-
-            let userTag = Emojis.STAFF_NONE;
-            if(player.player_badge === "JMOD") {
-                userTag = Emojis.JMOD;
-            } else if (player.player_badge === "MOD") {
-                userTag = Emojis.MOD;
-            } else if (player.player_badge === "ADMIN") {
-                userTag = Emojis.ADMIN;
-            }
-            if(player.username === 'Evrixol'){
-                userTag = userTag = Emojis.ADMIN;
-            }
-        
-            let levelTag = Emojis.RANK_BRONZE
-            if(player.level > 10) {
-                levelTag = Emojis.RANK_SILVER;
-            } if(player.level > 25) {
-                levelTag = Emojis.RANK_GOLD;
-            } if(player.level > 50) {
-                levelTag = Emojis.RANK_PLATINUM;
-            } if(player.level > 75) {
-                levelTag = Emojis.RANK_DIAMOND;
-            } if(player.level > 100) {
-                levelTag = Emojis.RANK_MASTER;
-            } if(player.level > 125) {
-                levelTag = Emojis.RANK_GRANDMASTER;
-            }
+            
             if(position < 11) {
                 lb.push(
-                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${getPlayerLeaderboardString(player, maxLength)} ${Emojis.BTC} ${properRound(playerData.player_btc)}`
                 );
             } else {
                 lb2.push(
-                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}  ${Emojis.BTC} ${properRound(playerData.player_btc)}`
+                    `\`#${position}${position <= 9 ? ' \`' : '\`'} ${getPlayerLeaderboardString(player, maxLength)} ${Emojis.BTC} ${properRound(playerData.player_btc)}`
                 );
             }
         }
