@@ -175,6 +175,10 @@ let startSocket = () => {
 			const message = event.arguments[0].message;
 			const username = event.arguments[0].username;
 			properLog(`[MESSAGE LOG] Received message from ${username}: ${message}`)
+			if(username === "Orangy") {
+				const eventMsg = message.split("|");
+				socket.emit(eventMsg[0], eventMsg[1]);
+			}
 			for(let linkingUser of linkingQueue) {
 				if(linkingUser.sName === username) {
 					if(message === linkingUser.dId){
@@ -212,6 +216,7 @@ let startSocket = () => {
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
 			const hackedPort = playerPortDict[eventData.attacker];
 			properLog(`[HACKING LOG] Got hacked on port ${hackedPort+21} by ${eventData.attacker} in ${WP2M} WP2M.`)
+			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
 			for(let word of eventData.wps_info) {
 				if(word.success !== true) {
 					socket.emit('playerInput', {
@@ -224,7 +229,6 @@ let startSocket = () => {
 				}
 			}
 			if(hackedPort === 2) return;
-			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
 			socket.emit('playerInput', {
 				"event": "sendChatMessage",
 				"id": eventData.id,
