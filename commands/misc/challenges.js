@@ -128,7 +128,7 @@ let showLeaderboardEmbed = async(cId, interaction) => {
     let position = 0;
     for(let player of leaderboard) {
         position++;
-        lStr.push(`\`${position> 9 ? "0" : ""}${position}\`${getPlayerLeaderboardString(await getPlayerData(player.playerName), maxLength)} ${player.player[challengeJson.lbStat]}${challengeJson.lbUnit}`);
+        lStr.push(`\`${position < 9 ? "0" : ""}${position}\`${getPlayerLeaderboardString(await getPlayerData(player.playerName), maxLength)} ${player.player[challengeJson.lbStat]}${challengeJson.lbUnit}`);
         if(position > 10) break;
     }
     const lStrReal = lStr.join('\n');
