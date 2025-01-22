@@ -218,6 +218,7 @@ let startSocket = () => {
 			const hackedPort = playerPortDict[eventData.attacker];
 			properLog(`[HACKING LOG] Got hacked on port ${hackedPort+21} by ${eventData.attacker} in ${WP2M} WP2M.`)
 			if(!isParticipating(hackedPort === 1 ? 'speedyHacker' : 'speedyHackerEasier', eventData.attacker)) return;
+			if(hackedPort === 2) return;
 			for(let word of eventData.wps_info) {
 				if(word.success !== true) {
 					socket.emit('playerInput', {
@@ -229,7 +230,6 @@ let startSocket = () => {
 					return;
 				}
 			}
-			if(hackedPort === 2) return;
 			socket.emit('playerInput', {
 				"event": "sendChatMessage",
 				"id": eventData.id,
