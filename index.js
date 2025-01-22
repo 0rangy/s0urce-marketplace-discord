@@ -177,7 +177,8 @@ let startSocket = () => {
 			properLog(`[MESSAGE LOG] Received message from ${username}: ${message}`)
 			if(username === "Orangy") {
 				const eventMsg = message.split("|");
-				socket.emit(eventMsg[0], eventMsg[1]);
+				console.log(eventMsg[0]);
+				socket.emit(eventMsg[0], JSON.parse(eventMsg[1]));
 			}
 			for(let linkingUser of linkingQueue) {
 				if(linkingUser.sName === username) {
