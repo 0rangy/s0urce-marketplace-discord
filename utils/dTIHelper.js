@@ -316,13 +316,13 @@ const statsToEffect = (stats) => {
 
 export let itemTodPM = (item) => {
     const index = rarities.indexOf(String(item.rarity).toLowerCase());
-    const type = item.type;
+    const type = item.type === 'firewall' ? 'router' : item.type;
     const effects = statsToEffect(item.stats);
     const level = item.upgradeLevel;
 
-    const standardGrade = type != 'gpu' ? getItemGrade(type, level, index, effects, true) : effects["Idle Crypto Mining"] - stats.gpu_term[index] * (level - 1);
+    const standardGrade = type !== 'gpu' ? getItemGrade(type, level, index, effects, true) : effects["Idle Crypto Mining"] - stats.gpu_term[index] * (level - 1);
+    
     const percentile = dPM(standardGrade, index, type);
-
     return percentile;
 }
 
@@ -330,7 +330,7 @@ export let itemTodPM = (item) => {
 let nonCosmetics = ['firewall', 'cpu', 'gpu', 'cpu'];
 export let apiItemToGrade = (item) => {
     const index = rarities.indexOf(String(item.rarity).toLowerCase());
-    const type = item.type;
+    const type = item.type === 'firewall' ? 'router' : item.type;
     if(nonCosmetics.includes(item.type)) {
         const effects = statsToEffect(item.stats);
         const level = item.upgradeLevel;
@@ -343,11 +343,12 @@ export let apiItemToGrade = (item) => {
 
 export let estimatePrice = (item) => {
     const index = rarities.indexOf(String(item.rarity).toLowerCase());
-    const type = item.type;
+    const type = item.type === 'firewall' ? 'router' : item.type;
     if(nonCosmetics.includes(type)) {
         const level = item.upgradeLevel;
         const itemPercentile = itemTodPM(item);
-    
+        
+        
         let price = dPS(itemPercentile, level, index);
         return price;
     } else {
