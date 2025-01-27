@@ -294,10 +294,10 @@ const getItemGrade = (type, level, index, effects, dPM_flag=false) => {
         case "router":
             const hp = !dPM_flag ? effects["Firewall Health"] : effects["Firewall Health"] - stats.fireterm[index]*(level-1);
             if (dPM_flag) level = 1
-            const rd = effects["Firewall Damage Reduction"] || 0;
-            const rg = effects["Firewall Regeneration"] || 0;
-            const ad = effects["Firewall Advanced Encryption"] || 0;
-            const ms = effects["Firewall Master Encryption"] || 0;
+            const rd = effects["Firewall Damage Reduction"].toFixed(2) || 0;
+            const rg = effects["Firewall Regeneration"].toFixed(2) || 0;
+            const ad = effects["Firewall Advanced Encryption"].toFixed(2) || 0;
+            const ms = effects["Firewall Master Encryption"].toFixed(2) || 0;
             const [hpP, rdP, rgP, encryption] = firewallEncryption(hp,rd,rg,ad,ms);
             return dFI(hpP, rdP, rgP, encryption, level, index).toFixed(4);
         default:
@@ -322,12 +322,13 @@ export let itemTodPM = (item) => {
 
     const standardGrade = type !== 'gpu' ? getItemGrade(type, level, index, effects, true) : effects["Idle Crypto Mining"] - stats.gpu_term[index] * (level - 1);
     
+    console.log(standardGrade);
     const percentile = dPM(standardGrade, index, type);
     return percentile;
 }
 
 
-let nonCosmetics = ['firewall', 'cpu', 'gpu', 'cpu'];
+let nonCosmetics = ['router', 'cpu', 'gpu', 'cpu'];
 export let apiItemToGrade = (item) => {
     const index = rarities.indexOf(String(item.rarity).toLowerCase());
     const type = item.type === 'firewall' ? 'router' : item.type;
@@ -348,7 +349,7 @@ export let estimatePrice = (item) => {
         const level = item.upgradeLevel;
         const itemPercentile = itemTodPM(item);
         
-        
+        console.log(itemPercentile);
         let price = dPS(itemPercentile, level, index);
         return price;
     } else {
