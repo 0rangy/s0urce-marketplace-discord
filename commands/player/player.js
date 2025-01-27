@@ -138,10 +138,10 @@ const getItemDisplayEmbed = (item) => {
                 inline: true
             });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         embed.addFields(
             {
-                name: "⠀Rarity",
+                name: "-Rarity-",
                 value: `${getRarityEmojiString(String(item.rarity).toLowerCase())}`,
                 inline: true
             });
@@ -154,7 +154,7 @@ const getItemDisplayEmbed = (item) => {
             inline: true
         })
     } catch(err) {
-        // console.log(err)
+        console.log(err)
         embed.addFields(
             {
                 name: "dTI",
