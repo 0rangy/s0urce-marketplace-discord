@@ -34,7 +34,7 @@ export let getPlayerData = (async(playerName) => {
     });
     return response.data;
 })
-export let getPlayerLeaderboardString = (player, maxLength) => {
+export let getPlayerLeaderboardString = (player, maxLength, playerid) => {
     let userTag = Emojis.STAFF_NONE;
     if(player.player_badge === "JMOD") {
         userTag = Emojis.JMOD;
@@ -43,7 +43,7 @@ export let getPlayerLeaderboardString = (player, maxLength) => {
     } else if (player.player_badge === "ADMIN") {
         userTag = Emojis.ADMIN;
     }
-    if(player.username === 'Evrixol'){
+    if((player.username === 'Evrixol') && (playerid === 397959622767673344)){
         userTag = userTag = Emojis.ADMIN;
     }
 

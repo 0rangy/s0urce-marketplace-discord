@@ -13,7 +13,7 @@ const ErrorEmbed = (errorStr) => {
     return embed;
 }
 
-const playerEmbed = (player) => {
+const playerEmbed = (player, playerid) => {
     const embed = new EmbedBuilder();
     embed.setTitle(`${player.username}'s Profile`);
     let userTag = "";
@@ -25,7 +25,7 @@ const playerEmbed = (player) => {
     } else if (player.player_badge === "ADMIN") {
         userTag = Emojis.ADMIN;
     }
-    if(player.username === 'Evrixol'){
+    if((player.username === 'Evrixol') && (playerid === 397959622767673344)){
         userTag = userTag = Emojis.ADMIN;
     }
 
@@ -470,7 +470,7 @@ let execute = (async(interaction) => {
     
         await interaction.deferReply();    
     
-        const embed = playerEmbed(response.data)
+        const embed = playerEmbed(response.data, interaction.user.id)
 
         const viewAvatar = new ButtonBuilder()
           .setCustomId('viewavatar')
