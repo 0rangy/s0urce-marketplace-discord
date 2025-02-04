@@ -120,7 +120,7 @@ const getItemDisplayEmbed = (item) => {
     embed.addFields(
     {
         name: "Name",
-        value: `${item.name} (#${item.mint})`,
+        value: `${((item.name === "Spooky Cat") && (item.mint === 17) ? "Spooky Car" : item.name)} (#${item.mint})`,
         inline: true
     });
     try {
