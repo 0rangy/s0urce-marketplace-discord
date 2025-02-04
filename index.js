@@ -288,10 +288,10 @@ client.commands = new Collection();
 client.commands.set(cwCommand.data.name, cwCommand);
 client.commands.set(auctionCommand.data.name, auctionCommand);
 client.commands.set(playerCommand.data.name, playerCommand);
-// client.commands.set(changelogCommand.data.name, changelogCommand); // Broken :/
+client.commands.set(changelogCommand.data.name, changelogCommand); // Broken :/
 client.commands.set(challengeCommand.data.name, challengeCommand);
 if(String(token).includes('Ub37IY')) {
-	client.commands.set(reloadCommand.data.name, reloadCommand); // Only include reload commadn if code is running on DebugBot
+	client.commands.set(reloadCommand.data.name, reloadCommand); // Only include reload command if code is running on DebugBot
 }
 client.commands.set(lbCommand.data.name, lbCommand);
 client.commands.set(linkCommand.data.name, linkCommand);

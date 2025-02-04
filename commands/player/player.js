@@ -25,6 +25,7 @@ const playerEmbed = (player, playerid) => {
     } else if (player.player_badge === "ADMIN") {
         userTag = Emojis.ADMIN;
     }
+    console.log(playerid)
     if((player.username === 'Evrixol') && (playerid === 397959622767673344)){
         userTag = userTag = Emojis.ADMIN;
     }
