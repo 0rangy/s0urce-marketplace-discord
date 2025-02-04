@@ -43,10 +43,10 @@ export let getPlayerLeaderboardString = (player, maxLength, playerid) => {
     } else if (player.player_badge === "ADMIN") {
         userTag = Emojis.ADMIN;
     }
-    if((player.username === 'Evrixol') && (playerid === 397959622767673344)){
+    let easterEggIds = ['397959622767673344', '669537804937592832']
+    if((player.username === 'Evrixol') && easterEggIds.includes(playerid)){
         userTag = userTag = Emojis.ADMIN;
     }
-
     let levelTag = Emojis.RANK_BRONZE
     if(player.level > 10) {
         levelTag = Emojis.RANK_SILVER;

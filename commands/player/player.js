@@ -25,7 +25,7 @@ const playerEmbed = (player, playerid) => {
     } else if (player.player_badge === "ADMIN") {
         userTag = Emojis.ADMIN;
     }
-    let easterEggIds = [397959622767673344, 669537804937592832]
+    let easterEggIds = ['397959622767673344', '669537804937592832']
     if((player.username === 'Evrixol') && easterEggIds.includes(playerid)){
         userTag = userTag = Emojis.ADMIN;
     }
