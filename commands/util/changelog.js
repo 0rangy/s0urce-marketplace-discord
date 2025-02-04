@@ -23,7 +23,7 @@ let commitEmbedBuilder = (ghCache, commitId) => {
         .setFooter({
             text: "Commit Time",
         })
-        .setTimestamp(moment(currentCommit['author']['time']).unix());
+        .setTimestamp(moment(currentCommit['author']['time'] * 1000).unix());
     return embed;
 
 }
