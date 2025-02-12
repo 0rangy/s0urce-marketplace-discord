@@ -47,20 +47,22 @@ export let getPlayerLeaderboardString = (player, maxLength, playerid) => {
     if((player.username === 'Evrixol') && easterEggIds.includes(playerid)){
         userTag = userTag = Emojis.ADMIN;
     }
+    
     let levelTag = Emojis.RANK_BRONZE
-    if(player.level >= 10) {
-        levelTag = Emojis.RANK_SILVER;
-    } if(player.level >= 25) {
-        levelTag = Emojis.RANK_GOLD;
-    } if(player.level >= 50) {
-        levelTag = Emojis.RANK_PLATINUM;
-    } if(player.level >= 75) {
-        levelTag = Emojis.RANK_DIAMOND;
-    } if(player.level >= 100) {
-        levelTag = Emojis.RANK_MASTER;
-    } if(player.level >= 125) {
+    if(player.level >= 125) {
         levelTag = Emojis.RANK_GRANDMASTER;
+    } else if(player.level >= 100) {
+        levelTag = Emojis.RANK_MASTER;
+    } else if(player.level >= 75) {
+        levelTag = Emojis.RANK_DIAMOND;
+    } else if(player.level >= 50) {
+        levelTag = Emojis.RANK_PLATINUM;
+    } else if(player.level >= 25) {
+        levelTag = Emojis.RANK_GOLD;
+    } else if(player.level >= 10) {
+        levelTag = Emojis.RANK_SILVER;
     }
+    
     return `${userTag}:flag_${String(player.countryCode).toLowerCase()}: ${player.premium ? Emojis.PREMIUM : Emojis.EMPTY} ${levelTag} \`${player.level}${" ".repeat(4 - String(player.level).length)} ${player.username}${" ".repeat(maxLength - String(player.username).length)}\` ${player.online ? Emojis.ONLINE : Emojis.EMPTY}`
 }
 
