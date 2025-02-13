@@ -19,7 +19,7 @@ let showMainEmbed = async (interaction) => {
             },
             {
                 name: "BTC Lost From Hacks",
-                value: `${Emojis.BTC} ${properRound(moneyLost) * -1}`,
+                value: `${Emojis.BTC} ${properRound(moneyLost*-1)}`,
                 inline: true
             },
             {
