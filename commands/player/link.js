@@ -32,17 +32,6 @@ let checkIfLoggedIn = (id) => {
         return false;
     }
 }
-let dCheckIfLoggedIn = (sName) => {
-    const users = fs.readFileSync('./linkedUsers.json',
-        {encoding: 'utf8', flag: 'r'});
-    const userData = JSON.parse(users);
-    for(let key in userData) {
-        if(userData[key] === sName){ 
-            return key;
-        }
-    }
-    return false;
-}
 
 let showLinkEmbed = async(interaction) => {
     const embed = new EmbedBuilder()
@@ -147,4 +136,4 @@ let execute = (async(interaction) => {
     await showLinkEmbed(interaction)
 });
 
-export { category, data, execute, checkIfLoggedIn, dCheckIfLoggedIn }
+export { category, data, execute, checkIfLoggedIn }

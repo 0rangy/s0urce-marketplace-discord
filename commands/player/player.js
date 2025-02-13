@@ -51,7 +51,7 @@ const playerEmbed = (player, playerid) => {
         nameColor = String(player.nameColor.name).split("Color")[1].trim();
     } catch {
         nameColor = "Default";
-    };
+    }
     
     let bgColor = "Default";
     try {

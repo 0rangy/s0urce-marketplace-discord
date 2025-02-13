@@ -47,7 +47,7 @@ const server = http.createServer((req, res) => {
 import * as fs from 'fs';
 import { io } from 'socket.io-client';
 
-let properLog = (msg) => {
+export let properLog = (msg) => {
 	let d = new Date();
 
 	let datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
@@ -66,6 +66,25 @@ let socket;
 
 let refreshingSession = false;
 
+
+export let btcLastUpdated = 0;
+export let btcPerSecond = 0;
+export let btcCount = 0;
+export let ethFilaCount = 0;
+
+let traverseForStats = (obj1) => {
+	traverse(obj1, (obj) => {
+		if(obj && obj.btcLastUpdated) {
+			btcCount = obj.btc;
+			btcLastUpdated = obj.btcLastUpdated;
+			btcPerSecond = obj.btcPerSecond;
+		}
+		if(obj && obj.filament && obj.filament.common) {
+			ethFilaCount = obj.filament.ethereal + (obj.filament.mythic / 5) + (obj.filament.legendary / 15) + (obj.filament.epic / 75) + (obj.filament.rare / 225) + (obj.filament.uncommon / 675) + (obj.filament.common / 2025)
+		}
+	})
+}
+
 let refreshSession = async() => {
 	refreshingSession = true;
 	console.log("Refreshing session...")
@@ -75,17 +94,27 @@ let refreshSession = async() => {
 			cookie: s0urce_cookie
 		}
 	})
-	socket.emit('playerInput', {'event': 'claimFilamentLoot'})
 	socket.emit('playerInput', {'event': 'shredComponentLoot'})
+	let ack = await socket.emitWithAck('playerInput', {'event': 'claimFilamentLoot'})
+	traverseForStats(ack);
 	setTimeout(() => {
 		refreshSession();
 	}, 60 * 60 * 1000)
 }
 
-import { linkingQueue, dCheckIfLoggedIn } from "./commands/player/link.js"
+import { linkingQueue } from "./commands/player/link.js"
 import { isParticipating, getPlayerPB, updatePlayerPB, getLeaderboard, getPlayerPosition } from "./commands/misc/challenges.js"
 
-const properRound = (num) => {
+// OMG I LOVE TRAVERSE THIS SHOULD BE IN JS 
+export let traverse = (obj, fn) => {
+	let keys = Object.keys(obj);
+	for (let i = 0; i < keys.length; i++) {
+		let part = obj[keys[i]];
+		if (part && typeof part === "object") traverse(part, fn);
+		fn(part);
+	}
+}
+export const properRound = (num) => {
 	return Math.round((num + Number.EPSILON) * 1000) / 1000
 }
 
@@ -152,6 +181,7 @@ let startSocket = () => {
 	
 	let eventLogBlacklist = ["gotGlobalRoomLogs", "countryWarsProgress", "updateCountryWarsGraph", "initPlayer", "gotGlobalRoomMessage"] // NO LOGGING POINTLESS SHIT
 	socket.on("event", (event, data) => {
+		traverseForStats(event.arguments);
 		if(!eventLogBlacklist.includes(event.event)) console.log(`${event.event}: ${JSON.stringify(event.arguments, null, 2)}\n`)
 		if(event.event === "updateCountryWarsGraph") {
 			fs.writeFileSync('./cwDailyCache.json', JSON.stringify({
@@ -212,6 +242,9 @@ let startSocket = () => {
 			console.log(JSON.stringify(playerPortDict, null, 2));
 		} else if(event.event === 'gotHacked') {
 			console.log(JSON.stringify(playerPortDict, null, 2));
+			let funnyStats = JSON.parse(fs.readFileSync("./funnyStats.json").toString());
+			funnyStats['btcLost'] += event.arguments[0];
+			fs.writeFileSync("./funnyStats.json", JSON.stringify(funnyStats));
 			const eventData = event.arguments[1]
 			const wordsAmt = Array(eventData.wps_info)[0].length;
 			const WP2M = (wordsAmt/eventData.total_hack_duration) * 120;
@@ -282,6 +315,7 @@ import * as lbCommand from './commands/player/leaderboard.js';
 import * as changelogCommand from './commands/util/changelog.js';
 import * as challengeCommand from './commands/misc/challenges.js';
 import * as linkCommand from './commands/player/link.js';
+import * as aboutCommand from './commands/misc/about.js';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
@@ -295,6 +329,7 @@ if(String(token).includes('Ub37IY')) {
 }
 client.commands.set(lbCommand.data.name, lbCommand);
 client.commands.set(linkCommand.data.name, linkCommand);
+client.commands.set(aboutCommand.data.name, aboutCommand);
 
 
 // console.log(JSON.stringify(cwCommand.data, null, 2))
@@ -305,7 +340,7 @@ client.commands.set(linkCommand.data.name, linkCommand);
 // console.log(JSON.stringify(changelogCommand.data, null, 2))
 // console.log(JSON.stringify(challengeCommand.data, null, 2))
 // console.log(JSON.stringify(linkCommand.data, null, 2))
-
+// console.log(JSON.stringify(aboutCommand.data, null, 2))
 
 
 client.on('interactionCreate', async interaction => {

@@ -110,6 +110,12 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		"name": "link",
 		"description": "Link your game account to the bot",
 		"type": 1
+	},
+	{
+		"options": [],
+		"name": "about",
+		"description": "Shows information about the bot.",
+		"type": 1
 	}
 ];
 

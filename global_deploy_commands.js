@@ -123,6 +123,12 @@ const commands = [ // Have to fill this manually because of ESM  complications :
 		"type": 1,
 		"integration_types": [0, 1],
 		"contexts": [0, 1, 2]
+	},
+	{
+		"options": [],
+		"name": "about",
+		"description": "Shows information about the bot.",
+		"type": 1
 	}
 ];
 
