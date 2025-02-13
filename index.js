@@ -242,7 +242,7 @@ let startSocket = () => {
 			console.log(JSON.stringify(playerPortDict, null, 2));
 		} else if(event.event === 'gotHacked') {
 			console.log(JSON.stringify(playerPortDict, null, 2));
-			let funnyStats = JSON.parse(fs.readFileSync("./funnyStats.json").toString());
+			let funnyStats = JSON.parse(fs.readFileSync("./funnyStats.json").toString().trim());
 			funnyStats['btcLost'] += event.arguments[0];
 			fs.writeFileSync("./funnyStats.json", JSON.stringify(funnyStats));
 			const eventData = event.arguments[1]
