@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } from 'discord.js';
-import { socket, Emojis } from '../../index.js';
+import {socket, Emojis, getRankEmoji} from '../../index.js';
 
 const properRound = (num) => {
     return Math.round((Number(num) + Number.EPSILON) * 1000) / 1000
@@ -31,20 +31,7 @@ const playerEmbed = (player, playerid) => {
     }
 
 
-    let levelTag = Emojis.RANK_BRONZE
-    if(player.level >= 125) {
-        levelTag = Emojis.RANK_GRANDMASTER;
-    } else if(player.level >= 100) {
-        levelTag = Emojis.RANK_MASTER;
-    } else if(player.level >= 75) {
-        levelTag = Emojis.RANK_DIAMOND;
-    } else if(player.level >= 50) {
-        levelTag = Emojis.RANK_PLATINUM;
-    } else if(player.level >= 25) {
-        levelTag = Emojis.RANK_GOLD;
-    } else if(player.level >= 10) {
-        levelTag = Emojis.RANK_SILVER;
-    }
+    let levelTag = getRankEmoji(player.level)
 
     let nameColor = "Default";
     try {

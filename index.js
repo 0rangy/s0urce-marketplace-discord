@@ -118,6 +118,22 @@ export const properRound = (num) => {
 	return Math.round((num + Number.EPSILON) * 1000) / 1000
 }
 
+export let getRankEmoji = (level) => {
+	return level < 10
+		? Emojis.RANK_BRONZE
+		: level < 25
+			? Emojis.RANK_SILVER
+			: level < 50
+				? Emojis.RANK_GOLD
+				: level < 75
+					? Emojis.RANK_PLATINUM
+					: level < 100
+						? Emojis.RANK_DIAMOND
+						: level < 125
+							? Emojis.RANK_MASTER
+							: Emojis.RANK_GRANDMASTER;
+}
+
 let playerPortDict = {};
 let startSocket = () => {
 	socket = io(`wss://s0urce.io/`, {
