@@ -203,6 +203,7 @@ let showChallengeEmbed = async (interaction, id, action) => {
     if(challengeJson.official){
         embed.setThumbnail(interaction.client.user.displayAvatarURL());
     }
+    await action.deferUpdate()
     const userLoggedIn = await checkIfLoggedIn(interaction.user.id);
 
     const select = new StringSelectMenuBuilder()
@@ -275,13 +276,13 @@ let showChallengeEmbed = async (interaction, id, action) => {
                 .addComponents(select);
             const row = new ActionRowBuilder()
                 .addComponents(participantsBtn, backOutBtn);
-            response = await action.update({ embeds: [embed], content: "", components: [selRow, row] });
+            response = await action.editReply({ embeds: [embed], content: "", components: [selRow, row] });
         } else {
             const selRow = new ActionRowBuilder()
                 .addComponents(select);
             const row = new ActionRowBuilder()
                 .addComponents(participantsBtn, participateBtn);
-            response = await action.update({ embeds: [embed], content: "", components: [selRow, row] });
+            response = await action.editReply({ embeds: [embed], content: "", components: [selRow, row] });
         }
     }
     const collectorFilter = i => i.user.id === interaction.user.id;
