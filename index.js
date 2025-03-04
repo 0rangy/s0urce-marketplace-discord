@@ -330,7 +330,6 @@ import * as reloadCommand from './commands/util/reload.js';
 import * as lbCommand from './commands/player/leaderboard.js';
 import * as changelogCommand from './commands/util/changelog.js';
 import * as challengeCommand from './commands/misc/challenges.js';
-import * as linkCommand from './commands/player/link.js';
 import * as aboutCommand from './commands/misc/about.js';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -344,7 +343,6 @@ if(String(token).includes('Ub37IY')) {
 	client.commands.set(reloadCommand.data.name, reloadCommand); // Only include reload command if code is running on DebugBot
 }
 client.commands.set(lbCommand.data.name, lbCommand);
-client.commands.set(linkCommand.data.name, linkCommand);
 client.commands.set(aboutCommand.data.name, aboutCommand);
 
 
@@ -402,7 +400,7 @@ client.once('ready', readyClient => {
 			mode: 0o666
 		});
 	}
-	const response = axios.get('https://api.github.com/repos/0rangy/s0urce-marketplace-discord/commits',{
+	axios.get('https://api.github.com/repos/0rangy/s0urce-marketplace-discord/commits',{
         headers:{
             'Authorization':`token ${repoToken}`
         }

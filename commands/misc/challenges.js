@@ -203,7 +203,7 @@ let showChallengeEmbed = async (interaction, id, action) => {
     if(challengeJson.official){
         embed.setThumbnail(interaction.client.user.displayAvatarURL());
     }
-    const userLoggedIn = checkIfLoggedIn(interaction.user.username);
+    const userLoggedIn = await checkIfLoggedIn(interaction.user.id);
 
     const select = new StringSelectMenuBuilder()
         .setCustomId('challengeSelect')
@@ -240,7 +240,8 @@ let showChallengeEmbed = async (interaction, id, action) => {
     if(!userLoggedIn){
         embed.addFields({
             name: "Your account isn't linked!",
-            value: `Link your Discord account using \`/link\` to parcitipate.`
+            value: `Link your Discord account to Yabluzo using [this link](https://nandertga.ddns.net:4097/login/discord) to parcitipate.\n
+            Yabluzo is another community bot made by the staff member \`NanderTGA\`.`
         });
         participateBtn.setDisabled(true);
         const selRow = new ActionRowBuilder()
@@ -291,12 +292,7 @@ let showChallengeEmbed = async (interaction, id, action) => {
             await showChallengeEmbed(interaction, challengeId, action);
         } else if(action.customId === 'participateBtn'){
             addParticipant(id, userLoggedIn);
-            await action.reply({embeds:[
-                new EmbedBuilder()
-                    .setTitle('Success!')
-                    .setDescription("You can now participate in this challenge!")
-                    .setColor('#00b0f4')
-                ], ephemeral: true});
+            await showChallengeEmbed(interaction, id, action)
         } else if(action.customId === 'backOutBtn'){
             const modal = new ModalBuilder()
                 .setCustomId('confirmBackout')
@@ -321,12 +317,8 @@ let showChallengeEmbed = async (interaction, id, action) => {
                             ], ephemeral: true});
                     } else {
                         removeParticipant(id, userLoggedIn);
-                        await interaction.reply({embeds: [new EmbedBuilder()
-                                .setTitle('Back Out')
-                                .setDescription(`You are no longer participating in ${challengeJson.name}.`)
-                                .setColor('#00b0f4')
-                            ], ephemeral: true});
                     }
+                    await showChallengeEmbed(interaction, id, action)
                 })
         } else if(action.customId === 'participantsBtn'){
             await showLeaderboardEmbed(id, interaction);
