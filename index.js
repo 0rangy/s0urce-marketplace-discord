@@ -226,30 +226,6 @@ let startSocket = () => {
 				console.log(eventMsg[0]);
 				socket.emit(eventMsg[0], JSON.parse(eventMsg[1]));
 			}
-			for(let linkingUser of linkingQueue) {
-				if(linkingUser.sName === username) {
-					if(message === linkingUser.dId){
-						socket.emit('playerInput', {
-							"event": "sendChatMessage",
-							"id": linkingUser.sId,
-							"username": linkingUser.sName,
-							"message": "Linked successfully! You can use challenge features now."
-						});
-						linkingQueue.splice(linkingQueue.indexOf(linkingUser), 1);
-						console.log(linkingQueue)
-						let linkedUsers = JSON.parse(fs.readFileSync("./linkedUsers.json").toString());
-						linkedUsers[linkingUser.dId] = linkingUser.sName;
-						fs.writeFileSync("./linkedUsers.json", JSON.stringify(linkedUsers));
-					} else {
-						socket.emit('playerInput', {
-							"event": "sendChatMessage",
-							"id": linkingUser.sId,
-							"username": linkingUser.sName,
-							"message": "ID doesn't match!"
-						});
-					}
-				}
-			}
 		} else if(event.event === 'logEnemyAttack') {
 			const eventData = event.arguments[0]
 			playerPortDict[eventData.attacker] = eventData.port;
