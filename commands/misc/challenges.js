@@ -249,7 +249,7 @@ let showChallengeEmbed = async (interaction, id, action) => {
             .addComponents(select);
         const row = new ActionRowBuilder()
             .addComponents(participantsBtn, participateBtn);
-        response = await action.update({ embeds: [embed], content: "", components: [selRow, row] });
+        response = await action.editReply({ embeds: [embed], content: "", components: [selRow, row] });
     } else {
         if(isParticipating(id, userLoggedIn)) {
             embed.addFields({
