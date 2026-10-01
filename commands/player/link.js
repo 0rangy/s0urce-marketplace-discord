@@ -20,7 +20,8 @@ let checkIfLoggedIn = async (id) => {
     let res = await axios.get(`https://nandertga.ddns.net:4097/api/v2/discordIdToS0urceUsernames/${id}`, {
         headers: {
             'X-API-Key': `${yabSecret}`
-        }
+        },
+        timeout: 3000
     })
     if(res.status === 200 && res.data.length > 0) {
         console.log(res.data)
