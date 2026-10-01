@@ -373,7 +373,7 @@ const showMainEmbed = async (interaction) => {
             await showChallengeEmbed(interaction, challengeId, action);
         }
     } catch(e) {
-        console.log(e)
+        console.log(`[main]:`, e)
     }
     
 }
